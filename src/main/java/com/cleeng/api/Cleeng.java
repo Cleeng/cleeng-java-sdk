@@ -60,7 +60,7 @@ public interface Cleeng {
 	/**
 	 * Returns set of properties describing relation between customer and item.
 	 * 
-	 * @param customerToken
+	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
 	 * @param itemOfferId
 	 * @return
 	 */
@@ -73,7 +73,7 @@ public interface Cleeng {
 	 * Internally this function makes a call to
 	 * {@link Cleeng#getAccessStatus(int)}.
 	 * 
-	 * @param customerToken
+	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
 	 * @param itemOfferId
 	 * @return
 	 */
@@ -82,7 +82,7 @@ public interface Cleeng {
 	/**
 	 * Returns available information that describes customer browsing your site.
 	 * 
-	 * @param customerToken
+	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
 	 * @return
 	 */
 	UserInfo getUserInfo(String customerToken);
