@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * Created by Jesion on 2016-10-29.
  */
+
 public class SingleOfferData extends OfferData {
 
     public String videoId;

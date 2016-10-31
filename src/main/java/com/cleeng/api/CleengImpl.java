@@ -39,4 +39,6 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, SingleOfferResponse.class );
 	}
+
+
 }
