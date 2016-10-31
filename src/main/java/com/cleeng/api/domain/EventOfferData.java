@@ -10,7 +10,6 @@ public class EventOfferData extends BaseOfferData {
     public String currency;
     public String playerCode;
     public String playerCodeHead;
-    public String backgroundImageUrl;
     public long startTime;
     public long endTime;
     public String timeZone;
@@ -27,7 +26,6 @@ public class EventOfferData extends BaseOfferData {
                           String description,
                           String playerCode,
                           String playerCodeHead,
-                          String backgroundImageUrl,
                           long startTime,
                           long endTime,
                           String timeZone,
@@ -43,7 +41,6 @@ public class EventOfferData extends BaseOfferData {
         this.currency = currency;
         this.playerCode = playerCode;
         this.playerCodeHead = playerCodeHead;
-        this.backgroundImageUrl = backgroundImageUrl;
         this.startTime = startTime;
         this.endTime = endTime;
         this.timeZone = timeZone;

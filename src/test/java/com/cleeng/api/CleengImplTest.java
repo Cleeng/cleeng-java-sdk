@@ -1,9 +1,6 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.OfferData;
-import com.cleeng.api.domain.OfferResponse;
-import com.cleeng.api.domain.SingleOfferData;
-import com.cleeng.api.domain.SingleOfferResponse;
+import com.cleeng.api.domain.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,9 +72,39 @@ public class CleengImplTest {
                 Arrays.asList("sport", "dance")
         );
 
-        final SingleOfferResponse response = this.api.createSingleOffer(offerData);
+        final SingleOfferResponse response = this.api.createSingleOffer( offerData );
         assertNotNull( response );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
-        assertEquals( "tags should match", offerData.tags.size(), response.result.tags.size() );
+        assertEquals( "videoId should match", offerData.videoId, response.result.videoId );
+    }
+
+    @Test
+    public void testCreateEventOffer() throws IOException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest( 12.34,
+                "GBP",
+                "title",
+                "http://www.someurl.com",
+                "description",
+                "9A",
+                "90",
+                1900000000,
+                1999999999,
+                "America/New_York",
+                "7777",
+                "2",
+                "teaser",
+                true,
+                Arrays.asList("Sport", "Entertainment"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE"),
+                "http://www.somedomain.com"
+        );
+
+        final EventOfferResponse response = this.api.createEventOffer( offerData );
+        assertNotNull( response );
+        assertEquals( "offer title should equal", offerData.title, response.result.title );
+        assertEquals( "tags should match", offerData.teaser, response.result.teaser );
     }
 }

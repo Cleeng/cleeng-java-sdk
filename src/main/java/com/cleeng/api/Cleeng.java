@@ -1,9 +1,6 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.OfferData;
-import com.cleeng.api.domain.OfferResponse;
-import com.cleeng.api.domain.SingleOfferData;
-import com.cleeng.api.domain.SingleOfferResponse;
+import com.cleeng.api.domain.*;
 
 import java.io.IOException;
 
@@ -30,6 +27,15 @@ public interface Cleeng {
 	 * @return
 	 */
 	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
+
+	/**
+	 * Creates an event offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData
+	 * @return
+	 */
+	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
 
 
 

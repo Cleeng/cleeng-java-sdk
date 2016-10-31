@@ -9,15 +9,15 @@ import java.io.Serializable;
 public class OfferParams implements Serializable {
 
     public String publisherToken;
-    public OfferData offerData;
+    public BaseOfferData offerData;
 
-    public OfferParams(String publisherToken, OfferData offerData) {
+    public OfferParams(String publisherToken, BaseOfferData offerData) {
 
         this.publisherToken = publisherToken;
         this.offerData = offerData;
     }
 
-    public static OfferParams create(String publisherToken, OfferData offerData) {
+    public static OfferParams create(String publisherToken, BaseOfferData offerData) {
         return new OfferParams(publisherToken, offerData);
     }
 }

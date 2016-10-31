@@ -21,7 +21,7 @@ import java.io.Serializable;
  * Created by Jesion on 2016-10-29.
  */
 public class HttpClient {
-    public String invoke( String endpoint, Serializable request ) throws IOException {
+    public synchronized String invoke( String endpoint, Serializable request ) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
