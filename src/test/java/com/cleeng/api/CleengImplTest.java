@@ -105,6 +105,6 @@ public class CleengImplTest {
         final EventOfferResponse response = this.api.createEventOffer( offerData );
         assertNotNull( response );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
-        assertEquals( "tags should match", offerData.teaser, response.result.teaser );
+        assertEquals( "teaser should match", offerData.teaser, response.result.teaser );
     }
 }
