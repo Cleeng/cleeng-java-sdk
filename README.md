@@ -1,14 +1,26 @@
 Cleeng Java SDK
 ===============
 
-See http://cleeng.com/open/Reference for details on the Cleeng API.
+See https://developers.cleeng.com/v3/Reference for details on the Cleeng API.
 
 Example usage:
 
 	// Initialize API
 	String publisherToken = "MyPublisherToken";
-	Cleeng api = CleengFactory.createProductionApi(publisherToken);
+	Cleeng api = CleengFactory.createProductionApi( publisherToken );
 
-	// Get country based on the customer token (which can be retrieved from the "CleengClientAccessToken" cookie)
-	UserInfo userInfo = api.getUserInfo("YourCustomerToken");
-	String country = userInfo.getCountry();
+	// Create subscription offer
+	final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+			"week",
+			"some title",
+			"http://www.youtube.com",
+			"desc",
+			0,
+			0,
+			Arrays.asList("sport"),
+			true,
+			"whitelist",
+			Arrays.asList("PL")
+	);
+
+	final SubscriptionOfferResponse response = this.api.createSubscriptionOffer( offerData );
