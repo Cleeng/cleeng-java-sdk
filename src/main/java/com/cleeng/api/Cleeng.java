@@ -66,6 +66,17 @@ public interface Cleeng {
 	 */
 	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
 
+	/**
+	 * Lists single offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
+
 
 
 
