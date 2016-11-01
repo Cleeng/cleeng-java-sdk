@@ -11,6 +11,7 @@ public class ListRequest extends JSONRPCMessage {
     public ListParams params;
 
     public ListRequest(String method, ListParams params) {
+        super("1", "2.0");
         this.method = method;
         this.params = params;
     }

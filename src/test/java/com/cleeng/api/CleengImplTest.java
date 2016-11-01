@@ -174,4 +174,13 @@ public class CleengImplTest {
         assertNotNull (response.error );
         assertEquals( "error code should match ", 8, response.error.code );
     }
+
+    @Test
+    public void testListSubscriptionOffers() throws IOException {
+
+        final Criteria criteria = new Criteria( true );
+        final ListSubscriptionOffersResponse response = this.api.listSubscriptionOffers( criteria, 0, 10 );
+        assertNotNull( response );
+        assertEquals("list length should match", 10, response.result.items.size());
+    }
 }
