@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by Jesion on 2016-10-28.
@@ -150,5 +151,27 @@ public class CleengImplTest {
         assertEquals( "offer title should equal", offerData.title, response.result.title );
         assertEquals( "period should match", offerData.expiresAt, response.result.expiresAt );
 
+    }
+
+    @Test
+    public void testCreatePassOfferError() throws IOException {
+
+        final PassOfferData offerData = new PassOfferData( 12.34,
+                "some text",
+                "http://www.someurl.com",
+                "description",
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE"),
+                Arrays.asList("Sport"),
+                "week",
+                1900000000
+        );
+
+        final PassOfferResponse response = this.api.createPassOffer( offerData );
+        assertNotNull( response );
+        assertNull( response.result );
+        assertNotNull (response.error );
+        assertEquals( "error code should match ", 8, response.error.code );
     }
 }
