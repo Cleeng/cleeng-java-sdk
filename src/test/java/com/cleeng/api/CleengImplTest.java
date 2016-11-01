@@ -183,4 +183,13 @@ public class CleengImplTest {
         assertNotNull( response );
         assertEquals("list length should match", 10, response.result.items.size());
     }
+
+    @Test
+    public void testListSingleOffers() throws IOException {
+
+        final Criteria criteria = new Criteria( true );
+        final ListSingleOffersResponse response = this.api.listSingleOffers( criteria, 0, 10 );
+        assertNotNull( response );
+        assertEquals("list length should match", 10, response.result.items.size());
+    }
 }
