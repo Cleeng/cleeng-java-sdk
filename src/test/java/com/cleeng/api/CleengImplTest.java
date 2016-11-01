@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -127,5 +128,27 @@ public class CleengImplTest {
         assertNotNull( response );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
         assertEquals( "period should match", offerData.period, response.result.period );
+    }
+
+    @Test
+    public void testCreatePassOffer() throws IOException {
+
+        final PassOfferData offerData = new PassOfferData( 12.34,
+                "some text",
+                "http://www.someurl.com",
+                "description",
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE"),
+                Arrays.asList("Sport"),
+                null,
+                1900000000
+        );
+
+        final PassOfferResponse response = this.api.createPassOffer( offerData );
+        assertNotNull( response );
+        assertEquals( "offer title should equal", offerData.title, response.result.title );
+        assertEquals( "period should match", offerData.expiresAt, response.result.expiresAt );
+
     }
 }

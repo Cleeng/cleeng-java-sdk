@@ -55,4 +55,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, RentalOfferResponse.class );
 	}
+
+	public PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest( "createPassOffer", OfferParams.create( this.publisherToken, offerData ) )
+		);
+		return gson.fromJson( response, PassOfferResponse.class );
+	}
 }

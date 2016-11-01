@@ -46,6 +46,15 @@ public interface Cleeng {
 	 */
 	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
 
+	/**
+	 * Creates a pass offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData
+	 * @return
+	 */
+	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
+
 
 
 
