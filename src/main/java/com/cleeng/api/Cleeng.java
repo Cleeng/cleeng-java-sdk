@@ -77,12 +77,14 @@ public interface Cleeng {
 	 */
 	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
 
-
-
-
-
-
-
-
-
+	/**
+	 * Lists pass offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
 }

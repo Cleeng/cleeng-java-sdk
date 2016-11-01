@@ -3,12 +3,10 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -189,6 +187,15 @@ public class CleengImplTest {
 
         final Criteria criteria = new Criteria( true );
         final ListSingleOffersResponse response = this.api.listSingleOffers( criteria, 0, 10 );
+        assertNotNull( response );
+        assertEquals("list length should match", 10, response.result.items.size());
+    }
+
+    @Test
+    public void testListPassOffers() throws IOException {
+
+        final Criteria criteria = new Criteria( true );
+        final ListPassOffersResponse response = this.api.listPassOffers( criteria, 0, 10 );
         assertNotNull( response );
         assertEquals("list length should match", 10, response.result.items.size());
     }
