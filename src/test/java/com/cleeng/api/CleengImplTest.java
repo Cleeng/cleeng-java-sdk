@@ -3,6 +3,7 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -106,5 +107,25 @@ public class CleengImplTest {
         assertNotNull( response );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
         assertEquals( "teaser should match", offerData.teaser, response.result.teaser );
+    }
+
+    @Test
+    public void testCreateRentalOffer() throws IOException {
+
+        final RentalOfferData offerData = new RentalOfferData( 12.34,
+                "title",
+                "http://www.someurl.com",
+                "description",
+                46,
+                "7777",
+                "2",
+                "some text",
+                Arrays.asList("Sport", "Entertainment")
+        );
+
+        final RentalOfferResponse response = this.api.createRentalOffer( offerData );
+        assertNotNull( response );
+        assertEquals( "offer title should equal", offerData.title, response.result.title );
+        assertEquals( "period should match", offerData.period, response.result.period );
     }
 }

@@ -37,6 +37,15 @@ public interface Cleeng {
 	 */
 	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
 
+	/**
+	 * Creates a rental offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData
+	 * @return
+	 */
+	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
+
 
 
 
