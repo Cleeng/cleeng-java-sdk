@@ -8,16 +8,12 @@ import java.io.Serializable;
 public class Criteria implements Serializable {
 
     public boolean active;
-    public int offset;
-    public int limit;
 
     public Criteria() {
 
     }
 
-    public Criteria(boolean active, int offset, int limit) {
+    public Criteria(boolean active) {
         this.active = active;
-        this.offset = offset;
-        this.limit = limit;
     }
 }

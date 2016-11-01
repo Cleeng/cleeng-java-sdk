@@ -63,4 +63,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, PassOfferResponse.class );
 	}
+
+	public ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new ListRequest( "listSubscriptionOffers", ListParams.create( this.publisherToken, criteria, offset, limit ) )
+		);
+		return gson.fromJson( response, ListSubscriptionOffersResponse.class );
+	}
 }

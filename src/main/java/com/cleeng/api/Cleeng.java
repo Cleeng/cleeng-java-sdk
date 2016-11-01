@@ -55,6 +55,19 @@ public interface Cleeng {
 	 */
 	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
 
+	/**
+	 * Lists subscription offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+
+
 
 
 
