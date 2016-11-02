@@ -15,6 +15,7 @@ public class GenerateCustomerTokenRequest extends JSONRPCMessage {
     }
 
     public GenerateCustomerTokenRequest(String method, GenerateCustomerTokenParams params) {
+        super("1", "2.0");
         this.method = method;
         this.params = params;
     }
