@@ -117,4 +117,14 @@ public interface Cleeng {
 	 * @return
 	 */
 	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
+
+	/**
+	 * Get accessible tags.<br/>
+	 * <br/>
+	 *
+	 * @param publisherToken
+	 * @param customerToken
+	 * @return
+	 */
+	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
 }

@@ -229,4 +229,12 @@ public class CleengImplTest {
         assertEquals( "ExpiresAt should match", 0, response.result.expiresAt );
         assertEquals( "PurchasedDirectly should match", false, response.result.purchasedDirectly );
     }
+
+    @Test
+    public void testGetAccessibleTags() throws IOException {
+
+        final GetAccessibleTagsResponse response = this.api.getAccessibleTags( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI" );
+        assertNotNull( response.result );
+        assertNotNull( response.result.tags );
+    }
 }

@@ -111,4 +111,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, GetAccessStatusResponse.class );
 	}
+
+	public GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetAccessibleTagsRequest( "getAccessibleTags", new GetAccessibleTagsParams( publisherToken, customerToken ) )
+		);
+		return gson.fromJson( response, GetAccessibleTagsResponse.class );
+	}
 }
