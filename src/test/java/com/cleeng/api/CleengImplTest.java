@@ -214,9 +214,9 @@ public class CleengImplTest {
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
-        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "jesionekdev+test1@gmail.com" );
+        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "testjohndoe2@gmail.com" );
         assertNotNull( response );
-        assertNull( response.error );
+        assertNull( response.error);
         assertNotNull( response.result.token );
     }
 }
