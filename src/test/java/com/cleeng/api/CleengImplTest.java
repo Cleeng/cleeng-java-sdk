@@ -208,6 +208,14 @@ public class CleengImplTest {
         final FlowDescription flowDescription = new FlowDescription( 8, "http://www.wp.pl" );
         final PrepareRemoteAuthResponse response = this.api.prepareRemoteAuth( customerData, flowDescription );
         assertNotNull( response );
-        assertTrue( response.result.url.length() > 0 );
+        assertTrue(response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testGenerateCustomerToken() throws IOException {
+
+        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "johndoe@gmail.com" );
+        assertNotNull( response );
+        assertNotNull( response.error );
     }
 }

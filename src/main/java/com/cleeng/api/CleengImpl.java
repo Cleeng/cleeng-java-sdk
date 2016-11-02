@@ -95,4 +95,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, PrepareRemoteAuthResponse.class );
 	}
+
+	public GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GenerateCustomerTokenRequest( "generateCustomerToken", GenerateCustomerTokenParams.create( this.publisherToken, customerEmail ) )
+		);
+		return gson.fromJson( response, GenerateCustomerTokenResponse.class );
+	}
 }

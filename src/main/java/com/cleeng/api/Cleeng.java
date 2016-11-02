@@ -97,4 +97,14 @@ public interface Cleeng {
 	 * @return
 	 */
 	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
+
+
+	/**
+	 * Generates a customer token.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail
+	 * @return
+	 */
+	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
 }
