@@ -22,4 +22,10 @@ public class PrepareRemoteAuthParams implements Serializable {
         this.customerData = customerData;
         this.flowDescription = flowDescription;
     }
+
+    public static PrepareRemoteAuthParams create( String publisherToken,
+                                                  CustomerData customerData,
+                                                  FlowDescription flowDescription ) {
+        return new PrepareRemoteAuthParams( publisherToken, customerData, flowDescription );
+    }
 }

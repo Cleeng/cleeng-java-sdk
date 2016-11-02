@@ -87,4 +87,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, ListPassOffersResponse.class );
 	}
+
+	public PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new PrepareRemoteAuthRequest( "prepareRemoteAuth", PrepareRemoteAuthParams.create( this.publisherToken, customerData, flowDescription ) )
+		);
+		return gson.fromJson( response, PrepareRemoteAuthResponse.class );
+	}
 }

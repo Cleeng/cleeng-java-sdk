@@ -87,4 +87,14 @@ public interface Cleeng {
 	 * @return
 	 */
 	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Prepares a remote auth.<br/>
+	 * <br/>
+	 *
+	 * @param customerData
+	 * @param flowDescription
+	 * @return
+	 */
+	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
 }
