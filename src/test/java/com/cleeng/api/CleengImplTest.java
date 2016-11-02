@@ -219,4 +219,14 @@ public class CleengImplTest {
         assertNull( response.error );
         assertNotNull( response.result.token );
     }
+
+    @Test
+    public void testGetAccessStatus() throws IOException {
+
+        final GetAccessStatusResponse response = this.api.getAccessStatus( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71" );
+        assertNotNull( response.result );
+        assertEquals( "Access granted should match", false, response.result.accessGranted );
+        assertEquals( "ExpiresAt should match", 0, response.result.expiresAt );
+        assertEquals( "PurchasedDirectly should match", false, response.result.purchasedDirectly );
+    }
 }
