@@ -24,3 +24,9 @@ Example usage:
 	);
 
 	final SubscriptionOfferResponse response = this.api.createSubscriptionOffer( offerData );
+
+	// Prepare remote authentication
+
+	final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
+    final FlowDescription flowDescription = new FlowDescription( 8, "http://www.youtube.com" );
+    final PrepareRemoteAuthResponse authResponse = this.api.prepareRemoteAuth( customerData, flowDescription );
