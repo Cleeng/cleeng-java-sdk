@@ -12,6 +12,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Jesion on 2016-10-28.
@@ -198,5 +199,15 @@ public class CleengImplTest {
         final ListPassOffersResponse response = this.api.listPassOffers( criteria, 0, 10 );
         assertNotNull( response );
         assertEquals("list length should match", 10, response.result.items.size());
+    }
+
+    @Test
+    public void testPrepareRemoteAuth() throws IOException {
+
+        final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
+        final FlowDescription flowDescription = new FlowDescription( 8, "http://www.wp.pl" );
+        final PrepareRemoteAuthResponse response = this.api.prepareRemoteAuth( customerData, flowDescription );
+        assertNotNull( response );
+        assertTrue( response.result.url.length() > 0 );
     }
 }
