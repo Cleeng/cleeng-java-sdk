@@ -216,7 +216,7 @@ public class CleengImplTest {
 
         final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "testjohndoe2@gmail.com" );
         assertNotNull( response );
-        assertNull( response.error);
+        assertNull( response.error );
         assertNotNull( response.result.token );
     }
 }

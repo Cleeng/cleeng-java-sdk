@@ -103,4 +103,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, GenerateCustomerTokenResponse.class );
 	}
+
+	public GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetAccessStatusRequest( "getAccessStatus", new GetAccessStatusParams( customerToken, offerId, ipAddress ) )
+		);
+		return gson.fromJson( response, GetAccessStatusResponse.class );
+	}
 }
