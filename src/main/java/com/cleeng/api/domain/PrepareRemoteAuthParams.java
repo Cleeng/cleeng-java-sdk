@@ -1,0 +1,25 @@
+package com.cleeng.api.domain;
+
+import java.io.Serializable;
+
+/**
+ * Created by Jesion on 2016-11-02.
+ */
+public class PrepareRemoteAuthParams implements Serializable {
+
+    public String publisherToken;
+    public CustomerData customerData;
+    public FlowDescription flowDescription;
+
+    public PrepareRemoteAuthParams() {
+
+    }
+
+    public PrepareRemoteAuthParams( String publisherToken,
+                                    CustomerData customerData,
+                                    FlowDescription flowDescription ) {
+        this.publisherToken = publisherToken;
+        this.customerData = customerData;
+        this.flowDescription = flowDescription;
+    }
+}
