@@ -46,7 +46,8 @@ public class CleengImplTest {
                 Arrays.asList("sport"),
                 true,
                 "whitelist",
-                Arrays.asList("PL")
+                Arrays.asList("PL"),
+                null
         );
 
         final OfferResponse response = this.api.createSubscriptionOffer( offerData );
@@ -71,7 +72,8 @@ public class CleengImplTest {
                 "7777",
                 "778",
                 "6",
-                Arrays.asList("sport", "dance")
+                Arrays.asList("sport", "dance"),
+                null
         );
 
         final SingleOfferResponse response = this.api.createSingleOffer( offerData );

@@ -27,7 +27,8 @@ public class SingleOfferData extends OfferData {
                      String videoId,
                      String contentExternalId,
                      String contentExternalData,
-                     List<String> tags) {
+                     List<String> tags,
+                     String associateEmail) {
         super( price,
                period,
                title,
@@ -38,7 +39,8 @@ public class SingleOfferData extends OfferData {
                accessToTags,
                geoRestrictionEnabled,
                geoRestrictionType,
-               geoRestrictionCountries );
+               geoRestrictionCountries,
+               associateEmail );
         this.videoId = videoId;
         this.contentExternalId = contentExternalId;
         this.contentExternalData = contentExternalData;
