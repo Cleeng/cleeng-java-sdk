@@ -14,7 +14,7 @@ public interface Cleeng {
 	 * Creates a subscription offer.<br/>
 	 * <br/>
 	 *
-	 * @param offerData
+	 * @param offerData domain object representing offer data
 	 * @return
 	 */
 	OfferResponse createSubscriptionOffer(OfferData offerData) throws IOException;
@@ -23,7 +23,7 @@ public interface Cleeng {
 	 * Creates a single offer.<br/>
 	 * <br/>
 	 *
-	 * @param offerData
+	 * @param offerData domain object representing single offer data
 	 * @return
 	 */
 	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
@@ -32,7 +32,7 @@ public interface Cleeng {
 	 * Creates an event offer.<br/>
 	 * <br/>
 	 *
-	 * @param offerData
+	 * @param offerData domain object representing event offer data
 	 * @return
 	 */
 	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
@@ -41,7 +41,7 @@ public interface Cleeng {
 	 * Creates a rental offer.<br/>
 	 * <br/>
 	 *
-	 * @param offerData
+	 * @param offerData domain object representing rental offer data
 	 * @return
 	 */
 	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
@@ -50,7 +50,7 @@ public interface Cleeng {
 	 * Creates a pass offer.<br/>
 	 * <br/>
 	 *
-	 * @param offerData
+	 * @param offerData domain object representing pass offer data
 	 * @return
 	 */
 	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
@@ -59,9 +59,9 @@ public interface Cleeng {
 	 * Lists subscription offers.<br/>
 	 * <br/>
 	 *
-	 * @param criteria
-	 * @param offset
-	 * @param limit
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
 	 * @return
 	 */
 	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
@@ -70,9 +70,9 @@ public interface Cleeng {
 	 * Lists single offers.<br/>
 	 * <br/>
 	 *
-	 * @param criteria
-	 * @param offset
-	 * @param limit
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
 	 * @return
 	 */
 	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
@@ -81,9 +81,9 @@ public interface Cleeng {
 	 * Lists pass offers.<br/>
 	 * <br/>
 	 *
-	 * @param criteria
-	 * @param offset
-	 * @param limit
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's limit
 	 * @return
 	 */
 	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
@@ -92,8 +92,8 @@ public interface Cleeng {
 	 * Prepares a remote auth.<br/>
 	 * <br/>
 	 *
-	 * @param customerData
-	 * @param flowDescription
+	 * @param customerData domain object representing customer's data
+	 * @param flowDescription domain object representing flow description
 	 * @return
 	 */
 	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
@@ -102,7 +102,7 @@ public interface Cleeng {
 	 * Generates a customer token.<br/>
 	 * <br/>
 	 *
-	 * @param customerEmail
+	 * @param customerEmail customer's email
 	 * @return
 	 */
 	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
@@ -111,9 +111,9 @@ public interface Cleeng {
 	 * Gets access status.<br/>
 	 * <br/>
 	 *
-	 * @param customerToken
-	 * @param offerId
-	 * @param ipAddress
+	 * @param customerToken customer token
+	 * @param offerId offer Id
+	 * @param ipAddress IP address
 	 * @return
 	 */
 	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
@@ -122,8 +122,8 @@ public interface Cleeng {
 	 * Get accessible tags.<br/>
 	 * <br/>
 	 *
-	 * @param publisherToken
-	 * @param customerToken
+	 * @param publisherToken publisher's token
+	 * @param customerToken customer's token
 	 * @return
 	 */
 	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
