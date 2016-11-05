@@ -16,16 +16,17 @@ public class PassOfferData extends BaseOfferData {
     }
 
     public PassOfferData(double price,
-                         String title,
-                         String url,
-                         String description,
-                         boolean geoRestrictionEnabled,
-                         String geoRestrictionType,
-                         List<String> geoRestrictionCountries,
-                         List<String> accessToTags,
                          String period,
                          long expiresAt,
-                         String associateEmail) {
+                         String title,
+                         String url,
+                         String associateEmail,
+                         String description,
+                         List<String> accessToTags,
+                         boolean geoRestrictionEnabled,
+                         String geoRestrictionType,
+                         List<String> geoRestrictionCountries
+                        ) {
         super( price,
             title,
             url,

@@ -138,16 +138,16 @@ public class CleengImplTest {
     public void testCreatePassOffer() throws IOException {
 
         final PassOfferData offerData = new PassOfferData( 12.34,
-                "some text",
-                "http://www.someurl.com",
-                "description",
-                true,
-                "whitelist",
-                Arrays.asList("PL","DE"),
-                Arrays.asList("Sport"),
-                null,
-                1900000000,
-                null
+            null,
+            1900000000,
+            "title",
+            "http://www.somedomain.com",
+            null,
+            "description",
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL","DE")
         );
 
         final PassOfferResponse response = this.api.createPassOffer( offerData );
@@ -161,16 +161,16 @@ public class CleengImplTest {
     public void testCreatePassOfferError() throws IOException {
 
         final PassOfferData offerData = new PassOfferData( 12.34,
-                "some text",
-                "http://www.someurl.com",
+                "month",
+                1900000000,
+                "title",
+                "http://www.somedomain.com",
+                null,
                 "description",
+                Arrays.asList("Sport"),
                 true,
                 "whitelist",
-                Arrays.asList("PL","DE"),
-                Arrays.asList("Sport"),
-                "week",
-                1900000000,
-                null
+                Arrays.asList("PL","DE")
         );
 
         final PassOfferResponse response = this.api.createPassOffer( offerData );
