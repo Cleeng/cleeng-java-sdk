@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -59,21 +60,17 @@ public class CleengImplTest {
     public void testCreateSingleOffer() throws IOException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
-                "week",
-                "some title",
-                "http://www.youtube.com",
-                "desc",
-                0,
-                0,
-                Arrays.asList("sport"),
-                true,
-                "whitelist",
-                Arrays.asList("PL"),
-                "7777",
-                "778",
-                "6",
-                Arrays.asList("sport", "dance"),
-                null
+            "title",
+            "http://www.youtube.com",
+            "description",
+            null,
+            "7777",
+            "778",
+            "8787",
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL","DE")
         );
 
         final SingleOfferResponse response = this.api.createSingleOffer( offerData );
