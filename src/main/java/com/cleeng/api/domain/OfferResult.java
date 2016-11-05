@@ -18,8 +18,7 @@ public class OfferResult extends BaseOfferData {
     public int averageRating;
     public String contentType;
     public long expiresAt;
-    //TODO: check in which responses period is required..
-    //public String period;
+    public String period;
     public int freePeriods;
     public int freeDays;
 
