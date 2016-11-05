@@ -17,7 +17,7 @@ public interface Cleeng {
 	 * @param offerData domain object representing offer data
 	 * @return
 	 */
-	OfferResponse createSubscriptionOffer(OfferData offerData) throws IOException;
+	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
 
 	/**
 	 * Creates a single offer.<br/>

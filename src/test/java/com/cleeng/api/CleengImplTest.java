@@ -37,18 +37,18 @@ public class CleengImplTest {
     @Test
     public void testCreateSubscriptionOffer() throws IOException {
 
-        final OfferData offerData = new OfferData(12.34,
-                "week",
-                "some title",
-                "http://www.youtube.com",
-                "desc",
-                0,
-                0,
-                Arrays.asList("sport"),
-                true,
-                "whitelist",
-                Arrays.asList("PL"),
-                null
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title",
+            "http://www.youtube.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
         );
 
         final OfferResponse response = this.api.createSubscriptionOffer( offerData );

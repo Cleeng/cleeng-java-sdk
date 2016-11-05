@@ -24,7 +24,7 @@ public class CleengImpl implements Cleeng {
 		this.publisherToken = publisherToken;
 	}
 
-	public OfferResponse createSubscriptionOffer(OfferData offerData) throws IOException {
+	public OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new OfferRequest( "createSubscriptionOffer", OfferParams.create( this.publisherToken, offerData) )
