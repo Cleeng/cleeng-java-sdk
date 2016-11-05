@@ -4,7 +4,7 @@ package com.cleeng.api.domain;
  * Created by Jesion on 2016-10-29.
  */
 
-public class OfferResult extends OfferData {
+public class OfferResult extends BaseOfferData {
 
     public String id;
     public String publisherEmail;
@@ -18,6 +18,10 @@ public class OfferResult extends OfferData {
     public int averageRating;
     public String contentType;
     public long expiresAt;
+    //TODO: check in which responses period is required..
+    //public String period;
+    public int freePeriods;
+    public int freeDays;
 
     public OfferResult() {
 
