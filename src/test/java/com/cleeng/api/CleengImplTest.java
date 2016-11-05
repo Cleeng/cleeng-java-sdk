@@ -117,15 +117,15 @@ public class CleengImplTest {
     public void testCreateRentalOffer() throws IOException {
 
         final RentalOfferData offerData = new RentalOfferData( 12.34,
-                "title",
-                "http://www.someurl.com",
-                "description",
-                46,
-                "7777",
-                "2",
-                "some text",
-                Arrays.asList("Sport", "Entertainment"),
-                null
+            "title",
+            48,
+            "http://www.someurl.com",
+            "description",
+            null,
+            "7777",
+            "2",
+            "some text",
+            Arrays.asList("Sport", "Entertainment")
         );
 
         final RentalOfferResponse response = this.api.createRentalOffer( offerData );

@@ -16,14 +16,14 @@ public class RentalOfferData extends BaseOfferData {
 
     public RentalOfferData(double price,
                            String title,
+                           int period,
                            String url,
                            String description,
-                           int period,
+                           String associateEmail,
                            String videoId,
                            String contentExternalId,
                            String contentExternalData,
-                           List<String> tags,
-                           String associateEmail) {
+                           List<String> tags) {
         super( price, title, url, description, false, null, null, associateEmail );
 
         this.period = period;
