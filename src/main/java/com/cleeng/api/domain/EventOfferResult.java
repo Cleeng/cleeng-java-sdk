@@ -1,10 +1,13 @@
 package com.cleeng.api.domain;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Jesion on 2016-10-31.
  */
 
-public class EventOfferResult extends EventOfferData {
+public class EventOfferResult extends BaseOfferData {
 
     public String id;
     public String publisherEmail;
@@ -16,4 +19,17 @@ public class EventOfferResult extends EventOfferData {
     public int socialCommissionRate;
     public int averageRating;
     public String contentType;
+    public String currency;
+    public String playerCode;
+    public String playerCodeHead;
+    public long startTime;
+    public long endTime;
+    public String timeZone;
+    public String videoId;
+    public String viewerEstimate;
+    public String teaser;
+    public boolean applyServiceFeeOnCustomer;
+    public List<String> tags;
+    public Map<String, String> backgroundImageUrl;
+
 }
