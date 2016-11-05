@@ -24,14 +24,16 @@ public class PassOfferData extends BaseOfferData {
                          List<String> geoRestrictionCountries,
                          List<String> accessToTags,
                          String period,
-                         long expiresAt) {
+                         long expiresAt,
+                         String associateEmail) {
         super( price,
             title,
             url,
             description,
             geoRestrictionEnabled,
             geoRestrictionType,
-            geoRestrictionCountries
+            geoRestrictionCountries,
+            associateEmail
         );
         this.accessToTags = accessToTags;
         this.period = period;

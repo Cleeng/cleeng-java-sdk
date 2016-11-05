@@ -27,7 +27,8 @@ public class EventOfferDataRequest extends EventOfferData {
                           boolean geoRestrictionEnabled,
                           String geoRestrictionType,
                           List<String> geoRestrictionCountries,
-                          String backgroundImageUrl) {
+                          String backgroundImageUrl,
+                          String associateEmail) {
         super(price,
             currency,
             title,
@@ -45,7 +46,9 @@ public class EventOfferDataRequest extends EventOfferData {
             tags,
             geoRestrictionEnabled,
             geoRestrictionType,
-            geoRestrictionCountries);
+            geoRestrictionCountries,
+            associateEmail
+        );
 
         this.backgroundImageUrl = backgroundImageUrl;
     }

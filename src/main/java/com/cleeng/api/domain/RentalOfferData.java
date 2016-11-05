@@ -22,8 +22,9 @@ public class RentalOfferData extends BaseOfferData {
                            String videoId,
                            String contentExternalId,
                            String contentExternalData,
-                           List<String> tags) {
-        super( price, title, url, description, false, null, null );
+                           List<String> tags,
+                           String associateEmail) {
+        super( price, title, url, description, false, null, null, associateEmail );
 
         this.period = period;
         this.videoId = videoId;

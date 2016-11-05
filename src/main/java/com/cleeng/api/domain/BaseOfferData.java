@@ -15,6 +15,7 @@ public class BaseOfferData implements Serializable {
     public boolean geoRestrictionEnabled;
     public String geoRestrictionType;
     public List<String> geoRestrictionCountries;
+    public String associateEmail;
 
     public BaseOfferData( double price,
                           String title,
@@ -22,7 +23,8 @@ public class BaseOfferData implements Serializable {
                           String description,
                           boolean geoRestrictionEnabled,
                           String geoRestrictionType,
-                          List<String> geoRestrictionCountries ) {
+                          List<String> geoRestrictionCountries,
+                          String associateEmail ) {
         this.price = price;
         this.title = title;
         this.url = url;
@@ -30,6 +32,7 @@ public class BaseOfferData implements Serializable {
         this.geoRestrictionEnabled = geoRestrictionEnabled;
         this.geoRestrictionType = geoRestrictionType;
         this.geoRestrictionCountries = geoRestrictionCountries;
+        this.associateEmail = associateEmail;
     }
 
     public BaseOfferData() {

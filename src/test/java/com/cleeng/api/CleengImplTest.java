@@ -103,7 +103,8 @@ public class CleengImplTest {
                 true,
                 "whitelist",
                 Arrays.asList("PL", "DE"),
-                "http://www.somedomain.com"
+                "http://www.somedomain.com",
+                null
         );
 
         final EventOfferResponse response = this.api.createEventOffer( offerData );
@@ -123,7 +124,8 @@ public class CleengImplTest {
                 "7777",
                 "2",
                 "some text",
-                Arrays.asList("Sport", "Entertainment")
+                Arrays.asList("Sport", "Entertainment"),
+                null
         );
 
         final RentalOfferResponse response = this.api.createRentalOffer( offerData );
@@ -144,7 +146,8 @@ public class CleengImplTest {
                 Arrays.asList("PL","DE"),
                 Arrays.asList("Sport"),
                 null,
-                1900000000
+                1900000000,
+                null
         );
 
         final PassOfferResponse response = this.api.createPassOffer( offerData );
@@ -166,7 +169,8 @@ public class CleengImplTest {
                 Arrays.asList("PL","DE"),
                 Arrays.asList("Sport"),
                 "week",
-                1900000000
+                1900000000,
+                null
         );
 
         final PassOfferResponse response = this.api.createPassOffer( offerData );

@@ -36,8 +36,17 @@ public class EventOfferData extends BaseOfferData {
                           List<String> tags,
                           boolean geoRestrictionEnabled,
                           String geoRestrictionType,
-                          List<String> geoRestrictionCountries) {
-        super( price, title, url, description, geoRestrictionEnabled, geoRestrictionType, geoRestrictionCountries );
+                          List<String> geoRestrictionCountries,
+                          String associateEmail) {
+        super( price,
+            title,
+            url,
+            description,
+            geoRestrictionEnabled,
+            geoRestrictionType,
+            geoRestrictionCountries,
+            associateEmail
+        );
         this.currency = currency;
         this.playerCode = playerCode;
         this.playerCodeHead = playerCodeHead;

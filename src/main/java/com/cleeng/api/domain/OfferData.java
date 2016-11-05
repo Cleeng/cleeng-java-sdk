@@ -12,7 +12,6 @@ public class OfferData extends BaseOfferData {
     public int freePeriods;
     public int freeDays;
     public List<String> accessToTags;
-    public String associateEmail;
 
     public OfferData() {
         super();
@@ -36,12 +35,12 @@ public class OfferData extends BaseOfferData {
             description,
             geoRestrictionEnabled,
             geoRestrictionType,
-            geoRestrictionCountries
+            geoRestrictionCountries,
+            associateEmail
         );
         this.period = period;
         this.freePeriods = freePeriods;
         this.freeDays = freeDays;
         this.accessToTags = accessToTags;
-        this.associateEmail = associateEmail;
     }
 }
