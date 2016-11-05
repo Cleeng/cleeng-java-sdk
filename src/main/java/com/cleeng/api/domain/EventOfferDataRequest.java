@@ -16,9 +16,11 @@ public class EventOfferDataRequest extends EventOfferData {
                           String description,
                           String playerCode,
                           String playerCodeHead,
+                          String backgroundImageUrl,
                           long startTime,
                           long endTime,
                           String timeZone,
+                          String associateEmail,
                           String videoId,
                           String viewerEstimate,
                           String teaser,
@@ -26,9 +28,7 @@ public class EventOfferDataRequest extends EventOfferData {
                           List<String> tags,
                           boolean geoRestrictionEnabled,
                           String geoRestrictionType,
-                          List<String> geoRestrictionCountries,
-                          String backgroundImageUrl,
-                          String associateEmail) {
+                          List<String> geoRestrictionCountries) {
         super(price,
             currency,
             title,
