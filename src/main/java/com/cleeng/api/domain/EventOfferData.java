@@ -2,9 +2,6 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
-/**
- * Created by Jesion on 2016-10-31.
- */
 public class EventOfferData extends BaseOfferDataRequest {
 
     public String currency;

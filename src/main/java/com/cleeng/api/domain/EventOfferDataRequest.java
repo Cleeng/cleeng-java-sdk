@@ -2,9 +2,6 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
-/**
- * Created by Jesion on 2016-10-31.
- */
 public class EventOfferDataRequest extends EventOfferData {
 
     public String backgroundImageUrl;

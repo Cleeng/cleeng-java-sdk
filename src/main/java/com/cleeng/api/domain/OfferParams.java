@@ -2,10 +2,6 @@ package com.cleeng.api.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by Jesion on 2016-10-29.
- */
-
 public class OfferParams implements Serializable {
 
     public String publisherToken;

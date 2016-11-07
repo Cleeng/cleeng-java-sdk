@@ -2,10 +2,6 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
-/**
- * Created by Jesion on 2016-10-29.
- */
-
 public class OfferData extends BaseOfferDataRequest {
 
     public String period;

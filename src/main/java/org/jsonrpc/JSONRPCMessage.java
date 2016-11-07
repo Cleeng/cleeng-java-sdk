@@ -2,10 +2,6 @@ package org.jsonrpc;
 
 import java.io.Serializable;
 
-
-/**
- * Created by Jesion on 2016-10-29.
- */
 public class JSONRPCMessage implements Serializable {
 
     public String jsonrpc;

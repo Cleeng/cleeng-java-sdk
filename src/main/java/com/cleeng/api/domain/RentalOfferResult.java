@@ -2,9 +2,6 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
-/**
- * Created by Jesion on 2016-11-01.
- */
 public class RentalOfferResult extends BaseOfferData {
 
     public String id;

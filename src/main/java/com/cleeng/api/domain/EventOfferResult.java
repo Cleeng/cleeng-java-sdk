@@ -3,10 +3,6 @@ package com.cleeng.api.domain;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Jesion on 2016-10-31.
- */
-
 public class EventOfferResult extends BaseOfferData {
 
     public String id;

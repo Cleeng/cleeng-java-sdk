@@ -2,10 +2,6 @@ package com.cleeng.api.domain;
 
 import org.jsonrpc.JSONRPCMessage;
 
-/**
- * Created by Jesion on 2016-10-28.
- */
-
 public class OfferRequest extends JSONRPCMessage {
 
     public String method;

@@ -17,9 +17,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * Created by Jesion on 2016-10-29.
- */
 public class HttpClient {
     public synchronized String invoke( String endpoint, Serializable request ) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
