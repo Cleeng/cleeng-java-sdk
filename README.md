@@ -10,23 +10,24 @@ Example usage:
 	Cleeng api = CleengFactory.createProductionApi( publisherToken );
 
 	// Create subscription offer
-	final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
-			"week",
-			"some title",
-			"http://www.youtube.com",
-			"desc",
-			0,
-			0,
-			Arrays.asList("sport"),
-			true,
-			"whitelist",
-			Arrays.asList("PL")
-	);
+    final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+		"week",
+		"title",
+		"http://www.someurl.com",
+		"description",
+		null,
+		0,
+		9,
+		Arrays.asList("Sport"),
+		true,
+		"whitelist",
+		Arrays.asList("PL", "DE")
+    );
 
-	final SubscriptionOfferResponse response = this.api.createSubscriptionOffer( offerData );
+    final OfferResponse response = this.api.createSubscriptionOffer( offerData );
 
 	// Prepare remote authentication
 
 	final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
-    final FlowDescription flowDescription = new FlowDescription( 8, "http://www.youtube.com" );
+    final FlowDescription flowDescription = new FlowDescription( "8", "http://www.someurl.com" );
     final PrepareRemoteAuthResponse authResponse = this.api.prepareRemoteAuth( customerData, flowDescription );
