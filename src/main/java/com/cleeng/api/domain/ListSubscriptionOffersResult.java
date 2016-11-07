@@ -9,4 +9,6 @@ import java.util.List;
 public class ListSubscriptionOffersResult implements Serializable {
 
     public List<OfferResult> items;
+
+    public int totalItemCount;
 }
