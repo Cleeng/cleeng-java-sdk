@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Jesion on 2016-10-31.
  */
-public class EventOfferData extends BaseOfferData {
+public class EventOfferData extends BaseOfferDataRequest {
 
     public String currency;
     public String playerCode;

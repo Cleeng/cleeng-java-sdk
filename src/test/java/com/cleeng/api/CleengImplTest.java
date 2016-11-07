@@ -53,6 +53,7 @@ public class CleengImplTest {
 
         final OfferResponse response = this.api.createSubscriptionOffer( offerData );
         assertNotNull( response );
+        assertNotNull( response.result.accessToTags );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
     }
 
@@ -61,7 +62,7 @@ public class CleengImplTest {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
             "title",
-            "http://www.youtube.com",
+            "http://www.somedomain.com",
             "description",
             null,
             "7777",

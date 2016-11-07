@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Jesion on 2016-10-29.
  */
 
-public class SingleOfferData extends BaseOfferData {
+public class SingleOfferData extends BaseOfferDataRequest {
 
     public String videoId;
     public String contentExternalId;

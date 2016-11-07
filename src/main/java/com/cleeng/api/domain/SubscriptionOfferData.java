@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Jesion on 2016-11-05.
  */
-public class SubscriptionOfferData extends BaseOfferData {
+public class SubscriptionOfferData extends BaseOfferDataRequest {
 
     public String period;
     public int freePeriods;

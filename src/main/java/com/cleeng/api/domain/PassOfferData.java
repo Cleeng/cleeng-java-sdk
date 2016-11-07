@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Jesion on 2016-11-01.
  */
-public class PassOfferData extends BaseOfferData {
+public class PassOfferData extends BaseOfferDataRequest {
 
     public List<String> accessToTags;
     public String period;

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Jesion on 2016-11-01.
  */
 
-public class RentalOfferData extends BaseOfferData {
+public class RentalOfferData extends BaseOfferDataRequest {
 
     public int period;
     public String videoId;
