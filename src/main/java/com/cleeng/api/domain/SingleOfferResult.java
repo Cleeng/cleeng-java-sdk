@@ -5,11 +5,22 @@ import java.util.List;
 /**
  * Created by Jesion on 2016-10-29.
  */
-public class SingleOfferResult extends OfferResult {
+public class SingleOfferResult extends BaseOfferData {
 
     public String videoId;
     public String contentExternalId;
     public String contentExternalData;
     public List<String> tags;
     public String contentAgeRestriction;
+    public String id;
+    public String publisherEmail;
+    public String country;
+    public String currency;
+    public boolean active;
+    public long createdAt;
+    public long updatedAt;
+    public double applicableTaxRate;
+    public int socialCommissionRate;
+    public int averageRating;
+    public String contentType;
 }
