@@ -40,7 +40,7 @@ public class CleengImplTest {
         final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
             "week",
             "title",
-            "http://www.youtube.com",
+            "http://www.someurl.com",
             "description",
             null,
             0,
@@ -62,7 +62,7 @@ public class CleengImplTest {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
             "title",
-            "http://www.somedomain.com",
+            "http://www.someurl.com",
             "description",
             null,
             "7777",
@@ -86,11 +86,11 @@ public class CleengImplTest {
         final EventOfferDataRequest offerData = new EventOfferDataRequest( 12.34,
             "GBP",
             "titleval",
-            "http://www.somedomain.com",
+            "http://www.someurl.com",
             "desc",
             "9A",
             "90",
-            "http://www.somedomain.com",
+            "http://www.someurl.com",
             1999999990,
             1999999999,
             "America/New_York",
@@ -139,7 +139,7 @@ public class CleengImplTest {
             null,
             1900000000,
             "title",
-            "http://www.somedomain.com",
+            "http://www.someurl.com",
             null,
             "description",
             Arrays.asList("Sport"),
@@ -162,7 +162,7 @@ public class CleengImplTest {
                 "month",
                 1900000000,
                 "title",
-                "http://www.somedomain.com",
+                "http://www.someurl.com",
                 null,
                 "description",
                 Arrays.asList("Sport"),
@@ -209,7 +209,7 @@ public class CleengImplTest {
     public void testPrepareRemoteAuth() throws IOException {
 
         final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
-        final FlowDescription flowDescription = new FlowDescription( 8, "http://www.wp.pl" );
+        final FlowDescription flowDescription = new FlowDescription( "8", "http://www.someurl.com" );
         final PrepareRemoteAuthResponse response = this.api.prepareRemoteAuth( customerData, flowDescription );
         assertNotNull( response );
         assertTrue(response.result.url.length() > 0);
