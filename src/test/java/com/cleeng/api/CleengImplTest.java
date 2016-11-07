@@ -54,7 +54,7 @@ public class CleengImplTest {
         final OfferResponse response = this.api.createSubscriptionOffer( offerData );
         assertNotNull( response );
         assertNotNull( response.result.accessToTags );
-        assertEquals( "offer title should equal", offerData.title, response.result.title );
+        assertEquals("offer title should equal", offerData.title, response.result.title);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class CleengImplTest {
         final EventOfferDataRequest offerData = new EventOfferDataRequest( 12.34,
             "GBP",
             "titleval",
-            "http://www.youtube.com",
+            "http://www.somedomain.com",
             "desc",
             "9A",
             "90",

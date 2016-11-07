@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by Jesion on 2016-10-31.
  */
 
-public class EventOfferResult extends BaseOfferDataRequest {
+public class EventOfferResult extends BaseOfferData {
 
     public String id;
     public String publisherEmail;
