@@ -1,14 +1,20 @@
 package com.cleeng.api.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RentalOfferData extends BaseOfferDataRequest {
+public class RentalOfferData implements Serializable {
 
     public int period;
     public String videoId;
     public String contentExternalId;
     public String contentExternalData;
     public List<String> tags;
+    public String associateEmail;
+    public double price;
+    public String title;
+    public String url;
+    public String description;
 
     public RentalOfferData(double price,
                            String title,
@@ -20,12 +26,16 @@ public class RentalOfferData extends BaseOfferDataRequest {
                            String contentExternalId,
                            String contentExternalData,
                            List<String> tags) {
-        super( price, title, url, description, false, null, null, associateEmail );
 
+        this.price = price;
+        this.title = title;
+        this.url = url;
+        this.description = description;
         this.period = period;
         this.videoId = videoId;
         this.contentExternalId = contentExternalId;
         this.contentExternalData = contentExternalData;
+        this.associateEmail = associateEmail;
         this.tags = tags;
     }
 

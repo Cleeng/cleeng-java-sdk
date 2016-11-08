@@ -51,7 +51,7 @@ public class CleengImpl implements Cleeng {
 	public RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new OfferRequest( "createRentalOffer", OfferParams.create( this.publisherToken, offerData ) )
+				new RentalOfferRequest( "createRentalOffer", RentalOfferParams.create( this.publisherToken, offerData ) )
 		);
 		return gson.fromJson( response, RentalOfferResponse.class );
 	}
