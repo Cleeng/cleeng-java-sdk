@@ -1,107 +1,122 @@
 package com.cleeng.api;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.cleeng.api.domain.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import com.cleeng.api.domain.AccessStatus;
-import com.cleeng.api.domain.ItemOffer;
-import com.cleeng.api.domain.ItemOfferRequest;
-import com.cleeng.api.domain.UserInfo;
-import com.googlecode.jsonrpc4j.JsonRpcHttpClient;
-import com.googlecode.jsonrpc4j.JsonRpcParam;
-import com.googlecode.jsonrpc4j.ProxyUtil;
+import java.io.IOException;
 
-/**
- * Client implementation of Cleeng JSON-RPC API based on <a
- * href="http://code.google.com/p/jsonrpc4j/">jsonrpc4j</a> library.
- * 
- */
 public class CleengImpl implements Cleeng {
 
 	private String publisherToken;
 	private String platformUrl;
-	private CleengRpc cleengRpc;
+	private Gson gson;
+	private HttpClient client;
 
-	private interface CleengRpc {
-		ItemOffer createItemOffer(
-				@JsonRpcParam(value = "token") String publisherToken,
-				@JsonRpcParam(value = "itemOfferData") ItemOfferRequest request);
-
-		ItemOffer updateItemOffer(
-				@JsonRpcParam(value = "token") String pubisherToken,
-				@JsonRpcParam(value = "itemOfferId") int itemOfferId,
-				@JsonRpcParam(value = "itemOfferData") ItemOfferRequest data);
-
-		void removeItemOffer(
-				@JsonRpcParam(value = "token") String publisherToken,
-				@JsonRpcParam(value = "itemOfferId") int itemOfferId);
-
-		ItemOffer getItemOffer(
-				@JsonRpcParam(value = "itemOfferId") int itemOfferId);
-
-		AccessStatus getAccessStatus(
-				@JsonRpcParam(value = "token") String token,
-				@JsonRpcParam(value = "itemOfferId") int itemOfferId);
-
-		UserInfo getUserInfo(@JsonRpcParam(value = "token") String token);
-	}
-
-	public CleengImpl(final String platformUrl) throws MalformedURLException {
+	public CleengImpl(final String platformUrl) {
+		this.gson = new GsonBuilder().create();
+		this.client = new HttpClient();
 		this.platformUrl = platformUrl;
-		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL(platformUrl));
-		cleengRpc = ProxyUtil.createProxy(getClass().getClassLoader(),
-				CleengRpc.class, client);
 	}
 
-	public CleengImpl(String platformUrl, String publisherToken)
-			throws MalformedURLException {
+	public CleengImpl(String platformUrl, String publisherToken) {
 		this(platformUrl);
 		this.publisherToken = publisherToken;
 	}
 
-	public ItemOffer createItemOffer(ItemOfferRequest request) {
-		return cleengRpc.createItemOffer(this.publisherToken, request);
+	public OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest( "createSubscriptionOffer", OfferParams.create( this.publisherToken, offerData) )
+		);
+		return gson.fromJson( response, OfferResponse.class );
 	}
 
-	public ItemOffer updateItemOffer(int itemOfferId, ItemOfferRequest data) {
-		return cleengRpc
-				.updateItemOffer(this.publisherToken, itemOfferId, data);
+	public SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest( "createSingleOffer", OfferParams.create( this.publisherToken, offerData ) )
+		);
+		return gson.fromJson( response, SingleOfferResponse.class );
 	}
 
-	public void removeItemOffer(int itemOfferId) {
-		cleengRpc.removeItemOffer(this.publisherToken, itemOfferId);
+	public EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest( "createEventOffer", OfferParams.create( this.publisherToken, offerData ) )
+		);
+		return gson.fromJson( response, EventOfferResponse.class );
 	}
 
-	public ItemOffer getItemOffer(int itemOfferId) {
-		return cleengRpc.getItemOffer(itemOfferId);
+	public RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new RentalOfferRequest( "createRentalOffer", RentalOfferParams.create( this.publisherToken, offerData ) )
+		);
+		return gson.fromJson( response, RentalOfferResponse.class );
 	}
 
-	public AccessStatus getAccessStatus(String customerToken, int itemOfferId) {
-		return cleengRpc.getAccessStatus(customerToken, itemOfferId);
+	public PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest( "createPassOffer", OfferParams.create( this.publisherToken, offerData ) )
+		);
+		return gson.fromJson( response, PassOfferResponse.class );
 	}
 
-	public boolean isAccessGranted(String customerToken, int itemOfferId) {
-		return getAccessStatus(customerToken, itemOfferId).getAccessGranted();
+	public ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new ListRequest( "listSubscriptionOffers", ListParams.create( this.publisherToken, criteria, offset, limit ) )
+		);
+		return gson.fromJson( response, ListSubscriptionOffersResponse.class );
 	}
 
-	public UserInfo getUserInfo(String customerToken) {
-		return cleengRpc.getUserInfo(customerToken);
+	public ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new ListRequest( "listSingleOffers", ListParams.create( this.publisherToken, criteria, offset, limit ) )
+		);
+		return gson.fromJson( response, ListSingleOffersResponse.class );
 	}
 
-	public String getPlatformUrl() {
-		return platformUrl;
+	public ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new ListRequest( "listPassOffers", ListParams.create( this.publisherToken, criteria, offset, limit ) )
+		);
+		return gson.fromJson( response, ListPassOffersResponse.class );
 	}
 
-	public void setPlatformUrl(final String platformUrl) {
-		this.platformUrl = platformUrl;
+	public PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new PrepareRemoteAuthRequest( "prepareRemoteAuth", PrepareRemoteAuthParams.create( this.publisherToken, customerData, flowDescription ) )
+		);
+		return gson.fromJson( response, PrepareRemoteAuthResponse.class );
 	}
 
-	public void setPublisherToken(final String publisherToken) {
-		this.publisherToken = publisherToken;
+	public GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GenerateCustomerTokenRequest( "generateCustomerToken", GenerateCustomerTokenParams.create( this.publisherToken, customerEmail ) )
+		);
+		return gson.fromJson( response, GenerateCustomerTokenResponse.class );
 	}
 
-	public String getPublisherToken() {
-		return this.publisherToken;
+	public GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetAccessStatusRequest( "getAccessStatus", new GetAccessStatusParams( customerToken, offerId, ipAddress ) )
+		);
+		return gson.fromJson( response, GetAccessStatusResponse.class );
 	}
 
+	public GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetAccessibleTagsRequest( "getAccessibleTags", new GetAccessibleTagsParams( publisherToken, customerToken ) )
+		);
+		return gson.fromJson( response, GetAccessibleTagsResponse.class );
+	}
 }

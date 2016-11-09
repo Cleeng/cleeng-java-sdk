@@ -1,9 +1,8 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.AccessStatus;
-import com.cleeng.api.domain.ItemOffer;
-import com.cleeng.api.domain.ItemOfferRequest;
-import com.cleeng.api.domain.UserInfo;
+import com.cleeng.api.domain.*;
+
+import java.io.IOException;
 
 /**
  * Cleeng API. Set of methods to interact with Cleeng platform.
@@ -12,108 +11,120 @@ import com.cleeng.api.domain.UserInfo;
 public interface Cleeng {
 
 	/**
-	 * Creates reference to item you want to sell on Cleeng servers.<br/>
+	 * Creates a subscription offer.<br/>
 	 * <br/>
-	 * 
-	 * In order to use it, you must set publisher token first. You can use one
-	 * of:
-	 * <ul>
-	 * <li>{@link Cleeng#setPublisherToken(String)}</li>
-	 * <li>{@link CleengFactory#createProductionApi(String)}</li>
-	 * <li>{@link CleengFactory#createSandboxApi(String)}</li>
-	 * </ul>
-	 * 
-	 * @param itemOffer
+	 *
+	 * @param offerData domain object representing offer data
 	 * @return
 	 */
-	ItemOffer createItemOffer(ItemOfferRequest itemOffer);
+	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
 
 	/**
-	 * Updates given item offer.
-	 * 
-	 * @param itemOfferId
-	 *            Id of item offer that needs to be updated
-	 * @param itemOffer
-	 * @return
-	 */
-	ItemOffer updateItemOffer(int itemOfferId, ItemOfferRequest itemOffer);
-
-	/**
-	 * Removes the given item offer.<br/>
+	 * Creates a single offer.<br/>
 	 * <br/>
-	 * 
-	 * Please note that removeItemOffer doesn't really remove anything from
-	 * Cleeng servers - it only marks given item offer as "removed".
-	 * 
-	 * @param itemOfferId
-	 */
-	void removeItemOffer(int itemOfferId);
-
-	/**
-	 * Returns information about given item offer.
-	 * 
-	 * @param itemOfferId
+	 *
+	 * @param offerData domain object representing single offer data
 	 * @return
 	 */
-	ItemOffer getItemOffer(int itemOfferId);
+	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
 
 	/**
-	 * Returns set of properties describing relation between customer and item.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
-	 * @param itemOfferId
-	 * @return
-	 */
-	AccessStatus getAccessStatus(String customerToken, int itemOfferId);
-
-	/**
-	 * Returns true if user has an access to given item offer.<br/>
+	 * Creates an event offer.<br/>
 	 * <br/>
-	 * 
-	 * Internally this function makes a call to
-	 * {@link Cleeng#getAccessStatus(int)}.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
-	 * @param itemOfferId
+	 *
+	 * @param offerData domain object representing event offer data
 	 * @return
 	 */
-	boolean isAccessGranted(String customerToken, int itemOfferId);
+	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
 
 	/**
-	 * Returns available information that describes customer browsing your site.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
+	 * Creates a rental offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing rental offer data
 	 * @return
 	 */
-	UserInfo getUserInfo(String customerToken);
+	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
 
 	/**
-	 * Returns URL of the platform that is used (e.g. http://cleeng.com or
-	 * http://sandbox.cleeng.com).
-	 * 
+	 * Creates a pass offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing pass offer data
 	 * @return
 	 */
-	String getPlatformUrl();
+	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
 
 	/**
-	 * Sets the Cleeng platform URL (e.g. http://cleeng.com or
-	 * http://sandbox.cleeng.com).
-	 * 
-	 * @param platformUrl
-	 */
-	void setPlatformUrl(String platformUrl);
-
-	/**
-	 * Returns the publisher token
-	 * 
+	 * Lists subscription offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
 	 * @return
 	 */
-	String getPublisherToken();
+	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
-	 * Sets the publisher token
-	 * 
-	 * @param publisherToken
+	 * Lists single offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
+	 * @return
 	 */
-	void setPublisherToken(String publisherToken);
+	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists pass offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's limit
+	 * @return
+	 */
+	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Prepares a remote auth.<br/>
+	 * <br/>
+	 *
+	 * @param customerData domain object representing customer's data
+	 * @param flowDescription domain object representing flow description
+	 * @return
+	 */
+	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
+
+	/**
+	 * Generates a customer token.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @return
+	 */
+	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
+
+	/**
+	 * Gets access status.<br/>
+	 * <br/>
+	 *
+	 * @param customerToken customer token
+	 * @param offerId offer Id
+	 * @param ipAddress IP address
+	 * @return
+	 */
+	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
+
+	/**
+	 * Get accessible tags.<br/>
+	 * <br/>
+	 *
+	 * @param publisherToken publisher's token
+	 * @param customerToken customer's token
+	 * @return
+	 */
+	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
 }
