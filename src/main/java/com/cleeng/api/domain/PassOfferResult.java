@@ -18,6 +18,4 @@ public class PassOfferResult extends BaseOfferData {
     public List<String> accessToTags;
     public String period;
     public long expiresAt;
-    public int freeDays;
-    public int freePeriods;
 }

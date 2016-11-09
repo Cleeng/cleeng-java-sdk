@@ -225,8 +225,8 @@ public class CleengImplTest {
 
         final GetAccessStatusResponse response = this.api.getAccessStatus( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71" );
         assertNotNull( response.result );
-        assertEquals( "Access granted should match", false, response.result.accessGranted );
-        assertEquals( "ExpiresAt should match", 0, response.result.expiresAt );
+        assertEquals( "Access granted should match", true, response.result.accessGranted );
+        assertEquals( "ExpiresAt should match", 1900000000, response.result.expiresAt );
         assertEquals( "PurchasedDirectly should match", false, response.result.purchasedDirectly );
     }
 
