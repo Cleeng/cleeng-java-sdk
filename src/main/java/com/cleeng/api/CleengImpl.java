@@ -48,6 +48,10 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, SingleOfferResponse.class );
 	}
 
+	public void createSingleOfferAsync() throws IOException, InterruptedException {
+		
+	}
+
 	public EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
