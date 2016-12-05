@@ -1,31 +1,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.cleeng</groupId>
 	<artifactId>cleeng-java-sdk</artifactId>
 	<version>1.0</version>
 	<name>Cleeng Java SDK</name>
 
-	<repositories>
-		<repository>
-			<id>jsonrpc4j-webdav-maven-repo</id>
-			<name>jsonrpc4j maven repository</name>
-			<url>http://jsonrpc4j.googlecode.com/svn/maven/repo/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>jsonrpc4j</artifactId>
-			<version>0.23</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.7.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<url>http://cleeng.com/open/</url>
 	<description>When you are building your website or application with Java, you can use the Cleeng Java SDK. It simplifies the use of the Cleeng API as it handles user login and content access, and deals with all JSON-RPC specific code.</description>
+
 </project>

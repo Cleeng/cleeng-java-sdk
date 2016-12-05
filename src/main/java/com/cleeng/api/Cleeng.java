@@ -1,9 +1,9 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.AccessStatus;
-import com.cleeng.api.domain.ItemOffer;
-import com.cleeng.api.domain.ItemOfferRequest;
-import com.cleeng.api.domain.UserInfo;
+import com.cleeng.api.domain.*;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Cleeng API. Set of methods to interact with Cleeng platform.
@@ -12,108 +12,170 @@ import com.cleeng.api.domain.UserInfo;
 public interface Cleeng {
 
 	/**
-	 * Creates reference to item you want to sell on Cleeng servers.<br/>
+	 * Creates a subscription offer.<br/>
 	 * <br/>
-	 * 
-	 * In order to use it, you must set publisher token first. You can use one
-	 * of:
-	 * <ul>
-	 * <li>{@link Cleeng#setPublisherToken(String)}</li>
-	 * <li>{@link CleengFactory#createProductionApi(String)}</li>
-	 * <li>{@link CleengFactory#createSandboxApi(String)}</li>
-	 * </ul>
-	 * 
-	 * @param itemOffer
+	 *
+	 * @param offerData domain object representing offer data
 	 * @return
 	 */
-	ItemOffer createItemOffer(ItemOfferRequest itemOffer);
+	OfferResponse createSubscriptionOffer( SubscriptionOfferData offerData ) throws IOException;
 
 	/**
-	 * Updates given item offer.
-	 * 
-	 * @param itemOfferId
-	 *            Id of item offer that needs to be updated
-	 * @param itemOffer
-	 * @return
-	 */
-	ItemOffer updateItemOffer(int itemOfferId, ItemOfferRequest itemOffer);
-
-	/**
-	 * Removes the given item offer.<br/>
+	 * Creates subscription offers (async)
 	 * <br/>
-	 * 
-	 * Please note that removeItemOffer doesn't really remove anything from
-	 * Cleeng servers - it only marks given item offer as "removed".
-	 * 
-	 * @param itemOfferId
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	void removeItemOffer(int itemOfferId);
+	void createSubscriptionOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
-	 * Returns information about given item offer.
-	 * 
-	 * @param itemOfferId
-	 * @return
-	 */
-	ItemOffer getItemOffer(int itemOfferId);
-
-	/**
-	 * Returns set of properties describing relation between customer and item.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
-	 * @param itemOfferId
-	 * @return
-	 */
-	AccessStatus getAccessStatus(String customerToken, int itemOfferId);
-
-	/**
-	 * Returns true if user has an access to given item offer.<br/>
+	 * Creates a single offer.<br/>
 	 * <br/>
-	 * 
-	 * Internally this function makes a call to
-	 * {@link Cleeng#getAccessStatus(int)}.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
-	 * @param itemOfferId
+	 *
+	 * @param offerData domain object representing single offer data
 	 * @return
 	 */
-	boolean isAccessGranted(String customerToken, int itemOfferId);
+	SingleOfferResponse createSingleOffer( SingleOfferData offerData ) throws IOException;
 
 	/**
-	 * Returns available information that describes customer browsing your site.
-	 * 
-	 * @param customerToken As stored in the "CleengClientAccessToken" cookie
+	 * Creates single offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createSingleOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
+	 * Creates an event offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing event offer data
 	 * @return
 	 */
-	UserInfo getUserInfo(String customerToken);
+	EventOfferResponse createEventOffer( EventOfferData offerData ) throws IOException;
 
 	/**
-	 * Returns URL of the platform that is used (e.g. http://cleeng.com or
-	 * http://sandbox.cleeng.com).
-	 * 
+	 * Creates an event offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createEventOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
+	 * Creates a rental offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing rental offer data
 	 * @return
 	 */
-	String getPlatformUrl();
+	RentalOfferResponse createRentalOffer( RentalOfferData offerData ) throws IOException;
 
 	/**
-	 * Sets the Cleeng platform URL (e.g. http://cleeng.com or
-	 * http://sandbox.cleeng.com).
-	 * 
-	 * @param platformUrl
+	 * Creates rental offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	void setPlatformUrl(String platformUrl);
+	void createRentalOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
-	 * Returns the publisher token
-	 * 
+	 * Creates a pass offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing pass offer data
 	 * @return
 	 */
-	String getPublisherToken();
+	PassOfferResponse createPassOffer( PassOfferData offerData ) throws IOException;
 
 	/**
-	 * Sets the publisher token
-	 * 
-	 * @param publisherToken
+	 * Creates pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	void setPublisherToken(String publisherToken);
+	void createPassOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
+	 * Lists subscription offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
+	 * @return
+	 */
+	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists single offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
+	 * @return
+	 */
+	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists pass offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's limit
+	 * @return
+	 */
+	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Prepares a remote auth.<br/>
+	 * <br/>
+	 *
+	 * @param customerData domain object representing customer's data
+	 * @param flowDescription domain object representing flow description
+	 * @return
+	 */
+	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
+
+	/**
+	 * Generates a customer token.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @return
+	 */
+	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
+
+	/**
+	 * Gets access status.<br/>
+	 * <br/>
+	 *
+	 * @param customerToken customer token
+	 * @param offerId offer Id
+	 * @param ipAddress IP address
+	 * @return
+	 */
+	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
+
+	/**
+	 * Get accessible tags.<br/>
+	 * <br/>
+	 *
+	 * @param publisherToken publisher's token
+	 * @param customerToken customer's token
+	 * @return
+	 */
+	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
 }
