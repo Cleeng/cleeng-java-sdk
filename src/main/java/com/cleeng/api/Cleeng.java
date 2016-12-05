@@ -23,6 +23,14 @@ public interface Cleeng {
 	 */
 	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
 
+	/**
+	 * Creates subscription offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
@@ -33,6 +41,16 @@ public interface Cleeng {
 	 * @return
 	 */
 	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
+
+	/**
+	 * Creates single offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates an event offer.<br/>
