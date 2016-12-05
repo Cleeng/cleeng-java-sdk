@@ -62,6 +62,16 @@ public interface Cleeng {
 	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
 
 	/**
+	 * Creates an event offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a rental offer.<br/>
 	 * <br/>
 	 *
