@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -57,48 +59,8 @@ public class CleengImplTest {
         assertEquals("offer title should equal", offerData.title, response.result.title);
     }
 
-    private CountDownLatch subscriptionOfferCounter = new CountDownLatch(2);
-
     @Test
     public void testCreateSubscriptionOfferAsync() throws IOException, InterruptedException {
-
-        final FutureCallback<HttpResponse> callback = new FutureCallback<HttpResponse>() {
-
-            @Override
-            public void completed(final HttpResponse response) {
-                System.out.println("Done async request: " + response.getStatusLine());
-                subscriptionOfferCounter.countDown();
-            }
-
-            @Override
-            public void failed(final Exception ex) {
-
-            }
-
-            @Override
-            public void cancelled() {
-
-            }
-        };
-
-        final FutureCallback<HttpResponse> secondCallback = new FutureCallback<HttpResponse>() {
-
-            @Override
-            public void completed(final HttpResponse response) {
-                System.out.println("Done async request (2): " + response.getStatusLine());
-                subscriptionOfferCounter.countDown();
-            }
-
-            @Override
-            public void failed(final Exception ex) {
-
-            }
-
-            @Override
-            public void cancelled() {
-
-            }
-        };
 
         final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
                 "week",
@@ -128,12 +90,31 @@ public class CleengImplTest {
                 Arrays.asList("PL", "DE")
         );
 
-        this.api.createSubscriptionOfferAsync(offerData, callback, subscriptionOfferCounter);
-        this.api.createSubscriptionOfferAsync(offerData2, secondCallback, subscriptionOfferCounter);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
 
-        subscriptionOfferCounter.await(10000, TimeUnit.MILLISECONDS);
+        this.api.createSubscriptionOfferAsync(requests);
 
-        assertEquals("Lock queue should be empty", 0, subscriptionOfferCounter.getCount());
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
     }
 
     @Test

@@ -8,8 +8,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class HttpClient {
@@ -48,22 +49,29 @@ public class HttpClient {
         }
     }
 
-
-    // TODO:
-    // https://hc.apache.org/httpcomponents-asyncclient-dev/httpasyncclient/examples/org/apache/http/examples/nio/client/AsyncClientHttpExchangeFutureCallback.java
-
-    public void invokeAsync( String endpoint, Serializable request, FutureCallback<HttpResponse> callback, CountDownLatch latch) throws IOException, InterruptedException {
-        final CloseableHttpAsyncClient httpClient = HttpAsyncClients.createDefault();
+    public void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(3000)
+                .setConnectTimeout(3000).build();
+        CloseableHttpAsyncClient httpClient = HttpAsyncClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
         try {
             httpClient.start();
-            HttpPost post = new HttpPost(endpoint);
-            post.setHeader("Content-Type", "application/json");
-            Gson gson = new GsonBuilder().create();
-            String json = gson.toJson( request );
-            post.setEntity( new StringEntity( json, "UTF-8" ));
-            httpClient.execute(post, callback);
+            final CountDownLatch latch = new CountDownLatch(requests.size());
+            for (final AsyncRequest request : requests) {
+                request.latch = latch;
+                request.callback.setCountdownLatch(latch);
+                HttpPost post = new HttpPost( request.endpoint );
+                post.setHeader("Content-Type", "application/json");
+                Gson gson = new GsonBuilder().create();
+                String json = gson.toJson( request.data );
+                post.setEntity( new StringEntity( json, "UTF-8" ));
+                httpClient.execute( post, request.callback );
+            }
+            latch.await();
         } finally {
-            //httpClient.close();
+            httpClient.close();
         }
     }
 }

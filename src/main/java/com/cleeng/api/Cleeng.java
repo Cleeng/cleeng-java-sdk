@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.concurrent.FutureCallback;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -22,7 +23,7 @@ public interface Cleeng {
 	 */
 	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
 
-	void createSubscriptionOfferAsync(SubscriptionOfferData offerData, FutureCallback<HttpResponse> callback, CountDownLatch latch) throws IOException, InterruptedException;
+	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates a single offer.<br/>
