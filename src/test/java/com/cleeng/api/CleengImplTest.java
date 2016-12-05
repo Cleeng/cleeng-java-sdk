@@ -122,7 +122,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testCreateSingleOffer() throws IOException {
+    public void testCreateSingleOffer() throws IOException, InterruptedException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
             "title",
@@ -136,6 +136,50 @@ public class CleengImplTest {
             true,
             "whitelist",
             Arrays.asList("PL","DE")
+        );
+
+        final AsyncRequestCallback<SingleOfferResponse> callback = new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, callback ) );
+
+        this.api.createSingleOfferAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final SingleOfferResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertEquals( "Average rating should match", true, response.result.active );
+    }
+
+    @Test
+    public void testCreateSingleOfferAsync() throws IOException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+                "title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "7777",
+                "778",
+                "8787",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
         );
 
         final SingleOfferResponse response = this.api.createSingleOffer( offerData );
