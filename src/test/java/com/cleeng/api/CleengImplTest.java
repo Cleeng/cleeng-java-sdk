@@ -288,6 +288,53 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testCreateRentalOfferAsync() throws IOException, InterruptedException {
+
+        final RentalOfferData offerData = new RentalOfferData( 12.34,
+                "title",
+                48,
+                "http://www.someurl.com",
+                "description",
+                null,
+                "7777",
+                "2",
+                "some text",
+                Arrays.asList("Sport", "Entertainment")
+        );
+
+        final AsyncRequestCallback<RentalOfferResponse> callback = new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, callback ) );
+
+        this.api.createRentalOfferAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final RentalOfferResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertEquals( "Active should match", true, response.result.active );
+    }
+
+    @Test
     public void testCreatePassOffer() throws IOException {
 
         final PassOfferData offerData = new PassOfferData( 12.34,
