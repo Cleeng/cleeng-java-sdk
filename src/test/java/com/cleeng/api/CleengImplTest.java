@@ -90,31 +90,38 @@ public class CleengImplTest {
                 Arrays.asList("PL", "DE")
         );
 
+        final AsyncRequestCallback<OfferResponse> callback = new AsyncRequestCallback<OfferResponse>(OfferResponse.class);
+
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback() ) );
-        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback() ) );
+        requests.add( new AsyncRequest( offerData, callback ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData2, new AsyncRequestCallback<OfferResponse>(OfferResponse.class) ) );
 
         this.api.createSubscriptionOfferAsync(requests);
 
         requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final OfferResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertEquals( "Average rating should match", 4, response.result.averageRating );
     }
 
     @Test
