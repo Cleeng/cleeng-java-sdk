@@ -1,12 +1,9 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import org.apache.http.HttpResponse;
-import org.apache.http.concurrent.FutureCallback;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Cleeng API. Set of methods to interact with Cleeng platform.
@@ -21,7 +18,7 @@ public interface Cleeng {
 	 * @param offerData domain object representing offer data
 	 * @return
 	 */
-	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
+	OfferResponse createSubscriptionOffer( SubscriptionOfferData offerData ) throws IOException;
 
 	/**
 	 * Creates subscription offers (async)
@@ -31,7 +28,7 @@ public interface Cleeng {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+	void createSubscriptionOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Creates a single offer.<br/>
@@ -40,7 +37,7 @@ public interface Cleeng {
 	 * @param offerData domain object representing single offer data
 	 * @return
 	 */
-	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
+	SingleOfferResponse createSingleOffer( SingleOfferData offerData ) throws IOException;
 
 	/**
 	 * Creates single offers (async)
@@ -50,7 +47,7 @@ public interface Cleeng {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	void createSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+	void createSingleOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Creates an event offer.<br/>
@@ -59,7 +56,7 @@ public interface Cleeng {
 	 * @param offerData domain object representing event offer data
 	 * @return
 	 */
-	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
+	EventOfferResponse createEventOffer( EventOfferData offerData ) throws IOException;
 
 	/**
 	 * Creates an event offers (async).<br/>
@@ -69,7 +66,7 @@ public interface Cleeng {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	void createEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+	void createEventOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Creates a rental offer.<br/>
@@ -78,7 +75,17 @@ public interface Cleeng {
 	 * @param offerData domain object representing rental offer data
 	 * @return
 	 */
-	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
+	RentalOfferResponse createRentalOffer( RentalOfferData offerData ) throws IOException;
+
+	/**
+	 * Creates rental offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createRentalOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Creates a pass offer.<br/>
@@ -87,7 +94,17 @@ public interface Cleeng {
 	 * @param offerData domain object representing pass offer data
 	 * @return
 	 */
-	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
+	PassOfferResponse createPassOffer( PassOfferData offerData ) throws IOException;
+
+	/**
+	 * Creates pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createPassOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Lists subscription offers.<br/>

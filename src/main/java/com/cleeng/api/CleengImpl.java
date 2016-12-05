@@ -72,12 +72,20 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync( requests );
 	}
 
-	public RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException {
+	public RentalOfferResponse createRentalOffer( RentalOfferData offerData ) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new RentalOfferRequest( "createRentalOffer", RentalOfferParams.create( this.publisherToken, offerData ) )
 		);
 		return gson.fromJson( response, RentalOfferResponse.class );
+	}
+
+	public void createRentalOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new RentalOfferRequest( "createRentalOffer", RentalOfferParams.create( this.publisherToken, (RentalOfferData) request.input ) );
+		}
+		this.client.invokeAsync( requests );
 	}
 
 	public PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException {
@@ -86,6 +94,14 @@ public class CleengImpl implements Cleeng {
 				new OfferRequest( "createPassOffer", OfferParams.create( this.publisherToken, offerData ) )
 		);
 		return gson.fromJson( response, PassOfferResponse.class );
+	}
+
+	public void createPassOfferAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new OfferRequest( "createPassOffer", OfferParams.create( this.publisherToken, (PassOfferData) request.input ) );
+		}
+		this.client.invokeAsync( requests );
 	}
 
 	public ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException {
