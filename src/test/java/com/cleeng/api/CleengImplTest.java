@@ -122,7 +122,30 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testCreateSingleOffer() throws IOException, InterruptedException {
+    public void testCreateSingleOffer() throws IOException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+                "title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "7777",
+                "778",
+                "8787",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final SingleOfferResponse response = this.api.createSingleOffer( offerData );
+        assertNotNull( response );
+        assertEquals( "offer title should equal", offerData.title, response.result.title );
+        assertEquals( "videoId should match", offerData.videoId, response.result.videoId );
+    }
+
+    @Test
+    public void testCreateSingleOfferAsync() throws IOException, InterruptedException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
             "title",
@@ -166,29 +189,6 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testCreateSingleOfferAsync() throws IOException {
-
-        final SingleOfferData offerData = new SingleOfferData(12.34,
-                "title",
-                "http://www.someurl.com",
-                "description",
-                null,
-                "7777",
-                "778",
-                "8787",
-                Arrays.asList("Sport"),
-                true,
-                "whitelist",
-                Arrays.asList("PL","DE")
-        );
-
-        final SingleOfferResponse response = this.api.createSingleOffer( offerData );
-        assertNotNull( response );
-        assertEquals( "offer title should equal", offerData.title, response.result.title );
-        assertEquals( "videoId should match", offerData.videoId, response.result.videoId );
-    }
-
-    @Test
     public void testCreateEventOffer() throws IOException {
 
         final EventOfferDataRequest offerData = new EventOfferDataRequest( 12.34,
@@ -217,6 +217,53 @@ public class CleengImplTest {
         assertNotNull( response );
         assertEquals( "offer title should equal", offerData.title, response.result.title );
         assertEquals( "teaser should match", offerData.teaser, response.result.teaser );
+    }
+
+    @Test
+    public void testCreateEventOfferAsync() throws IOException, InterruptedException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest( 12.34,
+                "GBP",
+                "titleval",
+                "http://www.someurl.com",
+                "desc",
+                "9A",
+                "90",
+                "http://www.someurl.com",
+                1999999990,
+                1999999999,
+                "America/New_York",
+                null,
+                "7777",
+                "2",
+                "teaser",
+                true,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+
+        final AsyncRequestCallback<EventOfferResponse> callback = new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, callback ) );
+
+        this.api.createEventOfferAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final EventOfferResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertEquals( "Active should match", true, response.result.active );
     }
 
     @Test
