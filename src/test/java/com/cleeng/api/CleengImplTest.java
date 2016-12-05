@@ -358,6 +358,60 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testCreatePassOfferAsync() throws IOException, InterruptedException {
+
+        final PassOfferData offerData = new PassOfferData( 12.34,
+                null,
+                1900000000,
+                "title",
+                "http://www.someurl.com",
+                null,
+                "description",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final AsyncRequestCallback<PassOfferResponse> callback = new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class) ) );
+        requests.add( new AsyncRequest( offerData, callback ) );
+
+        this.api.createPassOfferAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final PassOfferResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertEquals( "Active should match", true, response.result.active );
+    }
+
+    @Test
     public void testCreatePassOfferError() throws IOException {
 
         final PassOfferData offerData = new PassOfferData( 12.34,
