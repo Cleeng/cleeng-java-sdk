@@ -35,7 +35,7 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     @Override
     public void completed(final HttpResponse response) {
         this._countdownLatch.countDown();
-        System.out.println("Completed async request: " + response.getStatusLine() + " count: " + this._countdownLatch.getCount());
+        System.out.println("Completed async request: " + response.getStatusLine() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
         final HttpEntity entity = response.getEntity();
         try {
             this._response = EntityUtils.toString(entity);
