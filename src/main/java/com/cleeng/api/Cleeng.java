@@ -1,8 +1,11 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.concurrent.FutureCallback;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Cleeng API. Set of methods to interact with Cleeng platform.
@@ -18,6 +21,8 @@ public interface Cleeng {
 	 * @return
 	 */
 	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
+
+	void createSubscriptionOfferAsync(SubscriptionOfferData offerData, FutureCallback<HttpResponse> callback, CountDownLatch latch) throws IOException, InterruptedException;
 
 	/**
 	 * Creates a single offer.<br/>

@@ -9,13 +9,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.CountDownLatch;
 
 public class HttpClient {
     public synchronized String invoke( String endpoint, Serializable request ) throws IOException {
@@ -41,6 +45,25 @@ public class HttpClient {
                 }
             };
             return httpClient.execute(post, responseHandler);
+        }
+    }
+
+
+    // TODO:
+    // https://hc.apache.org/httpcomponents-asyncclient-dev/httpasyncclient/examples/org/apache/http/examples/nio/client/AsyncClientHttpExchangeFutureCallback.java
+
+    public void invokeAsync( String endpoint, Serializable request, FutureCallback<HttpResponse> callback, CountDownLatch latch) throws IOException, InterruptedException {
+        final CloseableHttpAsyncClient httpClient = HttpAsyncClients.createDefault();
+        try {
+            httpClient.start();
+            HttpPost post = new HttpPost(endpoint);
+            post.setHeader("Content-Type", "application/json");
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson( request );
+            post.setEntity( new StringEntity( json, "UTF-8" ));
+            httpClient.execute(post, callback);
+        } finally {
+            //httpClient.close();
         }
     }
 }

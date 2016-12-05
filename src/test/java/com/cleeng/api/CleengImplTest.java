@@ -1,6 +1,8 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.concurrent.FutureCallback;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +10,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -51,6 +55,85 @@ public class CleengImplTest {
         assertNotNull( response );
         assertNotNull( response.result.accessToTags );
         assertEquals("offer title should equal", offerData.title, response.result.title);
+    }
+
+    private CountDownLatch subscriptionOfferCounter = new CountDownLatch(2);
+
+    @Test
+    public void testCreateSubscriptionOfferAsync() throws IOException, InterruptedException {
+
+        final FutureCallback<HttpResponse> callback = new FutureCallback<HttpResponse>() {
+
+            @Override
+            public void completed(final HttpResponse response) {
+                System.out.println("Done async request: " + response.getStatusLine());
+                subscriptionOfferCounter.countDown();
+            }
+
+            @Override
+            public void failed(final Exception ex) {
+
+            }
+
+            @Override
+            public void cancelled() {
+
+            }
+        };
+
+        final FutureCallback<HttpResponse> secondCallback = new FutureCallback<HttpResponse>() {
+
+            @Override
+            public void completed(final HttpResponse response) {
+                System.out.println("Done async request (2): " + response.getStatusLine());
+                subscriptionOfferCounter.countDown();
+            }
+
+            @Override
+            public void failed(final Exception ex) {
+
+            }
+
+            @Override
+            public void cancelled() {
+
+            }
+        };
+
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+                "week",
+                "title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                0,
+                9,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+
+        final SubscriptionOfferData offerData2 = new SubscriptionOfferData(12.34,
+                "week",
+                "title",
+                "http://www.someurl.com/new",
+                "description",
+                null,
+                0,
+                9,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+
+        this.api.createSubscriptionOfferAsync(offerData, callback, subscriptionOfferCounter);
+        this.api.createSubscriptionOfferAsync(offerData2, secondCallback, subscriptionOfferCounter);
+
+        subscriptionOfferCounter.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, subscriptionOfferCounter.getCount());
     }
 
     @Test
@@ -225,8 +308,8 @@ public class CleengImplTest {
 
         final GetAccessStatusResponse response = this.api.getAccessStatus( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71" );
         assertNotNull( response.result );
-        assertEquals( "Access granted should match", true, response.result.accessGranted );
-        assertEquals( "ExpiresAt should match", 1900000000, response.result.expiresAt );
+        assertEquals( "Access granted should match", false, response.result.accessGranted );
+        assertEquals( "ExpiresAt should match", 0, response.result.expiresAt );
         assertEquals( "PurchasedDirectly should match", false, response.result.purchasedDirectly );
     }
 

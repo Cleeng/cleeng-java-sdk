@@ -3,8 +3,12 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.http.HttpResponse;
+import org.apache.http.concurrent.FutureCallback;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 public class CleengImpl implements Cleeng {
 
@@ -30,6 +34,14 @@ public class CleengImpl implements Cleeng {
 				new OfferRequest( "createSubscriptionOffer", OfferParams.create( this.publisherToken, offerData) )
 		);
 		return gson.fromJson( response, OfferResponse.class );
+	}
+
+	public void createSubscriptionOfferAsync(SubscriptionOfferData offerData, FutureCallback<HttpResponse> callback, CountDownLatch latch) throws IOException, InterruptedException {
+		this.client.invokeAsync( this.platformUrl,
+				new OfferRequest( "createSubscriptionOffer", OfferParams.create( this.publisherToken, offerData) ),
+				callback,
+				latch
+		);
 	}
 
 	public SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException {
