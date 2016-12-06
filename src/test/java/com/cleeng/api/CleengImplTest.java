@@ -550,6 +550,29 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GenerateCustomerTokenResponse> callback = new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncTokenRequest( callback, "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+
+        this.api.generateCustomerTokenAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final GenerateCustomerTokenResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertNotNull( "Response should contain token", response.result.token );
+    }
+
+    @Test
     public void testGetAccessStatus() throws IOException {
 
         final GetAccessStatusResponse response = this.api.getAccessStatus( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71" );

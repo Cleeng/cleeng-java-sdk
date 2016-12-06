@@ -168,6 +168,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, GenerateCustomerTokenResponse.class );
 	}
 
+	public void generateCustomerTokenAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new GenerateCustomerTokenRequest( "generateCustomerToken", GenerateCustomerTokenParams.create( this.publisherToken, ( (AsyncTokenRequest) request).customerEmail ) );
+		}
+		this.client.invokeAsync( requests );
+	}
+
 	public GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

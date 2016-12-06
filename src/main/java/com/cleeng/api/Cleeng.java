@@ -189,6 +189,15 @@ public interface Cleeng {
 	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
 
 	/**
+	 * Generates a customer token (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncTokenRequest objects
+	 * @return
+	 */
+	void generateCustomerTokenAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Gets access status.<br/>
 	 * <br/>
 	 *
