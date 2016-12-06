@@ -144,6 +144,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, ListPassOffersResponse.class );
 	}
 
+	public void listPassOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new ListRequest( "listPassOffers", ListParams.create( this.publisherToken, (Criteria) ((AsyncListRequest) request).input, ((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit ) );
+		}
+		this.client.invokeAsync( requests );
+	}
+
 	public PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

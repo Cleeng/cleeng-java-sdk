@@ -2,9 +2,6 @@ package com.cleeng.api;
 
 import java.io.Serializable;
 
-/**
- * Created by Jesion on 2016-12-06.
- */
 public class AsyncListRequest extends AsyncRequest {
 
     public int offset;

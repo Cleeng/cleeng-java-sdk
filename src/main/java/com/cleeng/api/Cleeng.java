@@ -160,6 +160,16 @@ public interface Cleeng {
 	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listPassOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Prepares a remote auth.<br/>
 	 * <br/>
 	 *

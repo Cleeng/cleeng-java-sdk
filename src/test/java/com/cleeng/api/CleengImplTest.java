@@ -508,6 +508,29 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testListPassOffersAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<ListPassOffersResponse> callback = new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncListRequest( new Criteria(true), callback, 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
+
+        this.api.listPassOffersAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final ListPassOffersResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue( "List should contain items", response.result.items.size() > 0 );
+    }
+
+    @Test
     public void testPrepareRemoteAuth() throws IOException {
 
         final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
