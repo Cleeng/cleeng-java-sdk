@@ -118,6 +118,16 @@ public interface Cleeng {
 	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists subscription offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSubscriptionOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Lists single offers.<br/>
 	 * <br/>
 	 *
@@ -129,6 +139,16 @@ public interface Cleeng {
 	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists single offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSingleOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Lists pass offers.<br/>
 	 * <br/>
 	 *
@@ -138,6 +158,16 @@ public interface Cleeng {
 	 * @return
 	 */
 	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listPassOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 
 	/**
 	 * Prepares a remote auth.<br/>
