@@ -118,6 +118,16 @@ public interface Cleeng {
 	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists subscription offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSubscriptionOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Lists single offers.<br/>
 	 * <br/>
 	 *
