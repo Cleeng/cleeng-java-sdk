@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -111,8 +110,6 @@ public class CleengImplTest {
 
         this.api.createSubscriptionOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final OfferResponse response = callback.getResponse();
@@ -177,8 +174,6 @@ public class CleengImplTest {
         requests.add( new AsyncRequest( offerData, callback ) );
 
         this.api.createSingleOfferAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -256,8 +251,6 @@ public class CleengImplTest {
 
         this.api.createEventOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final EventOfferResponse response = callback.getResponse();
@@ -323,8 +316,6 @@ public class CleengImplTest {
         requests.add( new AsyncRequest( offerData, callback ) );
 
         this.api.createRentalOfferAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -401,8 +392,6 @@ public class CleengImplTest {
 
         this.api.createPassOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final PassOfferResponse response = callback.getResponse();
@@ -456,8 +445,6 @@ public class CleengImplTest {
 
         this.api.listSubscriptionOffersAsync( requests );
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListSubscriptionOffersResponse response = callback.getResponse();
@@ -488,8 +475,6 @@ public class CleengImplTest {
 
         this.api.listSingleOffersAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListSingleOffersResponse response = callback.getResponse();
@@ -519,8 +504,6 @@ public class CleengImplTest {
         requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
 
         this.api.listPassOffersAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -561,8 +544,6 @@ public class CleengImplTest {
         requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
 
         this.api.generateCustomerTokenAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
