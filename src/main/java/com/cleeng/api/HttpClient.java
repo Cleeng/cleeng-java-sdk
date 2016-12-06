@@ -49,7 +49,7 @@ public class HttpClient {
         }
     }
 
-    public void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+    public synchronized void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(3000)
                 .setConnectTimeout(3000).build();
