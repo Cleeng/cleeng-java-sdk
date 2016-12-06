@@ -539,9 +539,10 @@ public class CleengImplTest {
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add( new AsyncTokenRequest( callback, "testjohndoe2@gmail.com" ) );
 
+        final List<String> tokens = new ArrayList<String>();
         final int count = 100;
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 1; i < count; i++) {
             requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
         }
 
@@ -553,6 +554,12 @@ public class CleengImplTest {
 
         assertNotNull( "Response object should not be null", response );
         assertNotNull( "Response should contain token", response.result.token );
+
+        for (int j = 0; j < requests.size(); j++) {
+           tokens.add(((AsyncRequestCallback<GenerateCustomerTokenResponse>) requests.get(j).callback).getResponse().result.token);
+        }
+
+        assertEquals( "Tokens array should match", 100, tokens.size() );
     }
 
     @Test
