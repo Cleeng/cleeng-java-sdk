@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -111,8 +110,6 @@ public class CleengImplTest {
 
         this.api.createSubscriptionOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final OfferResponse response = callback.getResponse();
@@ -177,8 +174,6 @@ public class CleengImplTest {
         requests.add( new AsyncRequest( offerData, callback ) );
 
         this.api.createSingleOfferAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -256,8 +251,6 @@ public class CleengImplTest {
 
         this.api.createEventOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final EventOfferResponse response = callback.getResponse();
@@ -323,8 +316,6 @@ public class CleengImplTest {
         requests.add( new AsyncRequest( offerData, callback ) );
 
         this.api.createRentalOfferAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -401,8 +392,6 @@ public class CleengImplTest {
 
         this.api.createPassOfferAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final PassOfferResponse response = callback.getResponse();
@@ -456,8 +445,6 @@ public class CleengImplTest {
 
         this.api.listSubscriptionOffersAsync( requests );
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListSubscriptionOffersResponse response = callback.getResponse();
@@ -487,8 +474,6 @@ public class CleengImplTest {
         requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
 
         this.api.listSingleOffersAsync(requests);
-
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -520,8 +505,6 @@ public class CleengImplTest {
 
         this.api.listPassOffersAsync(requests);
 
-        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
-
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListPassOffersResponse response = callback.getResponse();
@@ -547,6 +530,27 @@ public class CleengImplTest {
         assertNotNull( response );
         assertNull( response.error );
         assertNotNull( response.result.token );
+    }
+
+    @Test
+    public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GenerateCustomerTokenResponse> callback = new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncTokenRequest( callback, "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+        requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+
+        this.api.generateCustomerTokenAsync(requests);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final GenerateCustomerTokenResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertNotNull( "Response should contain token", response.result.token );
     }
 
     @Test
