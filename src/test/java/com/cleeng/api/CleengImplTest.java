@@ -463,7 +463,7 @@ public class CleengImplTest {
         final ListSubscriptionOffersResponse response = callback.getResponse();
 
         assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.items.size() > 0);
+        assertTrue("List should contain items", response.result.items.size() > 0 );
     }
 
     @Test
@@ -473,6 +473,29 @@ public class CleengImplTest {
         final ListSingleOffersResponse response = this.api.listSingleOffers( criteria, 0, 10 );
         assertNotNull( response );
         assertEquals("list length should match", 10, response.result.items.size());
+    }
+
+    @Test
+    public void testListSingleOffersAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<ListSingleOffersResponse> callback = new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncListRequest( new Criteria(true), callback, 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
+        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
+
+        this.api.listSingleOffersAsync(requests);
+
+        requests.get(0).latch.await(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final ListSingleOffersResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue( "List should contain items", response.result.items.size() > 0 );
     }
 
     @Test

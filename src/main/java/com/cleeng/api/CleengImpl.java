@@ -128,6 +128,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, ListSingleOffersResponse.class );
 	}
 
+	public void listSingleOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new ListRequest( "listSingleOffers", ListParams.create( this.publisherToken, (Criteria) ((AsyncListRequest) request).input, ((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit ) );
+		}
+		this.client.invokeAsync( requests );
+	}
+
 	public ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

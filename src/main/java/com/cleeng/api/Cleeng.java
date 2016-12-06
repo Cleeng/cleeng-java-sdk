@@ -139,6 +139,16 @@ public interface Cleeng {
 	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists single offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSingleOffersAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Lists pass offers.<br/>
 	 * <br/>
 	 *
