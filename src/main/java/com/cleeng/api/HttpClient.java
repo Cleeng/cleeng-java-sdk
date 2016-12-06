@@ -53,8 +53,8 @@ public class HttpClient {
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(3000)
-                .setConnectTimeout(3000).build();
+                .setSocketTimeout(2000)
+                .setConnectTimeout(5000).build();
         CloseableHttpAsyncClient httpClient = HttpAsyncClients.custom()
                 .setDefaultRequestConfig(requestConfig)
                 .build();
