@@ -37,6 +37,7 @@ public class HttpClient {
                     StatusLine statusLine = httpResponse.getStatusLine();
                     HttpEntity entity = httpResponse.getEntity();
                     if (statusLine.getStatusCode() >= 300) {
+                        System.out.println(" Server returned response code: " + statusLine.getStatusCode() + " reason: " + statusLine.getReasonPhrase());
                         throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
                     }
                     if (entity == null) {
@@ -49,6 +50,7 @@ public class HttpClient {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public synchronized void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(3000)
@@ -59,7 +61,7 @@ public class HttpClient {
         try {
             httpClient.start();
             final CountDownLatch latch = new CountDownLatch(requests.size());
-            for (final AsyncRequest request : requests) {
+            for ( final AsyncRequest request : requests) {
                 request.latch = latch;
                 request.callback.setCountdownLatch(latch);
                 HttpPost post = new HttpPost( request.endpoint );
