@@ -180,6 +180,16 @@ public interface Cleeng {
 	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
 
 	/**
+	 * Prepares a remote auth (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncPrepareRemoteAuthRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void prepareRemoteAuthAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Generates a customer token.<br/>
 	 * <br/>
 	 *

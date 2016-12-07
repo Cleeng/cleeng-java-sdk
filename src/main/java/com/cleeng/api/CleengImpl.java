@@ -160,6 +160,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, PrepareRemoteAuthResponse.class );
 	}
 
+	public void prepareRemoteAuthAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new PrepareRemoteAuthRequest( "prepareRemoteAuth", PrepareRemoteAuthParams.create( this.publisherToken, ( ( AsyncPrepareRemoteAuthRequest ) request).customerData, ( ( AsyncPrepareRemoteAuthRequest ) request).flowDescription ) );
+		}
+		this.client.invokeAsync( requests );
+	}
+
 	public GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

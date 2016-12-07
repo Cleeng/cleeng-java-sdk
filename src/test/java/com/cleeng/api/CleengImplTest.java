@@ -524,6 +524,25 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testPrepareRemoteAuthAsync() throws IOException, InterruptedException {
+
+        final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
+        final FlowDescription flowDescription = new FlowDescription( "8", "http://www.someurl.com" );
+        final AsyncRequestCallback<PrepareRemoteAuthResponse> callback = new AsyncRequestCallback<PrepareRemoteAuthResponse>(PrepareRemoteAuthResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncPrepareRemoteAuthRequest ( customerData, flowDescription, callback ) );
+
+        this.api.prepareRemoteAuthAsync(requests);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final PrepareRemoteAuthResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue( "List should contain items", response.result.url.length() > 0 );
+    }
+
+    @Test
     public void testGenerateCustomerToken() throws IOException {
 
         final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "testjohndoe2@gmail.com" );
