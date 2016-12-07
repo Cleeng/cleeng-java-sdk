@@ -579,4 +579,23 @@ public class CleengImplTest {
         assertNotNull( response.result );
         assertNotNull( response.result.tags );
     }
+
+    @Test
+    public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback ) );
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+
+        this.api.getAccessibleTagsAsync(requests);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final GetAccessibleTagsResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue( "List should contain items", response.result.tags.size() == 0 );
+    }
 }
