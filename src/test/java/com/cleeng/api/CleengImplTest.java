@@ -573,6 +573,24 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGetAccessStatusAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GetAccessStatusResponse> callback = new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncGetAccessStatusRequest ( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", callback ) );
+        requests.add( new AsyncGetAccessStatusRequest ( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class) ) );
+
+        this.api.getAccessStatusAsync(requests);
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final GetAccessStatusResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue( "List should contain items", response.result.accessGranted == false );
+    }
+
+    @Test
     public void testGetAccessibleTags() throws IOException {
 
         final GetAccessibleTagsResponse response = this.api.getAccessibleTags( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI" );
