@@ -184,6 +184,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson( response, GetAccessStatusResponse.class );
 	}
 
+	public void getAccessStatusAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new GetAccessStatusRequest( "getAccessStatus", new GetAccessStatusParams( ( (AsyncGetAccessStatusRequest) request).customerToken, ( (AsyncGetAccessStatusRequest) request).offerId, ( (AsyncGetAccessStatusRequest) request).ipAddress ) );
+		}
+		this.client.invokeAsync( requests );
+	}
+
 	public GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

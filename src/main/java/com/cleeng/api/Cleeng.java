@@ -209,6 +209,15 @@ public interface Cleeng {
 	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
 
 	/**
+	 * Gets access status (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncGetAccessStatusRequest objects
+	 * @return
+	 */
+	public void getAccessStatusAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
+
+	/**
 	 * Get accessible tags.<br/>
 	 * <br/>
 	 *
