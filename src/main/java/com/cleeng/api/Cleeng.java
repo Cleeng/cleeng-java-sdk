@@ -217,4 +217,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
+
+	/**
+	 * Gets accessible tags (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncGetAccessibleTagsRequest objects
+	 * @return
+	 */
+	void getAccessibleTagsAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException;
 }

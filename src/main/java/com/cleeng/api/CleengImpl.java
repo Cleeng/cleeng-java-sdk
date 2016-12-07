@@ -191,4 +191,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson( response, GetAccessibleTagsResponse.class );
 	}
+
+	public void getAccessibleTagsAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+		for ( AsyncRequest request : requests ) {
+			request.endpoint = this.platformUrl;
+			request.data = new GetAccessibleTagsRequest( "getAccessibleTags", new GetAccessibleTagsParams( ( (AsyncGetAccessibleTagsRequest) request).publisherToken, ( (AsyncGetAccessibleTagsRequest) request).customerToken ) );
+		}
+		this.client.invokeAsync( requests );
+	}
 }
