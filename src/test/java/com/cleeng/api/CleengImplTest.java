@@ -10,12 +10,15 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("unchecked")
 public class CleengImplTest {
 
     private String publisherToken = "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30";
@@ -618,7 +621,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
+         public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
 
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -634,5 +637,28 @@ public class CleengImplTest {
 
         assertNotNull( "Response object should not be null", response );
         assertTrue( "List should contain items", response.result.tags.size() == 0 );
+    }
+
+    @Test
+    public void testGetAccessibleTagsAsyncNonBlocking() throws IOException, InterruptedException {
+
+        CountDownLatch lock = new CountDownLatch(1);
+
+        final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback ) );
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+
+        this.api.setNonBlockingMode();
+        this.api.getAccessibleTagsAsync(requests);
+
+        lock.await( 10, TimeUnit.SECONDS );
+
+        final GetAccessibleTagsResponse response = callback.getResponse();
+
+        assertNotNull( "Response object should not be null", response );
+        assertTrue("List should contain items", response.result.tags.size() == 0);
+        assertTrue(true);
     }
 }

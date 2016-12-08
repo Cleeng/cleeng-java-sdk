@@ -19,6 +19,10 @@ public class CleengImpl implements Cleeng {
 		this.platformUrl = platformUrl;
 	}
 
+	public void setNonBlockingMode() {
+		this.client.useNonBlockingMode = true;
+	}
+
 	public CleengImpl(String platformUrl, String publisherToken) {
 		this(platformUrl);
 		this.publisherToken = publisherToken;

@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.concurrent.FutureCallback;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
@@ -16,6 +18,12 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     public AsyncRequestCallback(Class<T> responseClass) {
         this.gson = new GsonBuilder().create();
         this._responseClass = responseClass;
+    }
+
+    private CloseableHttpAsyncClient _client;
+
+    public void setClient(CloseableHttpAsyncClient client) {
+        this._client = client;
     }
 
     private CountDownLatch _countdownLatch;
@@ -42,6 +50,16 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
         } catch (Exception e) {
 
         }
+        if (this.useNonBlockingMode == true) {
+            if (this.getIndex() == this.getBatchSize() - 1) {
+                try {
+                    System.out.println("Closing connection...");
+                    this._client.close();
+                } catch (IOException e) {
+                    System.out.println("Failed to close http connection...");
+                }
+            }
+        }
     }
 
     @Override
@@ -53,4 +71,26 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     public void cancelled() {
 
     }
+
+    private int _index;
+
+    public void setIndex(int i) {
+        this._index = i;
+    }
+
+    public int getIndex() {
+        return this._index;
+    }
+
+    private int _batchSize;
+
+    public void setBatchSize(int batchSize) {
+        this._batchSize = batchSize;
+    }
+
+    public int getBatchSize() {
+        return this._batchSize;
+    }
+
+    public boolean useNonBlockingMode = false;
 }
