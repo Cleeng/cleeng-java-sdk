@@ -67,8 +67,6 @@ public class HttpClient {
             for ( int i = 0; i < requests.size(); i++ ) {
                 AsyncRequest request = requests.get(i);
                 request.latch = latch;
-                request.callback.setIndex(i);
-                request.callback.setBatchSize(requests.size());
                 request.callback.useNonBlockingMode = this.useNonBlockingMode;
                 request.callback.setCountdownLatch(latch);
                 HttpPost post = new HttpPost( request.endpoint );

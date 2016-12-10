@@ -32,6 +32,10 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
         this._countdownLatch = latch;
     }
 
+    public CountDownLatch getCountdownLatch() {
+        return this._countdownLatch;
+    }
+
     private String _response;
 
     private Class<T> _responseClass;
@@ -70,26 +74,6 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     @Override
     public void cancelled() {
 
-    }
-
-    private int _index;
-
-    public void setIndex(int i) {
-        this._index = i;
-    }
-
-    public int getIndex() {
-        return this._index;
-    }
-
-    private int _batchSize;
-
-    public void setBatchSize(int batchSize) {
-        this._batchSize = batchSize;
-    }
-
-    public int getBatchSize() {
-        return this._batchSize;
     }
 
     public boolean useNonBlockingMode = false;
