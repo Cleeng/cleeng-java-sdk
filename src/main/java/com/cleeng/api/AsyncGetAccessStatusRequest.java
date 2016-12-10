@@ -8,7 +8,7 @@ public class AsyncGetAccessStatusRequest extends AsyncRequest {
 
     public String ipAddress;
 
-    public AsyncGetAccessStatusRequest(  String customerToken, String offerId, String ipAddress, AsyncRequestCallback callback ) {
+    public AsyncGetAccessStatusRequest(String customerToken, String offerId, String ipAddress, AsyncRequestCallback callback) {
         super();
 
         this.callback = callback;

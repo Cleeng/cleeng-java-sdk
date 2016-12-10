@@ -26,7 +26,7 @@ public class HttpClient {
 
     public boolean useNonBlockingMode = false;
 
-    public synchronized String invoke( String endpoint, Serializable request ) throws IOException {
+    public synchronized String invoke(String endpoint, Serializable request) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
@@ -54,7 +54,7 @@ public class HttpClient {
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized void invokeAsync( List<AsyncRequest> requests ) throws IOException, InterruptedException {
+    public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(2000)
                 .setConnectTimeout(5000).build();
@@ -67,8 +67,6 @@ public class HttpClient {
             for ( int i = 0; i < requests.size(); i++ ) {
                 AsyncRequest request = requests.get(i);
                 request.latch = latch;
-                request.callback.setIndex(i);
-                request.callback.setBatchSize(requests.size());
                 request.callback.useNonBlockingMode = this.useNonBlockingMode;
                 request.callback.setCountdownLatch(latch);
                 HttpPost post = new HttpPost( request.endpoint );

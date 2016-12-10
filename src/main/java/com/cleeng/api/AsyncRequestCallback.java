@@ -32,6 +32,10 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
         this._countdownLatch = latch;
     }
 
+    public CountDownLatch getCountdownLatch() {
+        return this._countdownLatch;
+    }
+
     private String _response;
 
     private Class<T> _responseClass;
@@ -51,13 +55,14 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
 
         }
         if (this.useNonBlockingMode == true) {
-            if (this.getIndex() == this.getBatchSize() - 1) {
+            if (this._countdownLatch.getCount() == 0) {
                 try {
                     System.out.println("Closing connection...");
                     this._client.close();
                 } catch (IOException e) {
                     System.out.println("Failed to close http connection...");
                 }
+                this._countdownLatch.notify();
             }
         }
     }
@@ -70,26 +75,6 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     @Override
     public void cancelled() {
 
-    }
-
-    private int _index;
-
-    public void setIndex(int i) {
-        this._index = i;
-    }
-
-    public int getIndex() {
-        return this._index;
-    }
-
-    private int _batchSize;
-
-    public void setBatchSize(int batchSize) {
-        this._batchSize = batchSize;
-    }
-
-    public int getBatchSize() {
-        return this._batchSize;
     }
 
     public boolean useNonBlockingMode = false;

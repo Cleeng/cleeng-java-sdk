@@ -6,7 +6,7 @@ public class AsyncGetAccessibleTagsRequest extends AsyncRequest {
 
     public String customerToken;
 
-    public AsyncGetAccessibleTagsRequest( String publisherToken, String customerToken, AsyncRequestCallback callback ) {
+    public AsyncGetAccessibleTagsRequest(String publisherToken, String customerToken, AsyncRequestCallback callback) {
         super();
 
         this.callback = callback;
