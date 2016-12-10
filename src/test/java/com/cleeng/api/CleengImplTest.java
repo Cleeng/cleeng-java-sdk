@@ -470,11 +470,11 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<ListSingleOffersResponse> callback = new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncListRequest( new Criteria(true), callback, 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10 ) );
+        requests.add(new AsyncListRequest(new Criteria(true), callback, 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10));
 
         this.api.listSingleOffersAsync(requests);
 
@@ -482,16 +482,16 @@ public class CleengImplTest {
 
         final ListSingleOffersResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.items.size() > 0 );
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
     @Test
     public void testListPassOffers() throws IOException {
 
-        final Criteria criteria = new Criteria( true );
-        final ListPassOffersResponse response = this.api.listPassOffers( criteria, 0, 10 );
-        assertNotNull( response );
+        final Criteria criteria = new Criteria(true);
+        final ListPassOffersResponse response = this.api.listPassOffers(criteria, 0, 10);
+        assertNotNull(response);
         assertEquals("list length should match", 10, response.result.items.size());
     }
 
@@ -500,11 +500,11 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<ListPassOffersResponse> callback = new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncListRequest( new Criteria(true), callback, 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
-        requests.add( new AsyncListRequest( new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10 ) );
+        requests.add(new AsyncListRequest(new Criteria(true), callback, 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListPassOffersResponse>(ListPassOffersResponse.class), 0, 10));
 
         this.api.listPassOffersAsync(requests);
 
@@ -512,28 +512,28 @@ public class CleengImplTest {
 
         final ListPassOffersResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.items.size() > 0 );
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
     @Test
     public void testPrepareRemoteAuth() throws IOException {
 
-        final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
-        final FlowDescription flowDescription = new FlowDescription( "8", "http://www.someurl.com" );
-        final PrepareRemoteAuthResponse response = this.api.prepareRemoteAuth( customerData, flowDescription );
-        assertNotNull( response );
+        final CustomerData customerData = new CustomerData("johndoe@gmail.com", "en_US", "GBP", "PL");
+        final FlowDescription flowDescription = new FlowDescription("8", "http://www.someurl.com");
+        final PrepareRemoteAuthResponse response = this.api.prepareRemoteAuth(customerData, flowDescription);
+        assertNotNull(response);
         assertTrue(response.result.url.length() > 0);
     }
 
     @Test
     public void testPrepareRemoteAuthAsync() throws IOException, InterruptedException {
 
-        final CustomerData customerData = new CustomerData( "johndoe@gmail.com", "en_US", "GBP", "PL" );
-        final FlowDescription flowDescription = new FlowDescription( "8", "http://www.someurl.com" );
+        final CustomerData customerData = new CustomerData("johndoe@gmail.com", "en_US", "GBP", "PL");
+        final FlowDescription flowDescription = new FlowDescription("8", "http://www.someurl.com");
         final AsyncRequestCallback<PrepareRemoteAuthResponse> callback = new AsyncRequestCallback<PrepareRemoteAuthResponse>(PrepareRemoteAuthResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncPrepareRemoteAuthRequest ( customerData, flowDescription, callback ) );
+        requests.add(new AsyncPrepareRemoteAuthRequest(customerData, flowDescription, callback));
 
         this.api.prepareRemoteAuthAsync(requests);
 
@@ -541,17 +541,17 @@ public class CleengImplTest {
 
         final PrepareRemoteAuthResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.url.length() > 0 );
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.url.length() > 0);
     }
 
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
-        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken( "testjohndoe2@gmail.com" );
-        assertNotNull( response );
-        assertNull( response.error );
-        assertNotNull( response.result.token );
+        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
+        assertNotNull(response);
+        assertNull(response.error);
+        assertNotNull(response.result.token);
     }
 
     @Test
@@ -559,13 +559,13 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<GenerateCustomerTokenResponse> callback = new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncTokenRequest( callback, "testjohndoe2@gmail.com" ) );
+        requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
 
         final List<String> tokens = new ArrayList<String>();
         final int count = 100;
 
         for (int i = 1; i < count; i++) {
-            requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com" ) );
+            requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com"));
         }
 
         this.api.generateCustomerTokenAsync(requests);
@@ -574,24 +574,24 @@ public class CleengImplTest {
 
         final GenerateCustomerTokenResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertNotNull( "Response should contain token", response.result.token );
+        assertNotNull("Response object should not be null", response);
+        assertNotNull("Response should contain token", response.result.token);
 
         for (int j = 0; j < requests.size(); j++) {
            tokens.add(((AsyncRequestCallback<GenerateCustomerTokenResponse>) requests.get(j).callback).getResponse().result.token);
         }
 
-        assertEquals( "Tokens array should match", 100, tokens.size() );
+        assertEquals("Tokens array should match", 100, tokens.size());
     }
 
     @Test
     public void testGetAccessStatus() throws IOException {
 
-        final GetAccessStatusResponse response = this.api.getAccessStatus( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71" );
-        assertNotNull( response.result );
-        assertEquals( "Access granted should match", false, response.result.accessGranted );
-        assertEquals( "ExpiresAt should match", 0, response.result.expiresAt );
-        assertEquals( "PurchasedDirectly should match", false, response.result.purchasedDirectly );
+        final GetAccessStatusResponse response = this.api.getAccessStatus("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71");
+        assertNotNull(response.result);
+        assertEquals("Access granted should match", false, response.result.accessGranted);
+        assertEquals("ExpiresAt should match", 0, response.result.expiresAt);
+        assertEquals("PurchasedDirectly should match", false, response.result.purchasedDirectly);
     }
 
     @Test
@@ -599,8 +599,8 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<GetAccessStatusResponse> callback = new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncGetAccessStatusRequest ( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", callback ) );
-        requests.add( new AsyncGetAccessStatusRequest ( "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class) ) );
+        requests.add(new AsyncGetAccessStatusRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", callback));
+        requests.add(new AsyncGetAccessStatusRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class)));
 
         this.api.getAccessStatusAsync(requests);
 
@@ -608,16 +608,16 @@ public class CleengImplTest {
 
         final GetAccessStatusResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.accessGranted == false );
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.accessGranted == false);
     }
 
     @Test
     public void testGetAccessibleTags() throws IOException {
 
-        final GetAccessibleTagsResponse response = this.api.getAccessibleTags( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI" );
-        assertNotNull( response.result );
-        assertNotNull( response.result.tags );
+        final GetAccessibleTagsResponse response = this.api.getAccessibleTags(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI");
+        assertNotNull(response.result);
+        assertNotNull(response.result.tags);
     }
 
     @Test
@@ -625,9 +625,9 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback ) );
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
 
         this.api.getAccessibleTagsAsync(requests);
 
@@ -635,8 +635,8 @@ public class CleengImplTest {
 
         final GetAccessibleTagsResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
-        assertTrue( "List should contain items", response.result.tags.size() == 0 );
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.tags.size() == 0);
     }
 
     @Test
@@ -646,18 +646,18 @@ public class CleengImplTest {
 
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback ) );
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
-        requests.add( new AsyncGetAccessibleTagsRequest ( this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class) ) );
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
 
         this.api.setNonBlockingMode();
         this.api.getAccessibleTagsAsync(requests);
 
-        lock.await( 10, TimeUnit.SECONDS );
+        lock.await(10, TimeUnit.SECONDS);
 
         final GetAccessibleTagsResponse response = callback.getResponse();
 
-        assertNotNull( "Response object should not be null", response );
+        assertNotNull("Response object should not be null", response);
         assertTrue("List should contain items", response.result.tags.size() == 0);
         assertTrue(true);
     }
