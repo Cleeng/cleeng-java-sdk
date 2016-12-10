@@ -69,7 +69,7 @@ public class HttpClient {
                 request.latch = latch;
                 request.callback.useNonBlockingMode = this.useNonBlockingMode;
                 request.callback.setCountdownLatch(latch);
-                HttpPost post = new HttpPost( request.endpoint );
+                HttpPost post = new HttpPost(request.endpoint);
                 post.setHeader("Content-Type", "application/json");
                 Gson gson = new GsonBuilder().create();
                 String json = gson.toJson( request.data );
