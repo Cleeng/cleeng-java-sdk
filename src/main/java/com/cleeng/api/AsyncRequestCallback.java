@@ -51,7 +51,7 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
 
         }
         if (this.useNonBlockingMode == true) {
-            if (this.getIndex() == this.getBatchSize() - 1) {
+            if (this._countdownLatch.getCount() == 0) {
                 try {
                     System.out.println("Closing connection...");
                     this._client.close();

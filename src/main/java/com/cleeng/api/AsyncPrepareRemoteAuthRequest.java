@@ -9,7 +9,7 @@ public class AsyncPrepareRemoteAuthRequest extends AsyncRequest {
 
     public FlowDescription flowDescription;
 
-    public AsyncPrepareRemoteAuthRequest( CustomerData customerData, FlowDescription flowDescription, AsyncRequestCallback callback ) {
+    public AsyncPrepareRemoteAuthRequest(CustomerData customerData, FlowDescription flowDescription, AsyncRequestCallback callback) {
 
         super();
 

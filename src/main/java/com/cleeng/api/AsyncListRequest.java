@@ -8,7 +8,7 @@ public class AsyncListRequest extends AsyncRequest {
 
     public int limit;
 
-    public AsyncListRequest( Serializable input, AsyncRequestCallback callback, int offset, int limit ) {
+    public AsyncListRequest(Serializable input, AsyncRequestCallback callback, int offset, int limit) {
         super(input, callback);
         this.offset = offset;
         this.limit = limit;

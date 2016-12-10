@@ -19,7 +19,7 @@ public class AsyncRequest {
 
     }
 
-    public AsyncRequest( Serializable input, AsyncRequestCallback callback ) {
+    public AsyncRequest(Serializable input, AsyncRequestCallback callback) {
         this.input = input;
         this.callback = callback;
     }
