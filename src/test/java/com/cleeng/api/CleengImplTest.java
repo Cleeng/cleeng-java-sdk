@@ -111,6 +111,8 @@ public class CleengImplTest {
 
         this.api.createSubscriptionOfferAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final OfferResponse response = callback.getResponse();
@@ -175,6 +177,8 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(offerData, callback));
 
         this.api.createSingleOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -252,6 +256,8 @@ public class CleengImplTest {
 
         this.api.createEventOfferAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final EventOfferResponse response = callback.getResponse();
@@ -318,6 +324,8 @@ public class CleengImplTest {
 
         this.api.createRentalOfferAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final RentalOfferResponse response = callback.getResponse();
@@ -346,7 +354,6 @@ public class CleengImplTest {
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
         assertEquals("period should match", offerData.expiresAt, response.result.expiresAt);
-
     }
 
     @Test
@@ -392,6 +399,8 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(offerData, callback));
 
         this.api.createPassOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -446,6 +455,8 @@ public class CleengImplTest {
 
         this.api.listSubscriptionOffersAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListSubscriptionOffersResponse response = callback.getResponse();
@@ -475,6 +486,8 @@ public class CleengImplTest {
         requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListSingleOffersResponse>(ListSingleOffersResponse.class), 0, 10));
 
         this.api.listSingleOffersAsync(requests);
+
+        callback.getCountdownLatch().await();
 
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
@@ -506,6 +519,8 @@ public class CleengImplTest {
 
         this.api.listPassOffersAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final ListPassOffersResponse response = callback.getResponse();
@@ -535,6 +550,8 @@ public class CleengImplTest {
 
         this.api.prepareRemoteAuthAsync(requests);
 
+        callback.getCountdownLatch().await();
+
         assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
 
         final PrepareRemoteAuthResponse response = callback.getResponse();
@@ -562,13 +579,13 @@ public class CleengImplTest {
         final List<String> tokens = new ArrayList<String>();
         final int count = 100;
 
-        for (int i = 1; i < count; i++) {
-            requests.add( new AsyncTokenRequest( new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com"));
+        for (int i = 0; i < count; i++) {
+            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com"));
         }
 
         this.api.generateCustomerTokenAsync(requests);
 
-        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+        callback.getCountdownLatch().await();
 
         final GenerateCustomerTokenResponse response = callback.getResponse();
 
@@ -579,7 +596,7 @@ public class CleengImplTest {
            tokens.add(((AsyncRequestCallback<GenerateCustomerTokenResponse>) requests.get(j).callback).getResponse().result.token);
         }
 
-        assertEquals("Tokens array should match", 100, tokens.size());
+        assertEquals("Tokens array should match", 101, tokens.size());
     }
 
     @Test
@@ -602,7 +619,7 @@ public class CleengImplTest {
 
         this.api.getAccessStatusAsync(requests);
 
-        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+        callback.getCountdownLatch().await();
 
         final GetAccessStatusResponse response = callback.getResponse();
 
@@ -619,7 +636,7 @@ public class CleengImplTest {
     }
 
     @Test
-         public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
+    public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
 
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -629,7 +646,7 @@ public class CleengImplTest {
 
         this.api.getAccessibleTagsAsync(requests);
 
-        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+        callback.getCountdownLatch().await();
 
         final GetAccessibleTagsResponse response = callback.getResponse();
 
@@ -646,7 +663,6 @@ public class CleengImplTest {
         requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
         requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
 
-        this.api.setNonBlockingMode();
         this.api.getAccessibleTagsAsync(requests);
 
         callback.getCountdownLatch().await();

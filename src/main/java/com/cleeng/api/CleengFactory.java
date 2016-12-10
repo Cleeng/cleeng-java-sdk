@@ -11,10 +11,14 @@ public class CleengFactory {
 	final static String PRODUCTION_URL = "https://cleeng.com/api/3.0/json-rpc";
 
 	public static Cleeng createSandboxApi(String publisherToken) {
-		return new CleengImpl(SANDBOX_URL, publisherToken);
+		final CleengImpl cleeng = new CleengImpl(SANDBOX_URL, publisherToken);
+		cleeng.setNonBlockingMode();
+		return cleeng;
 	}
 
 	public static Cleeng createProductionApi(String publisherToken) {
-		return new CleengImpl(PRODUCTION_URL, publisherToken);
+		final CleengImpl cleeng = new CleengImpl(PRODUCTION_URL, publisherToken);
+		cleeng.setNonBlockingMode();
+		return cleeng;
 	}
 }
