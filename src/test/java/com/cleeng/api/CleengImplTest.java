@@ -642,8 +642,6 @@ public class CleengImplTest {
     @Test
     public void testGetAccessibleTagsAsyncNonBlocking() throws IOException, InterruptedException {
 
-        CountDownLatch lock = new CountDownLatch(1);
-
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
@@ -653,7 +651,7 @@ public class CleengImplTest {
         this.api.setNonBlockingMode();
         this.api.getAccessibleTagsAsync(requests);
 
-        lock.await(10, TimeUnit.SECONDS);
+        callback.getCountdownLatch().await();
 
         final GetAccessibleTagsResponse response = callback.getResponse();
 

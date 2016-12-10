@@ -62,6 +62,7 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
                 } catch (IOException e) {
                     System.out.println("Failed to close http connection...");
                 }
+                this._countdownLatch.notify();
             }
         }
     }
