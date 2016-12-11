@@ -51,7 +51,7 @@ Example usage:
 	final AsyncRequestCallback<PassOfferResponse> secondCallback = new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class);
 
 	final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-	requests.add( new AsyncRequest( offerData, callback ) );
-	requests.add( new AsyncRequest( offerData, secondCallback ) );
+	requests.add(new AsyncRequest(offerData, callback));
+	requests.add(new AsyncRequest(offerData, secondCallback));
 
 	this.api.createPassOfferAsync(requests);
