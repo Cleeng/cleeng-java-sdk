@@ -3,12 +3,15 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Cleeng API. Set of methods to interact with Cleeng platform.
  * 
  */
 public interface Cleeng {
+
+	public void setNonBlockingMode();
 
 	/**
 	 * Creates a subscription offer.<br/>
@@ -20,6 +23,16 @@ public interface Cleeng {
 	OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException;
 
 	/**
+	 * Creates subscription offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a single offer.<br/>
 	 * <br/>
 	 *
@@ -27,6 +40,16 @@ public interface Cleeng {
 	 * @return
 	 */
 	SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException;
+
+	/**
+	 * Creates single offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates an event offer.<br/>
@@ -38,6 +61,16 @@ public interface Cleeng {
 	EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException;
 
 	/**
+	 * Creates an event offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a rental offer.<br/>
 	 * <br/>
 	 *
@@ -47,6 +80,16 @@ public interface Cleeng {
 	RentalOfferResponse createRentalOffer(RentalOfferData offerData) throws IOException;
 
 	/**
+	 * Creates rental offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createRentalOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a pass offer.<br/>
 	 * <br/>
 	 *
@@ -54,6 +97,16 @@ public interface Cleeng {
 	 * @return
 	 */
 	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
+
+	/**
+	 * Creates pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void createPassOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Lists subscription offers.<br/>
@@ -67,6 +120,16 @@ public interface Cleeng {
 	ListSubscriptionOffersResponse listSubscriptionOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists subscription offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSubscriptionOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Lists single offers.<br/>
 	 * <br/>
 	 *
@@ -76,6 +139,16 @@ public interface Cleeng {
 	 * @return
 	 */
 	ListSingleOffersResponse listSingleOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists single offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listSingleOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Lists pass offers.<br/>
@@ -89,6 +162,16 @@ public interface Cleeng {
 	ListPassOffersResponse listPassOffers(Criteria criteria, int offset, int limit) throws IOException;
 
 	/**
+	 * Lists pass offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listPassOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Prepares a remote auth.<br/>
 	 * <br/>
 	 *
@@ -99,6 +182,16 @@ public interface Cleeng {
 	PrepareRemoteAuthResponse prepareRemoteAuth(CustomerData customerData, FlowDescription flowDescription) throws IOException;
 
 	/**
+	 * Prepares a remote auth (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncPrepareRemoteAuthRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void prepareRemoteAuthAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Generates a customer token.<br/>
 	 * <br/>
 	 *
@@ -106,6 +199,15 @@ public interface Cleeng {
 	 * @return
 	 */
 	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
+
+	/**
+	 * Generates a customer token (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncTokenRequest objects
+	 * @return
+	 */
+	void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Gets access status.<br/>
@@ -119,6 +221,15 @@ public interface Cleeng {
 	GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException;
 
 	/**
+	 * Gets access status (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncGetAccessStatusRequest objects
+	 * @return
+	 */
+	public void getAccessStatusAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Get accessible tags.<br/>
 	 * <br/>
 	 *
@@ -127,4 +238,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	GetAccessibleTagsResponse getAccessibleTags(String publisherToken, String customerToken) throws IOException;
+
+	/**
+	 * Gets accessible tags (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncGetAccessibleTagsRequest objects
+	 * @return
+	 */
+	void getAccessibleTagsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
