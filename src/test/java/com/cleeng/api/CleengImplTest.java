@@ -675,4 +675,30 @@ public class CleengImplTest {
         assertTrue("List should contain items", response.result.tags.size() == 0);
         assertTrue(true);
     }
+
+    @Test
+    public void testCustomer() throws IOException {
+
+        final GetCustomerResponse response = this.api.getCustomer("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI");
+        assertNotNull(response.result);
+    }
+
+    @Test
+    public void testGetCustomerAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GetCustomerResponse> callback = new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
+        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
+        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
+
+        this.api.getCustomerAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final GetCustomerResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", "US", response.result.country);
+    }
 }

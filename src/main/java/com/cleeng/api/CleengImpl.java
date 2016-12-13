@@ -219,4 +219,20 @@ public class CleengImpl implements Cleeng {
 		}
 		this.client.invokeAsync(requests);
 	}
+
+	public GetCustomerResponse getCustomer(String customerToken) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetCustomerRequest("getCustomer", new GetCustomerParams(customerToken))
+		);
+		return gson.fromJson(response, GetCustomerResponse.class);
+	}
+
+	public void getCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new GetCustomerRequest("getCustomer", new GetCustomerParams((String) request.input));
+		}
+		this.client.invokeAsync(requests);
+	}
 }

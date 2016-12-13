@@ -247,4 +247,22 @@ public interface Cleeng {
 	 * @return
 	 */
 	void getAccessibleTagsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Get customer<br/>
+	 * <br/>
+	 *
+	 * @param customerToken customer's token
+	 * @return
+	 */
+	GetCustomerResponse getCustomer(String customerToken) throws IOException;
+
+	/**
+	 * Get customer (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void getCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
