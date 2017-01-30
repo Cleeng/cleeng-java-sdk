@@ -267,4 +267,12 @@ public class CleengImpl implements Cleeng {
 		}
 		this.client.invokeAsync(requests);
 	}
+
+	public VodOfferResponse updateVodOffer(String offerId, VodOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new CreateVodOfferRequest("updateVodOffer", new UpdateVodOfferParams(publisherToken, offerData, offerId))
+		);
+		return gson.fromJson(response, VodOfferResponse.class);
+	}
 }
