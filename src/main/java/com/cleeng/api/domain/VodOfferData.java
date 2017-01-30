@@ -2,39 +2,6 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
-/*
-example request:
-[
-  {
-    "method": "createVodOffer",
-    "params": {
-      "publisherToken": "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30",
-      "offerData": {
-        "price": "9",
-        "title": "yiuyiu",
-        "url": "http:\/\/www.wp.pl",
-        "description": "iuyiuy",
-        "videoId": "iuyiu",
-        "playerCode": "yiuy",
-        "playerCodeHead": "iuyi",
-        "rentalPeriod": "7",
-        "runtime": "7",
-        "videoQuality": "hd",
-        "backgroundImageUrl": "http:\/\/www.wp.pl",
-        "geoRestrictionEnabled": "true",
-        "geoRestrictionType": "whitelist",
-        "geoRestrictionCountries": [
-          "pl",
-          "de"
-        ]
-      }
-    },
-    "jsonrpc": "2.0",
-    "id": 1
-  }
-]
-*/
-
 public class VodOfferData extends BaseOfferDataRequest {
 
     public String videoId;
