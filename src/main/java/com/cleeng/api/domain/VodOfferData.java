@@ -2,6 +2,39 @@ package com.cleeng.api.domain;
 
 import java.util.List;
 
+/*
+example request:
+[
+  {
+    "method": "createVodOffer",
+    "params": {
+      "publisherToken": "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30",
+      "offerData": {
+        "price": "9",
+        "title": "yiuyiu",
+        "url": "http:\/\/www.wp.pl",
+        "description": "iuyiuy",
+        "videoId": "iuyiu",
+        "playerCode": "yiuy",
+        "playerCodeHead": "iuyi",
+        "rentalPeriod": "7",
+        "runtime": "7",
+        "videoQuality": "hd",
+        "backgroundImageUrl": "http:\/\/www.wp.pl",
+        "geoRestrictionEnabled": "true",
+        "geoRestrictionType": "whitelist",
+        "geoRestrictionCountries": [
+          "pl",
+          "de"
+        ]
+      }
+    },
+    "jsonrpc": "2.0",
+    "id": 1
+  }
+]
+*/
+
 public class VodOfferData extends BaseOfferDataRequest {
 
     public String videoId;
@@ -57,29 +90,3 @@ public class VodOfferData extends BaseOfferDataRequest {
         this.backgroundImageUrl = backgroundImageUrl;
     }
 }
-/*
-example:
-
-        "price": "19.95",
-        "title": "Big Bang",
-        "url": "http:\/\/www.wp.pl",
-        "description": "some desc",
-        "videoId": "8",
-        "playerCode": "566",
-        "playerCodeHead": "343434",
-        "rentalPeriod": "2",
-        "runtime": "1",
-        "videoQuality": "hd",
-        "eventAssociation": [
-
-        ],
-        "tags": [
-
-        ],
-        "geoRestrictionCountries": [
-
-        ]
-        backgroundImageUrl,
-        geoRestrictionEnabled : true
-        geoRestrictionType
- */

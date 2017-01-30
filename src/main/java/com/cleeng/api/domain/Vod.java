@@ -22,39 +22,6 @@ public class Vod extends BaseOfferData {
 
     }
 
-    /*
-        "id": "R945797261_PL",
-        "title": "Big Bang",
-        "description": "some desc",
-        "url": "http:\/\/www.wp.pl",
-        "price": "16.2195",
-        "videoId": "8",
-        "rentalPeriod": "2",
-        "publisherEmail": "jesionekdev@gmail.com",
-        "playerCode": "566",
-        "playerCodeHead": "343434",
-        "streamingPlatform": null,
-        "runtime": "1",
-        "videoQuality": "hd",
-        "backgroundImageUrl": {
-        "small": null,
-        "medium": null,
-        "large": null
-        },
-        "eventAssociation": [
-
-        ],
-        "geoRestrictionEnabled": false,
-        "geoRestrictionType": null,
-        "geoRestrictionCountries": [
-
-        ],
-        "tags": [
-
-        ]
-        }
-     */
-
     public Vod(String id,
                String title,
                String description,
@@ -98,36 +65,44 @@ public class Vod extends BaseOfferData {
 }
 /*
 
-example:
-"vod": {
-        "id": "R945797261_PL",
-        "title": "Big Bang",
-        "description": "some desc",
+[
+  {
+    "result": {
+      "vod": {
+        "id": "R262528011_PL",
+        "title": "yiuyiu",
+        "description": "iuyiuy",
         "url": "http:\/\/www.wp.pl",
-        "price": "16.2195",
-        "videoId": "8",
-        "rentalPeriod": "2",
+        "price": "7.3170",
+        "videoId": "iuyiu",
+        "rentalPeriod": "7",
         "publisherEmail": "jesionekdev@gmail.com",
-        "playerCode": "566",
-        "playerCodeHead": "343434",
+        "playerCode": "yiuy",
+        "playerCodeHead": "iuyi",
         "streamingPlatform": null,
-        "runtime": "1",
+        "runtime": "7",
         "videoQuality": "hd",
         "backgroundImageUrl": {
-        "small": null,
-        "medium": null,
-        "large": null
+          "small": "http:\/\/www.wp.pl",
+          "medium": "http:\/\/www.wp.pl",
+          "large": "http:\/\/www.wp.pl"
         },
         "eventAssociation": [
 
         ],
-        "geoRestrictionEnabled": false,
-        "geoRestrictionType": null,
+        "geoRestrictionEnabled": true,
+        "geoRestrictionType": "whitelist",
         "geoRestrictionCountries": [
-
+          "pl",
+          "de"
         ],
         "tags": [
 
         ]
-        }
+      }
+    },
+    "id": "1",
+    "jsonrpc": "2.0"
+  }
+]
 */
