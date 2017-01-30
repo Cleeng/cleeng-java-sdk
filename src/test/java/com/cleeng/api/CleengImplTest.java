@@ -737,7 +737,7 @@ public class CleengImplTest {
                 "http://www.someurl.com",
                 "description",
                 null,
-                "iuyiu",
+                "vidoeId",
                 "playerC",
                 "playerCodeH",
                 "7",
@@ -821,4 +821,41 @@ public class CleengImplTest {
         assertEquals("offer title should equal", offerData.title, response.result.vod.title);
     }
 
+    @Test
+    public void testUpdateVodOfferAsync() throws IOException, InterruptedException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+            "some title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "videoIdUpdated",
+            "playerC",
+            "playerCodeH",
+            "7",
+            "7",
+            "hd",
+            null,
+            Arrays.asList("Sport"),
+            Arrays.asList("PL", "DE"),
+            false,
+            "whitelist",
+            "http://www.someurl.com/image.png"
+        );
+
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, callback, "R262528011_PL"));
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class), "R262528011_PL"));
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class), "R262528011_PL"));
+
+        this.api.updateVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final VodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", offerData.videoId, response.result.vod.videoId);
+    }
 }

@@ -312,6 +312,12 @@ public interface Cleeng {
 	 */
 	public VodOfferResponse updateVodOffer(String offerId, VodOfferData offerData) throws IOException;
 
-
-
+	/**
+	 * Updates Vod offer(s) (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }

@@ -239,7 +239,7 @@ public class CleengImpl implements Cleeng {
 	public VodOfferResponse createVodOffer(VodOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 			this.platformUrl,
-			new CreateVodOfferRequest("createVodOffer", new CreateVodOfferParams(publisherToken, offerData))
+			new VodOfferRequest("createVodOffer", new CreateVodOfferParams(publisherToken, offerData))
 		);
 		return gson.fromJson(response, VodOfferResponse.class);
 	}
@@ -247,7 +247,7 @@ public class CleengImpl implements Cleeng {
 	public void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new CreateVodOfferRequest("createVodOffer", new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken, ((AsyncCreateVodOfferRequest) request).offerData));
+			request.data = new VodOfferRequest("createVodOffer", new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken, ((AsyncCreateVodOfferRequest) request).offerData));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -271,8 +271,16 @@ public class CleengImpl implements Cleeng {
 	public VodOfferResponse updateVodOffer(String offerId, VodOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new CreateVodOfferRequest("updateVodOffer", new UpdateVodOfferParams(publisherToken, offerData, offerId))
+				new VodOfferRequest("updateVodOffer", new UpdateVodOfferParams(publisherToken, offerData, offerId))
 		);
 		return gson.fromJson(response, VodOfferResponse.class);
+	}
+
+	public void updateVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new VodOfferRequest("updateVodOffer", new UpdateVodOfferParams(((AsyncUpdateVodOfferRequest) request).publisherToken, ((AsyncUpdateVodOfferRequest) request).offerData, ((AsyncUpdateVodOfferRequest) request).offerIdString));
+		}
+		this.client.invokeAsync(requests);
 	}
 }
