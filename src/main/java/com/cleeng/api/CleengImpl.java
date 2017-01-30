@@ -259,4 +259,12 @@ public class CleengImpl implements Cleeng {
 		);
 		return gson.fromJson(response, VodOfferResponse.class);
 	}
+
+	public void getVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new GetVodOfferRequest("getVodOffer", new GetVodOfferParams(((AsyncGetVodOfferRequest) request).publisherToken, ((AsyncGetVodOfferRequest) request).offerId));
+		}
+		this.client.invokeAsync(requests);
+	}
 }
