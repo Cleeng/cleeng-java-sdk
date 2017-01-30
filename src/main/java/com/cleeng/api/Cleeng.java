@@ -265,4 +265,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	void getCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Creates Vod offer<br/>
+	 * <br/>
+	 *
+	 * @param offerData vod offer data
+	 * @return
+	 */
+	CreateVodOfferResponse createVodOffer(VodOfferData offerData) throws IOException;
 }

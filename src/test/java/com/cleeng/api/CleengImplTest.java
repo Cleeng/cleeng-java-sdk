@@ -701,4 +701,31 @@ public class CleengImplTest {
         assertNotNull("Response object should not be null", response);
         assertEquals("List should contain items", "US", response.result.country);
     }
+
+    @Test
+    public void testCreateVodOffer() throws IOException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+            "some title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "iuyiu",
+            "playerC",
+            "playerCodeH",
+            "7",
+            "7",
+            "hd",
+            null,
+            Arrays.asList("Sport"),
+            Arrays.asList("PL", "DE"),
+            false,
+            "whitelist",
+            "http://www.someurl.com/image.png"
+        );
+
+        final CreateVodOfferResponse response = this.api.createVodOffer(offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.vod.title);
+    }
 }

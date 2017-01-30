@@ -21,7 +21,6 @@ public class Vod extends BaseOfferData {
     public Vod() {
 
     }
-
     public Vod(String id,
                String title,
                String description,
@@ -63,46 +62,3 @@ public class Vod extends BaseOfferData {
         this.tags = tags;
     }
 }
-/*
-
-[
-  {
-    "result": {
-      "vod": {
-        "id": "R262528011_PL",
-        "title": "yiuyiu",
-        "description": "iuyiuy",
-        "url": "http:\/\/www.wp.pl",
-        "price": "7.3170",
-        "videoId": "iuyiu",
-        "rentalPeriod": "7",
-        "publisherEmail": "jesionekdev@gmail.com",
-        "playerCode": "yiuy",
-        "playerCodeHead": "iuyi",
-        "streamingPlatform": null,
-        "runtime": "7",
-        "videoQuality": "hd",
-        "backgroundImageUrl": {
-          "small": "http:\/\/www.wp.pl",
-          "medium": "http:\/\/www.wp.pl",
-          "large": "http:\/\/www.wp.pl"
-        },
-        "eventAssociation": [
-
-        ],
-        "geoRestrictionEnabled": true,
-        "geoRestrictionType": "whitelist",
-        "geoRestrictionCountries": [
-          "pl",
-          "de"
-        ],
-        "tags": [
-
-        ]
-      }
-    },
-    "id": "1",
-    "jsonrpc": "2.0"
-  }
-]
-*/
