@@ -273,7 +273,7 @@ public interface Cleeng {
 	 * @param offerData vod offer data
 	 * @return
 	 */
-	CreateVodOfferResponse createVodOffer(VodOfferData offerData) throws IOException;
+	VodOfferResponse createVodOffer(VodOfferData offerData) throws IOException;
 
 	/**
 	 * Creates Vod offer (async)<br/>
@@ -283,6 +283,15 @@ public interface Cleeng {
 	 * @return
 	 */
 	void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Gets Vod offer<br/>
+	 * <br/>
+	 *
+	 * @param offerId an id of an offer
+	 * @return
+	 */
+	public VodOfferResponse getVodOffer(String offerId) throws IOException;
 
 
 }

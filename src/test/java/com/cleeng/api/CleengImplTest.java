@@ -724,7 +724,7 @@ public class CleengImplTest {
             "http://www.someurl.com/image.png"
         );
 
-        final CreateVodOfferResponse response = this.api.createVodOffer(offerData);
+        final VodOfferResponse response = this.api.createVodOffer(offerData);
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.vod.title);
     }
@@ -751,19 +751,27 @@ public class CleengImplTest {
                 "http://www.someurl.com/image.png"
         );
 
-        final AsyncRequestCallback<CreateVodOfferResponse> callback = new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class);
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, callback));
-        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class)));
-        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class)));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
 
         this.api.createVodOfferAsync(requests);
 
         callback.getCountdownLatch().await();
 
-        final CreateVodOfferResponse response = callback.getResponse();
+        final VodOfferResponse response = callback.getResponse();
 
         assertNotNull("Response object should not be null", response);
         assertEquals("List should contain items", offerData.title, response.result.vod.title);
+    }
+
+    @Test
+    public void testGetVodOffer() throws IOException {
+
+        final VodOfferResponse response = this.api.getVodOffer("R262528011_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", "yiuyiu", response.result.vod.title);
     }
 }

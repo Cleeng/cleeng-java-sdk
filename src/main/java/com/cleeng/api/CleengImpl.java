@@ -236,12 +236,12 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public CreateVodOfferResponse createVodOffer(VodOfferData offerData) throws IOException {
+	public VodOfferResponse createVodOffer(VodOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 			this.platformUrl,
 			new CreateVodOfferRequest("createVodOffer", new CreateVodOfferParams(publisherToken, offerData))
 		);
-		return gson.fromJson(response, CreateVodOfferResponse.class);
+		return gson.fromJson(response, VodOfferResponse.class);
 	}
 
 	public void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
@@ -250,5 +250,13 @@ public class CleengImpl implements Cleeng {
 			request.data = new CreateVodOfferRequest("createVodOffer", new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken, ((AsyncCreateVodOfferRequest) request).offerData));
 		}
 		this.client.invokeAsync(requests);
+	}
+
+	public VodOfferResponse getVodOffer(String offerId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GetVodOfferRequest("getVodOffer", new GetVodOfferParams(publisherToken, offerId))
+		);
+		return gson.fromJson(response, VodOfferResponse.class);
 	}
 }
