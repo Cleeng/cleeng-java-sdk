@@ -728,4 +728,42 @@ public class CleengImplTest {
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.vod.title);
     }
+
+    @Test
+    public void testCreateVodOfferAsync() throws IOException, InterruptedException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+                "some title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "iuyiu",
+                "playerC",
+                "playerCodeH",
+                "7",
+                "7",
+                "hd",
+                null,
+                Arrays.asList("Sport"),
+                Arrays.asList("PL", "DE"),
+                false,
+                "whitelist",
+                "http://www.someurl.com/image.png"
+        );
+
+        final AsyncRequestCallback<CreateVodOfferResponse> callback = new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, callback));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class)));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<CreateVodOfferResponse>(CreateVodOfferResponse.class)));
+
+        this.api.createVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final CreateVodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", offerData.title, response.result.vod.title);
+    }
 }

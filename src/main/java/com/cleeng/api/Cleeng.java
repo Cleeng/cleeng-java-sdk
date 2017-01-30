@@ -274,4 +274,15 @@ public interface Cleeng {
 	 * @return
 	 */
 	CreateVodOfferResponse createVodOffer(VodOfferData offerData) throws IOException;
+
+	/**
+	 * Creates Vod offer (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+
 }

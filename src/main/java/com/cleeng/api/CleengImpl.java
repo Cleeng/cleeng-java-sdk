@@ -244,5 +244,11 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson(response, CreateVodOfferResponse.class);
 	}
 
-
+	public void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new CreateVodOfferRequest("createVodOffer", new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken, ((AsyncCreateVodOfferRequest) request).offerData));
+		}
+		this.client.invokeAsync(requests);
+	}
 }
