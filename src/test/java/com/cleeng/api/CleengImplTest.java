@@ -772,6 +772,25 @@ public class CleengImplTest {
 
         final VodOfferResponse response = this.api.getVodOffer("R262528011_PL");
         assertNotNull(response);
-        assertEquals("offer title should equal", "yiuyiu", response.result.vod.title);
+        assertEquals("offer title should equal", "hd", response.result.vod.videoQuality);
+    }
+
+    @Test
+    public void testGetVodOfferAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", callback));
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+
+        this.api.getVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final VodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", "hd", response.result.vod.videoQuality);
     }
 }
