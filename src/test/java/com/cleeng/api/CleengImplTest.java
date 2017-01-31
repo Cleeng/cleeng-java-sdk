@@ -483,6 +483,27 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateRentalOffer() throws IOException {
+
+        final RentalOfferData offerData = new RentalOfferData(12.34,
+            "title updated",
+            24,
+            "http://www.someurl.com",
+            "description updated",
+            null,
+            "7777",
+            "3",
+            "some text 2",
+            Arrays.asList("Sport", "Entertainment")
+        );
+
+        final RentalOfferResponse response = this.api.updateRentalOffer(offerData, "R802832039_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("period should match", offerData.period, response.result.period);
+    }
+
+    @Test
     public void testCreatePassOffer() throws IOException {
 
         final PassOfferData offerData = new PassOfferData(12.34,

@@ -124,6 +124,22 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public RentalOfferResponse updateRentalOffer(RentalOfferData offerData, String offerId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest("updateRentalOffer", new UpdateOfferParams(this.publisherToken, offerData, offerId))
+		);
+		return gson.fromJson(response, RentalOfferResponse.class);
+	}
+
+	public void updateRentalOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new OfferRequest("updateRentalOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
