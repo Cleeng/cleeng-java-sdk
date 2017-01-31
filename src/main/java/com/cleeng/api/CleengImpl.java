@@ -60,6 +60,14 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public SingleOfferResponse updateSingleOffer(String offerId, SingleOfferData offerData) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new OfferRequest("updateSingleOffer", new UpdateOfferParams(this.publisherToken, offerData, offerId))
+		);
+		return gson.fromJson(response, SingleOfferResponse.class);
+	}
+
 	public EventOfferResponse createEventOffer(EventOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

@@ -148,6 +148,29 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateSingleOffer() throws IOException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+                "title updated",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "videoIdUpdated",
+                "778",
+                "8787",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final SingleOfferResponse response = this.api.updateSingleOffer("A127679757_PL", offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("videoId should match", offerData.videoId, response.result.videoId);
+    }
+
+    @Test
     public void testCreateSingleOfferAsync() throws IOException, InterruptedException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
