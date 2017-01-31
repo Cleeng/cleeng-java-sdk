@@ -61,6 +61,16 @@ public interface Cleeng {
 	SingleOfferResponse updateSingleOffer(String offerId, SingleOfferData offerData) throws IOException;
 
 	/**
+	 * Updates single offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates an event offer.<br/>
 	 * <br/>
 	 *

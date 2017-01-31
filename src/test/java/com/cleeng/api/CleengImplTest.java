@@ -151,17 +151,17 @@ public class CleengImplTest {
     public void testUpdateSingleOffer() throws IOException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
-                "title updated",
-                "http://www.someurl.com",
-                "description",
-                null,
-                "videoIdUpdated",
-                "778",
-                "8787",
-                Arrays.asList("Sport"),
-                true,
-                "whitelist",
-                Arrays.asList("PL","DE")
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "videoIdUpdated",
+            "778",
+            "8787",
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL","DE")
         );
 
         final SingleOfferResponse response = this.api.updateSingleOffer("A127679757_PL", offerData);
@@ -212,6 +212,50 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("Average rating should match", true, response.result.active);
+    }
+
+    @Test
+    public void testUpdateSingleOfferAsync() throws IOException, InterruptedException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+                "new title 2",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "7777",
+                "778",
+                "8787",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final AsyncRequestCallback<SingleOfferResponse> callback = new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+
+        this.api.updateSingleOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final SingleOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Average rating should match", offerData.title, response.result.title);
     }
 
     @Test
