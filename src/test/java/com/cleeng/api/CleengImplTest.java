@@ -290,6 +290,37 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateEventOffer() throws IOException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,
+            "GBP",
+            "titleval updated",
+            "http://www.someurl.com",
+            "desc",
+            "9A",
+            "90",
+            "http://www.someurl.com",
+            1999999990,
+            1999999999,
+            "America/New_York",
+            null,
+            "7777",
+            "2",
+            "teaser updated",
+            true,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final EventOfferResponse response = this.api.updateEventOffer(offerData, "E575167459_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("teaser should match", offerData.teaser, response.result.teaser);
+    }
+
+    @Test
     public void testCreateEventOfferAsync() throws IOException, InterruptedException {
 
         final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,

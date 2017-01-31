@@ -90,6 +90,26 @@ public interface Cleeng {
 	void createEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates an event offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing event offer data
+	 * @param offerId offer Id
+	 * @return
+	 */
+	EventOfferResponse updateEventOffer(EventOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates event offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a rental offer.<br/>
 	 * <br/>
 	 *
