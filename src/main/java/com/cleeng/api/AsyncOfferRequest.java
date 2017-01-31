@@ -1,16 +1,16 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.BaseOfferDataRequest;
+import java.io.Serializable;
 
 public class AsyncOfferRequest extends AsyncRequest {
 
-    public BaseOfferDataRequest offerData;
+    public Serializable offerData;
 
-    public AsyncOfferRequest(BaseOfferDataRequest offerData, AsyncRequestCallback callback) {
+    public AsyncOfferRequest(Serializable offerData, AsyncRequestCallback callback) {
 
         super();
 
         this.callback = callback;
-         this.offerData = offerData;
+        this.offerData = offerData;
     }
 }
