@@ -368,6 +368,53 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateEventOfferAsync() throws IOException, InterruptedException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,
+                "GBP",
+                "titleval updated",
+                "http://www.someurl.com",
+                "desc",
+                "9A",
+                "90",
+                "http://www.someurl.com",
+                1999999990,
+                1999999999,
+                "America/New_York",
+                null,
+                "7777",
+                "2",
+                "teaser",
+                true,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+
+        final AsyncRequestCallback<EventOfferResponse> callback = new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+
+        this.api.updateEventOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final EventOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Active should match", offerData.title, response.result.title);
+    }
+
+    @Test
     public void testCreateRentalOffer() throws IOException {
 
         final RentalOfferData offerData = new RentalOfferData(12.34,
