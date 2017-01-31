@@ -60,6 +60,28 @@ public class CleengImplTest {
     }
 
     @Test
+    public void updateCreateSubscriptionOffer() throws IOException {
+
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final OfferResponse response = this.api.updateSubscriptionOffer(offerData, "S222742070_PL" );
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+    }
+
+    @Test
     public void testCreateSubscriptionOfferAsync() throws IOException, InterruptedException {
 
         final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
