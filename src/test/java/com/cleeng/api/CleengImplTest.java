@@ -631,6 +631,28 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdatePassOffer() throws IOException {
+
+        final PassOfferData offerData = new PassOfferData(12.34,
+                null,
+                1900000001,
+                "title",
+                "http://www.someurl.com/new",
+                null,
+                "description",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final OfferResponse response = this.api.updatePassOffer(offerData, "P808240899_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.url, response.result.url);
+        assertEquals("period should match", offerData.expiresAt, response.result.expiresAt);
+    }
+
+    @Test
     public void testCreatePassOfferAsync() throws IOException, InterruptedException {
 
         final PassOfferData offerData = new PassOfferData(12.34,
