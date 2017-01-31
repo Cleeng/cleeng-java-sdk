@@ -60,7 +60,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void updateCreateSubscriptionOffer() throws IOException {
+    public void updateSubscriptionOffer() throws IOException {
 
         final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
             "week",
@@ -76,7 +76,7 @@ public class CleengImplTest {
             Arrays.asList("PL", "DE")
         );
 
-        final OfferResponse response = this.api.updateSubscriptionOffer(offerData, "S222742070_PL" );
+        final OfferResponse response = this.api.updateSubscriptionOffer(offerData, "S222742070_PL");
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
     }
@@ -144,6 +144,42 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("Average rating should match", 4, response.result.averageRating);
+    }
+
+    @Test
+    public void testUpdateSubscriptionOfferAsync() throws IOException, InterruptedException {
+
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final AsyncRequestCallback<OfferResponse> callback = new AsyncRequestCallback<OfferResponse>(OfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "S222742070_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class), "S222742070_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class), "S222742070_PL"));
+
+        this.api.updateSubscriptionOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final OfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Average rating should match", offerData.title, response.result.title);
     }
 
     @Test
