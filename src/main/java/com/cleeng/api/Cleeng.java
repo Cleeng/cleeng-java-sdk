@@ -33,6 +33,26 @@ public interface Cleeng {
 	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates a subscription offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing offer data
+	 * @param offerId offer id
+	 * @return
+	 */
+	OfferResponse updateSubscriptionOffer(SubscriptionOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates subscription offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a single offer.<br/>
 	 * <br/>
 	 *
@@ -156,6 +176,26 @@ public interface Cleeng {
 	 * @return
 	 */
 	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
+
+	/**
+	 * Updates a pass offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing pass offer data
+	 * @param offerId offer Id
+	 * @return
+	 */
+	public OfferResponse updatePassOffer(PassOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates pass offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updatePassOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates pass offers (async).<br/>

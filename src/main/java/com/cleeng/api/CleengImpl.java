@@ -44,6 +44,22 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public OfferResponse updateSubscriptionOffer(SubscriptionOfferData offerData, String offerId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest("updateSubscriptionOffer", new UpdateOfferParams(this.publisherToken, offerData, offerId))
+		);
+		return gson.fromJson(response, OfferResponse.class);
+	}
+
+	public void updateSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new OfferRequest("updateSubscriptionOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public SingleOfferResponse createSingleOffer(SingleOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
@@ -152,6 +168,22 @@ public class CleengImpl implements Cleeng {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
 			request.data = new OfferRequest("createPassOffer", OfferParams.create(this.publisherToken, (PassOfferData) request.input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public OfferResponse updatePassOffer(PassOfferData offerData, String offerId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new OfferRequest("updatePassOffer", new UpdateOfferParams(this.publisherToken, offerData, offerId))
+		);
+		return gson.fromJson(response, OfferResponse.class);
+	}
+
+	public void updatePassOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new OfferRequest("updatePassOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
