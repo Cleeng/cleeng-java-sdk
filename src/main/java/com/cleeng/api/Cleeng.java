@@ -309,6 +309,24 @@ public interface Cleeng {
 	void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Generates a customer token from facebook.<br/>
+	 * <br/>
+	 *
+	 * @param facebookId facebook login
+	 * @return
+	 */
+	GenerateCustomerTokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException;
+
+	/**
+	 * Generates a customer token from facebook (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncTokenRequest objects
+	 * @return
+	 */
+	void generateCustomerTokenFromFacebookAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Gets access status.<br/>
 	 * <br/>
 	 *
