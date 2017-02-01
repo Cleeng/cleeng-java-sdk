@@ -284,6 +284,22 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public GenerateCustomerTokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GenerateCustomerTokenRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, password))
+		);
+		return gson.fromJson(response, GenerateCustomerTokenResponse.class);
+	}
+
+	public void generateCustomerTokenFromPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new GenerateCustomerTokenRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public GetAccessStatusResponse getAccessStatus(String customerToken, String offerId, String ipAddress) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
