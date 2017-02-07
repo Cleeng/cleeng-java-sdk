@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -897,7 +898,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
-        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
+        final TokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
@@ -906,7 +907,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
 
-        final AsyncRequestCallback<GenerateCustomerTokenResponse> callback = new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class);
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
 
@@ -914,7 +915,7 @@ public class CleengImplTest {
         final int count = 100;
 
         for (int i = 0; i < count; i++) {
-            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com"));
+            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "testjohndoe2@gmail.com"));
         }
 
         this.api.generateCustomerTokenAsync(requests);
@@ -922,7 +923,7 @@ public class CleengImplTest {
         callback.getCountdownLatch().await();
 
         for (int j = 0; j < requests.size(); j++) {
-           tokens.add(((AsyncRequestCallback<GenerateCustomerTokenResponse>) requests.get(j).callback).getResponse().result.token);
+           tokens.add(((AsyncRequestCallback<TokenResponse>) requests.get(j).callback).getResponse().result.token);
         }
 
         assertEquals("Tokens array should match", 101, tokens.size());
@@ -1186,5 +1187,66 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("List should contain items", offerData.videoId, response.result.vod.videoId);
+    }
+
+    @Test
+    public void testGenerateCheckoutUrl() throws IOException {
+
+        final GenerateCheckoutUrlResponse response = this.api.generateCheckoutUrl("testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testGenerateCheckoutUrlAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GenerateCheckoutUrlResponse> callback = new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), callback));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
+
+        this.api.generateCheckoutUrlAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final GenerateCheckoutUrlResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testRegisterCustomer() throws IOException {
+        final UUID uuid = UUID.randomUUID();
+        final CustomerData customerData = new CustomerData(uuid.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final TokenResponse response = this.api.registerCustomer(customerData);
+        assertNotNull(response);
+        assertTrue(response.result.token.length() > 0);
+    }
+
+    @Test
+    public void testRegisterCustomerAsync() throws IOException, InterruptedException {
+        final UUID uuid1 = UUID.randomUUID();
+        final CustomerData input1 = new CustomerData(uuid1.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final UUID uuid2 = UUID.randomUUID();
+        final CustomerData input2 = new CustomerData(uuid2.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final UUID uuid3 = UUID.randomUUID();
+        final CustomerData input3 = new CustomerData(uuid3.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input1, callback));
+        requests.add(new AsyncRequest(input2, new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncRequest(input3, new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+
+        this.api.registerCustomerAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final TokenResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
 }

@@ -4,6 +4,7 @@ import com.cleeng.api.domain.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 public class CleengImpl implements Cleeng {
@@ -252,12 +253,12 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException {
+	public TokenResponse generateCustomerToken(String customerEmail) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new GenerateCustomerTokenRequest("generateCustomerToken", GenerateCustomerTokenParams.create(this.publisherToken, customerEmail))
 		);
-		return gson.fromJson(response, GenerateCustomerTokenResponse.class);
+		return gson.fromJson(response, TokenResponse.class);
 	}
 
 	public void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
@@ -268,12 +269,12 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public GenerateCustomerTokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException {
+	public TokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new GenerateCustomerTokenRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, facebookId))
 		);
-		return gson.fromJson(response, GenerateCustomerTokenResponse.class);
+		return gson.fromJson(response, TokenResponse.class);
 	}
 
 	public void generateCustomerTokenFromFacebookAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
@@ -284,12 +285,12 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public GenerateCustomerTokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException {
+	public TokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new GenerateCustomerTokenRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, password))
 		);
-		return gson.fromJson(response, GenerateCustomerTokenResponse.class);
+		return gson.fromJson(response, TokenResponse.class);
 	}
 
 	public void generateCustomerTokenFromPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
@@ -392,6 +393,38 @@ public class CleengImpl implements Cleeng {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
 			request.data = new VodOfferRequest("updateVodOffer", new UpdateVodOfferParams(((AsyncUpdateVodOfferRequest) request).publisherToken, ((AsyncUpdateVodOfferRequest) request).offerData, ((AsyncUpdateVodOfferRequest) request).offerIdString));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public GenerateCheckoutUrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GenerateCheckoutUrlRequest("generateCheckoutUrl", new GenerateCheckoutUrlParams(publisherToken, customerEmail, flowDescription))
+		);
+		return gson.fromJson(response, GenerateCheckoutUrlResponse.class);
+	}
+
+	public void generateCheckoutUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new GenerateCheckoutUrlRequest("generateCheckoutUrl", new GenerateCheckoutUrlParams(((AsyncGenerateCheckoutUrlRequest) request).publisherToken, ((AsyncGenerateCheckoutUrlRequest) request).customerEmail, ((AsyncGenerateCheckoutUrlRequest) request).flowDescription));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public TokenResponse registerCustomer(CustomerData data) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new GenerateCustomerTokenRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, data))
+		);
+		return gson.fromJson(response, TokenResponse.class);
+	}
+
+	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new GenerateCustomerTokenRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, (CustomerData) ((AsyncRequest) request).input));
 		}
 		this.client.invokeAsync(requests);
 	}

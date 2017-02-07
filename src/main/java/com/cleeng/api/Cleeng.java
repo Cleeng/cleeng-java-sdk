@@ -297,7 +297,7 @@ public interface Cleeng {
 	 * @param customerEmail customer's email
 	 * @return
 	 */
-	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
+	TokenResponse generateCustomerToken(String customerEmail) throws IOException;
 
 	/**
 	 * Generates a customer token (async)<br/>
@@ -315,7 +315,7 @@ public interface Cleeng {
 	 * @param facebookId facebook login
 	 * @return
 	 */
-	GenerateCustomerTokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException;
+	TokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException;
 
 	/**
 	 * Generates a customer token from facebook (async)<br/>
@@ -333,7 +333,7 @@ public interface Cleeng {
 	 * @param password password
 	 * @return
 	 */
-	GenerateCustomerTokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException;
+	TokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException;
 
 	/**
 	 * Generates a customer token from password (async)<br/>
@@ -455,4 +455,42 @@ public interface Cleeng {
 	 * @return
 	 */
 	public void updateVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Generates a checkout url
+	 *
+	 * @param customerEmail vod offer data
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public GenerateCheckoutUrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException;
+
+	/**
+	 * Generates checkout urls (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void generateCheckoutUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Registers a customer
+	 *
+	 * @param data customer data
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public TokenResponse registerCustomer(CustomerData data) throws IOException;
+
+	/**
+	 * Registers customers (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
