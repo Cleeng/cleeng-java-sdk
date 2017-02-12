@@ -2,12 +2,12 @@ package com.cleeng.api;
 
 public class AsyncTokenRequest extends AsyncRequest {
 
-    public String customerEmail;
+    public String input;
 
-    public AsyncTokenRequest(AsyncRequestCallback callback, String customerEmail) {
+    public AsyncTokenRequest(AsyncRequestCallback callback, String input) {
         super();
 
         this.callback = callback;
-        this.customerEmail = customerEmail;
+        this.input = input;
     }
 }
