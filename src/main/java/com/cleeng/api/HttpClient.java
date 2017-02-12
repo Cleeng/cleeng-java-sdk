@@ -10,6 +10,7 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -66,7 +67,7 @@ public class HttpClient {
                 .setConnectTimeout(this.config.connectionTimeout).build();
         CloseableHttpAsyncClient httpClient = HttpAsyncClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig)
-                .setMaxConnTotal(this.config.retryCount).build();
+                .build();
         try {
             httpClient.start();
             final CountDownLatch latch = new CountDownLatch(requests.size());
