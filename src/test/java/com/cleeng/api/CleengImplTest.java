@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +57,28 @@ public class CleengImplTest {
         final OfferResponse response = this.api.createSubscriptionOffer( offerData );
         assertNotNull(response);
         assertNotNull(response.result.accessToTags);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+    }
+
+    @Test
+    public void updateSubscriptionOffer() throws IOException {
+
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final OfferResponse response = this.api.updateSubscriptionOffer(offerData, "S222742070_PL");
+        assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
     }
 
@@ -125,6 +148,42 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateSubscriptionOfferAsync() throws IOException, InterruptedException {
+
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final AsyncRequestCallback<OfferResponse> callback = new AsyncRequestCallback<OfferResponse>(OfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "S222742070_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class), "S222742070_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<OfferResponse>(OfferResponse.class), "S222742070_PL"));
+
+        this.api.updateSubscriptionOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final OfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Average rating should match", offerData.title, response.result.title);
+    }
+
+    @Test
     public void testCreateSingleOffer() throws IOException {
 
         final SingleOfferData offerData = new SingleOfferData(12.34,
@@ -142,6 +201,29 @@ public class CleengImplTest {
         );
 
         final SingleOfferResponse response = this.api.createSingleOffer(offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("videoId should match", offerData.videoId, response.result.videoId);
+    }
+
+    @Test
+    public void testUpdateSingleOffer() throws IOException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+            "title updated",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "videoIdUpdated",
+            "778",
+            "8787",
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL","DE")
+        );
+
+        final SingleOfferResponse response = this.api.updateSingleOffer("A127679757_PL", offerData);
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
         assertEquals("videoId should match", offerData.videoId, response.result.videoId);
@@ -192,6 +274,50 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateSingleOfferAsync() throws IOException, InterruptedException {
+
+        final SingleOfferData offerData = new SingleOfferData(12.34,
+                "new title 2",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "7777",
+                "778",
+                "8787",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final AsyncRequestCallback<SingleOfferResponse> callback = new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<SingleOfferResponse>(SingleOfferResponse.class), "A127679757_PL"));
+
+        this.api.updateSingleOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final SingleOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Average rating should match", offerData.title, response.result.title);
+    }
+
+    @Test
     public void testCreateEventOffer() throws IOException {
 
         final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,
@@ -217,6 +343,37 @@ public class CleengImplTest {
         );
 
         final EventOfferResponse response = this.api.createEventOffer(offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("teaser should match", offerData.teaser, response.result.teaser);
+    }
+
+    @Test
+    public void testUpdateEventOffer() throws IOException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,
+            "GBP",
+            "titleval updated",
+            "http://www.someurl.com",
+            "desc",
+            "9A",
+            "90",
+            "http://www.someurl.com",
+            1999999990,
+            1999999999,
+            "America/New_York",
+            null,
+            "7777",
+            "2",
+            "teaser updated",
+            true,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+
+        final EventOfferResponse response = this.api.updateEventOffer(offerData, "E575167459_PL");
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
         assertEquals("teaser should match", offerData.teaser, response.result.teaser);
@@ -267,6 +424,53 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("Active should match", true, response.result.active);
+    }
+
+    @Test
+    public void testUpdateEventOfferAsync() throws IOException, InterruptedException {
+
+        final EventOfferDataRequest offerData = new EventOfferDataRequest(12.34,
+                "GBP",
+                "titleval updated",
+                "http://www.someurl.com",
+                "desc",
+                "9A",
+                "90",
+                "http://www.someurl.com",
+                1999999990,
+                1999999999,
+                "America/New_York",
+                null,
+                "7777",
+                "2",
+                "teaser",
+                true,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+
+        final AsyncRequestCallback<EventOfferResponse> callback = new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<EventOfferResponse>(EventOfferResponse.class), "E575167459_PL"));
+
+        this.api.updateEventOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final EventOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Active should match", offerData.title, response.result.title);
     }
 
     @Test
@@ -338,6 +542,74 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateRentalOffer() throws IOException {
+
+        final RentalOfferData offerData = new RentalOfferData(12.34,
+            "title updated",
+            24,
+            "http://www.someurl.com",
+            "description updated",
+            null,
+            "7777",
+            "3",
+            "some text 2",
+            Arrays.asList("Sport", "Entertainment")
+        );
+
+        final RentalOfferResponse response = this.api.updateRentalOffer(offerData, "R802832039_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("period should match", offerData.period, response.result.period);
+    }
+
+    @Test
+    public void testUpdateRentalOfferAsync() throws IOException, InterruptedException {
+
+        final RentalOfferData offerData = new RentalOfferData(12.34,
+            "title updated",
+            24,
+            "http://www.someurl.com",
+            "description updated",
+            null,
+            "7777",
+            "2",
+            "some text",
+            Arrays.asList("Sport", "Entertainment")
+        );
+
+        final AsyncRequestCallback<RentalOfferResponse> callback = new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<RentalOfferResponse>(RentalOfferResponse.class), "R802832039_PL"));
+
+        this.api.updateRentalOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final RentalOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Active should match", offerData.title, response.result.title);
+    }
+
+    @Test
     public void testCreatePassOffer() throws IOException {
 
         final PassOfferData offerData = new PassOfferData(12.34,
@@ -356,6 +628,28 @@ public class CleengImplTest {
         final PassOfferResponse response = this.api.createPassOffer(offerData);
         assertNotNull(response);
         assertEquals("offer title should equal", offerData.title, response.result.title);
+        assertEquals("period should match", offerData.expiresAt, response.result.expiresAt);
+    }
+
+    @Test
+    public void testUpdatePassOffer() throws IOException {
+
+        final PassOfferData offerData = new PassOfferData(12.34,
+                null,
+                1900000001,
+                "title",
+                "http://www.someurl.com/new",
+                null,
+                "description",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final OfferResponse response = this.api.updatePassOffer(offerData, "P808240899_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.url, response.result.url);
         assertEquals("period should match", offerData.expiresAt, response.result.expiresAt);
     }
 
@@ -411,6 +705,42 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("Active should match", true, response.result.active);
+    }
+
+    @Test
+    public void testUpdatePassOfferAsync() throws IOException, InterruptedException {
+
+        final PassOfferData offerData = new PassOfferData(12.34,
+                null,
+                1900000000,
+                "title 2",
+                "http://www.someurl.com",
+                null,
+                "description",
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL","DE")
+        );
+
+        final AsyncRequestCallback<PassOfferResponse> callback = new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class);
+
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateOfferRequest(offerData, callback, "P808240899_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class), "P808240899_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class), "P808240899_PL"));
+        requests.add(new AsyncUpdateOfferRequest(offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class), "P808240899_PL"));
+
+        this.api.updatePassOfferAsync(requests);
+
+        requests.get(0).latch.await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final PassOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("Active should match", offerData.title, response.result.title);
     }
 
     @Test
@@ -568,7 +898,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
-        final GenerateCustomerTokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
+        final TokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
@@ -577,7 +907,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
 
-        final AsyncRequestCallback<GenerateCustomerTokenResponse> callback = new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class);
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
 
@@ -585,7 +915,7 @@ public class CleengImplTest {
         final int count = 100;
 
         for (int i = 0; i < count; i++) {
-            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<GenerateCustomerTokenResponse>(GenerateCustomerTokenResponse.class), "testjohndoe2@gmail.com"));
+            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "testjohndoe2@gmail.com"));
         }
 
         this.api.generateCustomerTokenAsync(requests);
@@ -593,7 +923,7 @@ public class CleengImplTest {
         callback.getCountdownLatch().await();
 
         for (int j = 0; j < requests.size(); j++) {
-           tokens.add(((AsyncRequestCallback<GenerateCustomerTokenResponse>) requests.get(j).callback).getResponse().result.token);
+           tokens.add(((AsyncRequestCallback<TokenResponse>) requests.get(j).callback).getResponse().result.token);
         }
 
         assertEquals("Tokens array should match", 101, tokens.size());
@@ -700,5 +1030,223 @@ public class CleengImplTest {
 
         assertNotNull("Response object should not be null", response);
         assertEquals("List should contain items", "US", response.result.country);
+    }
+
+    @Test
+    public void testCreateVodOffer() throws IOException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+            "some title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "iuyiu",
+            "playerC",
+            "playerCodeH",
+            "7",
+            "7",
+            "hd",
+            null,
+            Arrays.asList("Sport"),
+            Arrays.asList("PL", "DE"),
+            false,
+            "whitelist",
+            "http://www.someurl.com/image.png"
+        );
+
+        final VodOfferResponse response = this.api.createVodOffer(offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.vod.title);
+    }
+
+    @Test
+    public void testCreateVodOfferAsync() throws IOException, InterruptedException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+                "some title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                "vidoeId",
+                "playerC",
+                "playerCodeH",
+                "7",
+                "7",
+                "hd",
+                null,
+                Arrays.asList("Sport"),
+                Arrays.asList("PL", "DE"),
+                false,
+                "whitelist",
+                "http://www.someurl.com/image.png"
+        );
+
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, callback));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+        requests.add(new AsyncCreateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+
+        this.api.createVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final VodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", offerData.title, response.result.vod.title);
+    }
+
+    @Test
+    public void testGetVodOffer() throws IOException {
+
+        final VodOfferResponse response = this.api.getVodOffer("R262528011_PL");
+        assertNotNull(response);
+        assertEquals("offer title should equal", "hd", response.result.vod.videoQuality);
+    }
+
+    @Test
+    public void testGetVodOfferAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", callback));
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+        requests.add(new AsyncGetVodOfferRequest(this.publisherToken, "R262528011_PL", new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class)));
+
+        this.api.getVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final VodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", "hd", response.result.vod.videoQuality);
+    }
+
+    @Test
+    public void testUpdateVodOffer() throws IOException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+            "some updated title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "videoId",
+            "playerCode",
+            "playerCodeHead",
+            "7",
+            "7",
+            "hd",
+            null,
+            Arrays.asList("Sport"),
+            Arrays.asList("PL", "DE"),
+            false,
+            "whitelist",
+            "http://www.someurl.com/image.png"
+        );
+
+        final VodOfferResponse response = this.api.updateVodOffer("R262528011_PL", offerData);
+        assertNotNull(response);
+        assertEquals("offer title should equal", offerData.title, response.result.vod.title);
+    }
+
+    @Test
+    public void testUpdateVodOfferAsync() throws IOException, InterruptedException {
+
+        final VodOfferData offerData = new VodOfferData(12.34,
+            "some title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            "videoIdUpdated",
+            "playerC",
+            "playerCodeH",
+            "7",
+            "7",
+            "hd",
+            null,
+            Arrays.asList("Sport"),
+            Arrays.asList("PL", "DE"),
+            false,
+            "whitelist",
+            "http://www.someurl.com/image.png"
+        );
+
+        final AsyncRequestCallback<VodOfferResponse> callback = new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, callback, "R262528011_PL"));
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class), "R262528011_PL"));
+        requests.add(new AsyncUpdateVodOfferRequest(this.publisherToken, offerData, new AsyncRequestCallback<VodOfferResponse>(VodOfferResponse.class), "R262528011_PL"));
+
+        this.api.updateVodOfferAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final VodOfferResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertEquals("List should contain items", offerData.videoId, response.result.vod.videoId);
+    }
+
+    @Test
+    public void testGenerateCheckoutUrl() throws IOException {
+
+        final GenerateCheckoutUrlResponse response = this.api.generateCheckoutUrl("testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testGenerateCheckoutUrlAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<GenerateCheckoutUrlResponse> callback = new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), callback));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
+
+        this.api.generateCheckoutUrlAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final GenerateCheckoutUrlResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testRegisterCustomer() throws IOException {
+        final UUID uuid = UUID.randomUUID();
+        final CustomerData customerData = new CustomerData(uuid.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final TokenResponse response = this.api.registerCustomer(customerData);
+        assertNotNull(response);
+        assertTrue(response.result.token.length() > 0);
+    }
+
+    @Test
+    public void testRegisterCustomerAsync() throws IOException, InterruptedException {
+        final UUID uuid1 = UUID.randomUUID();
+        final CustomerData input1 = new CustomerData(uuid1.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final UUID uuid2 = UUID.randomUUID();
+        final CustomerData input2 = new CustomerData(uuid2.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final UUID uuid3 = UUID.randomUUID();
+        final CustomerData input3 = new CustomerData(uuid3.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input1, callback));
+        requests.add(new AsyncRequest(input2, new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncRequest(input3, new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+
+        this.api.registerCustomerAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        final TokenResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
 }
