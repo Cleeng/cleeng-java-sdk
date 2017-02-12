@@ -11,10 +11,9 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -25,16 +24,23 @@ import java.util.concurrent.CountDownLatch;
 public class HttpClient {
 
     public boolean useNonBlockingMode = false;
+    public Config config;
 
     public synchronized String invoke(String endpoint, Serializable request) throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create()
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(this.config.retryCount, false))
+                .build()) {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
             Gson gson = new GsonBuilder().create();
             String json = gson.toJson( request );
-            post.setEntity( new StringEntity( json, "UTF-8" ));
+            post.setEntity(new StringEntity(json, "UTF-8"));
+            RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(this.config.socketTimeout)
+                .setConnectTimeout(this.config.connectionTimeout)
+                .build();
+            post.setConfig(requestConfig);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
                 @Override
                 public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
                     StatusLine statusLine = httpResponse.getStatusLine();
@@ -56,11 +62,11 @@ public class HttpClient {
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(2000)
-                .setConnectTimeout(5000).build();
-        CloseableHttpAsyncClient httpClient = HttpAsyncClients.custom()
+                .setSocketTimeout(this.config.socketTimeout)
+                .setConnectTimeout(this.config.connectionTimeout).build();
+        CloseableHttpAsyncClient httpClient = HttpAsyncClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig)
-                .build();
+                .setMaxConnTotal(this.config.retryCount).build();
         try {
             httpClient.start();
             final CountDownLatch latch = new CountDownLatch(requests.size());

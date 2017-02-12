@@ -5,8 +5,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
 
+
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 public class CleengImpl implements Cleeng {
 
@@ -14,11 +18,36 @@ public class CleengImpl implements Cleeng {
 	private String platformUrl;
 	private Gson gson;
 	private HttpClient client;
+	private Config config;
 
 	public CleengImpl(final String platformUrl) {
+		this.initProps();
 		this.gson = new GsonBuilder().create();
 		this.client = new HttpClient();
+		this.client.config = config;
 		this.platformUrl = platformUrl;
+	}
+
+	private void initProps() {
+		Properties properties = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream("src/main/resources/config.properties");
+			properties.load(input);
+			this.config = new Config(Integer.parseInt(properties.getProperty("socketTimeout")),
+					Integer.parseInt( properties.getProperty("connectionTimeout")),
+					Integer.parseInt( properties.getProperty("retryCount")));
+		} catch (IOException e) {
+			System.out.println("Config file not found!");
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
 	}
 
 	public void setNonBlockingMode() {
