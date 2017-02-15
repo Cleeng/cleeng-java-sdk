@@ -4,7 +4,6 @@ import com.cleeng.api.domain.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 
 public class CleengImpl implements Cleeng {
@@ -269,7 +268,7 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public TokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException {
+	public TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new GenerateCustomerTokenRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, facebookId))

@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -930,6 +931,41 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGenerateCustomerTokenFromPassword() throws IOException {
+        final TokenResponse response = this.api.generateCustomerTokenFromPassword("john2000doepass", "john2000doe@domain.com");
+        assertNotNull(response);
+        assertNull(response.error);
+        assertNotNull(response.result.token);
+    }
+
+    @Test
+    public void testGenerateCustomerTokenFromPasswordAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", callback));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+
+        this.api.generateCustomerTokenFromPasswordAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final TokenResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Token should be present in response object", response.result.token.length() > 0);
+    }
+
+
+
+
+
+    @Test
     public void testGetAccessStatus() throws IOException {
 
         final GetAccessStatusResponse response = this.api.getAccessStatus("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71");
@@ -1227,6 +1263,15 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
+    public void testRegisterMyCustomer() throws IOException {
+        final CustomerData customerData = new CustomerData("john2000doe@domain.com", "en_US", "GBP", "PL", "john2000doepass");
+        final TokenResponse response = this.api.registerCustomer(customerData);
+        assertNotNull(response);
+        assertTrue(response.result.token.length() > 0);
+    }
+
+    @Test
     public void testRegisterCustomerAsync() throws IOException, InterruptedException {
         final UUID uuid1 = UUID.randomUUID();
         final CustomerData input1 = new CustomerData(uuid1.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
@@ -1249,4 +1294,6 @@ public class CleengImplTest {
         assertNotNull("Response object should not be null", response);
         assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
+
+
 }
