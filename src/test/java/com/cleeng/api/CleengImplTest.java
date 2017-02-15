@@ -961,9 +961,36 @@ public class CleengImplTest {
         assertTrue("Token should be present in response object", response.result.token.length() > 0);
     }
 
+    @Test
+    public void testGenerateCustomerTokenFromFacebook() throws IOException {
+        final TokenResponse response = this.api.generateCustomerTokenFromFacebook("john2001doe");
+        assertNotNull(response);
+        assertNull(response.error);
+        assertNotNull(response.result.token);
+    }
 
+    @Test
+    public void testGenerateCustomerTokenFromFacebookAsync() throws IOException, InterruptedException {
 
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncTokenRequest(callback, "john2001doe"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
 
+        this.api.generateCustomerTokenFromFacebookAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final TokenResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Token should be present in response object", response.result.token.length() > 0);
+    }
 
     @Test
     public void testGetAccessStatus() throws IOException {
@@ -1265,7 +1292,7 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("john2000doe@domain.com", "en_US", "GBP", "PL", "john2000doepass");
+        final CustomerData customerData = new CustomerData("john2001doe@domain.com", "en_US", "GBP", "PL", "john2001doepass", "john2001doe");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
         assertTrue(response.result.token.length() > 0);
