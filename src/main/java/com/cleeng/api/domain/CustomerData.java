@@ -9,6 +9,7 @@ public class CustomerData implements Serializable {
     public String currency;
     public String country;
     public String password;
+    public String facebookId;
 
     public CustomerData() {
 
@@ -34,5 +35,19 @@ public class CustomerData implements Serializable {
         this.currency = currency;
         this.country = country;
         this.password = password;
+    }
+
+    public CustomerData(String email,
+                        String locale,
+                        String currency,
+                        String country,
+                        String password,
+                        String facebookId) {
+        this.email = email;
+        this.locale = locale;
+        this.currency = currency;
+        this.country = country;
+        this.password = password;
+        this.facebookId = facebookId;
     }
 }

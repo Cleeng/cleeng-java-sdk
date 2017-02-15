@@ -315,7 +315,7 @@ public interface Cleeng {
 	 * @param facebookId facebook login
 	 * @return
 	 */
-	TokenResponse generateCustomerTokenResponseFromFacebook(String facebookId) throws IOException;
+	TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException;
 
 	/**
 	 * Generates a customer token from facebook (async)<br/>
@@ -333,7 +333,7 @@ public interface Cleeng {
 	 * @param password password
 	 * @return
 	 */
-	TokenResponse generateCustomerTokenResponseFromPassword(String password) throws IOException;
+	TokenResponse generateCustomerTokenFromPassword(String password, String customerEmail) throws IOException;
 
 	/**
 	 * Generates a customer token from password (async)<br/>
