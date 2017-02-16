@@ -932,9 +932,10 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testUpdateCustomerPassword() throws IOException {
 
-        final String customerEmail = "yesionuk@gmail.com";
+        final String customerEmail = "user@gmail.com";
         final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
         final String newPassword = "newpass2001";
 
@@ -942,6 +943,29 @@ public class CleengImplTest {
 
         assertNotNull(response);
         assertNull(response.error);
+        assertTrue(response.result.success);
+    }
+
+    @Test
+    @Ignore
+    public void testUpdateCustomerPasswordAsync() throws IOException, InterruptedException {
+
+        final String customerEmail = "user@gmail.com";
+        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String newPassword = "newpass2002";
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(new ResetPasswordParams(customerEmail, resetPasswordToken, newPassword), callback));
+
+        this.api.updateCustomerPasswordAsync(requests);
+
+        lock.await(2, TimeUnit.SECONDS);
+
+        final BooleanResponse response = callback.getResponse();
+
         assertTrue(response.result.success);
     }
 
@@ -1334,11 +1358,10 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("yesionuk@gmail.com", "en_US", "GBP", "PL", "myoriginalpass", "yesion2017");
+        final CustomerData customerData = new CustomerData("user@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
         assertTrue(response.result.token.length() > 0);
-        //DtNKiS4HJnZch7uqRJOkOH6Sgy4BAiPsWoj9aAf5Rkcvazae
     }
 
     @Test
@@ -1364,6 +1387,4 @@ public class CleengImplTest {
         assertNotNull("Response object should not be null", response);
         assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
-
-
 }

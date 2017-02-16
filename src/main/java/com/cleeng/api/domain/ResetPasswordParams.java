@@ -19,4 +19,11 @@ public class ResetPasswordParams implements Serializable {
         this.resetPasswordToken = resetPasswordToken;
         this.newPassword = newPassword;
     }
+
+    public ResetPasswordParams(String customerEmail, String resetPasswordToken, String newPassword) {
+
+        this.customerEmail = customerEmail;
+        this.resetPasswordToken = resetPasswordToken;
+        this.newPassword = newPassword;
+    }
 }

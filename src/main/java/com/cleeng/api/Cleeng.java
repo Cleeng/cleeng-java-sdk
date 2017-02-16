@@ -339,6 +339,15 @@ public interface Cleeng {
 	BooleanResponse updateCustomerPassword(String customerEmail, String resetPasswordToken, String newPassword) throws IOException;
 
 	/**
+	 * Updates customer password (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Generates a customer token from facebook.<br/>
 	 * <br/>
 	 *
