@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -939,6 +940,24 @@ public class CleengImplTest {
         final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
+        assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testRequestPasswordResetAsync() throws IOException, InterruptedException {
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
+
+        this.api.requestPasswordResetAsync(requests);
+
+        lock.await(2, TimeUnit.SECONDS);
+
+        final BooleanResponse response = callback.getResponse();
+
         assertTrue(response.result.success);
     }
 

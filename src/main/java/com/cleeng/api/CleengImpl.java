@@ -278,6 +278,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson(response, BooleanResponse.class);
 	}
 
+	public void requestPasswordResetAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("requestPasswordReset", GenerateCustomerTokenParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
