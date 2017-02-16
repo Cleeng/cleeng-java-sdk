@@ -896,6 +896,8 @@ public class CleengImplTest {
         assertTrue("List should contain items", response.result.url.length() > 0);
     }
 
+    private String token;
+
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
@@ -903,6 +905,7 @@ public class CleengImplTest {
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
+        this.token = response.result.token;
     }
 
     @Test
@@ -928,6 +931,15 @@ public class CleengImplTest {
         }
 
         assertEquals("Tokens array should match", 101, tokens.size());
+    }
+
+    @Test
+    public void testRequestPasswordReset() throws IOException {
+
+        final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
+        assertNotNull(response);
+        assertNull(response.error);
+        assertTrue(response.result.success);
     }
 
     @Test
