@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
 import java.util.List;
@@ -307,6 +308,44 @@ public interface Cleeng {
 	 * @return
 	 */
 	void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Requests user's password reset.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @return
+	 */
+	BooleanResponse requestPasswordReset(String customerEmail) throws IOException;
+
+	/**
+	 * Requests user's password reset (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void requestPasswordResetAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Updates user's password.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @param resetPasswordToken token received on email
+	 * @param newPassword new password
+	 * @return
+	 */
+	BooleanResponse updateCustomerPassword(String customerEmail, String resetPasswordToken, String newPassword) throws IOException;
+
+	/**
+	 * Updates customer password (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Generates a customer token from facebook.<br/>

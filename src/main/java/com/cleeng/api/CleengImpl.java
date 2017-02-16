@@ -3,6 +3,8 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.jsonrpc.JSONRPCRequest;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -255,7 +257,7 @@ public class CleengImpl implements Cleeng {
 	public TokenResponse generateCustomerToken(String customerEmail) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new GenerateCustomerTokenRequest("generateCustomerToken", GenerateCustomerTokenParams.create(this.publisherToken, customerEmail))
+				new JSONRPCRequest("generateCustomerToken", GenerateCustomerTokenParams.create(this.publisherToken, customerEmail))
 		);
 		return gson.fromJson(response, TokenResponse.class);
 	}
@@ -263,7 +265,39 @@ public class CleengImpl implements Cleeng {
 	public void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GenerateCustomerTokenRequest("generateCustomerToken", GenerateCustomerTokenParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+			request.data = new JSONRPCRequest("generateCustomerToken", GenerateCustomerTokenParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BooleanResponse requestPasswordReset(String customerEmail) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("requestPasswordReset", GenerateCustomerTokenParams.create(this.publisherToken, customerEmail))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void requestPasswordResetAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("requestPasswordReset", GenerateCustomerTokenParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BooleanResponse updateCustomerPassword(String customerEmail, String resetPasswordToken, String newPassword) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("updateCustomerPassword", new ResetPasswordParams(this.publisherToken, customerEmail, resetPasswordToken, newPassword))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("updateCustomerPassword", new ResetPasswordParams(this.publisherToken, ((ResetPasswordParams) ((AsyncRequest) request).input).customerEmail, ((ResetPasswordParams) ((AsyncRequest) request).input).resetPasswordToken, ((ResetPasswordParams) ((AsyncRequest) request).input).newPassword));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -271,7 +305,7 @@ public class CleengImpl implements Cleeng {
 	public TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new GenerateCustomerTokenRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, facebookId))
+				new JSONRPCRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, facebookId))
 		);
 		return gson.fromJson(response, TokenResponse.class);
 	}
@@ -279,7 +313,7 @@ public class CleengImpl implements Cleeng {
 	public void generateCustomerTokenFromFacebookAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GenerateCustomerTokenRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+			request.data = new JSONRPCRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -287,7 +321,7 @@ public class CleengImpl implements Cleeng {
 	public TokenResponse generateCustomerTokenFromPassword(String password, String customerEmail) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new GenerateCustomerTokenRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, password, customerEmail))
+				new JSONRPCRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, password, customerEmail))
 		);
 		return gson.fromJson(response, TokenResponse.class);
 	}
@@ -295,7 +329,7 @@ public class CleengImpl implements Cleeng {
 	public void generateCustomerTokenFromPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GenerateCustomerTokenRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).password, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).customerEmail));
+			request.data = new JSONRPCRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).password, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).customerEmail));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -415,7 +449,7 @@ public class CleengImpl implements Cleeng {
 	public TokenResponse registerCustomer(CustomerData data) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
-				new GenerateCustomerTokenRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, data))
+				new JSONRPCRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, data))
 		);
 		return gson.fromJson(response, TokenResponse.class);
 	}
@@ -423,7 +457,7 @@ public class CleengImpl implements Cleeng {
 	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GenerateCustomerTokenRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, (CustomerData) ((AsyncRequest) request).input));
+			request.data = new JSONRPCRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, (CustomerData) ((AsyncRequest) request).input));
 		}
 		this.client.invokeAsync(requests);
 	}

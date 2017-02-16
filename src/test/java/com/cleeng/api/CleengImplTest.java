@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -931,6 +932,71 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
+    public void testUpdateCustomerPassword() throws IOException {
+
+        final String customerEmail = "user@gmail.com";
+        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String newPassword = "newpass2001";
+
+        final BooleanResponse response = this.api.updateCustomerPassword(customerEmail, resetPasswordToken, newPassword);
+
+        assertNotNull(response);
+        assertNull(response.error);
+        assertTrue(response.result.success);
+    }
+
+    @Test
+    @Ignore
+    public void testUpdateCustomerPasswordAsync() throws IOException, InterruptedException {
+
+        final String customerEmail = "user@gmail.com";
+        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String newPassword = "newpass2002";
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(new ResetPasswordParams(customerEmail, resetPasswordToken, newPassword), callback));
+
+        this.api.updateCustomerPasswordAsync(requests);
+
+        lock.await(2, TimeUnit.SECONDS);
+
+        final BooleanResponse response = callback.getResponse();
+
+        assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testRequestPasswordReset() throws IOException {
+
+        final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
+        assertNotNull(response);
+        assertNull(response.error);
+        assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testRequestPasswordResetAsync() throws IOException, InterruptedException {
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
+
+        this.api.requestPasswordResetAsync(requests);
+
+        lock.await(2, TimeUnit.SECONDS);
+
+        final BooleanResponse response = callback.getResponse();
+
+        assertTrue(response.result.success);
+    }
+
+    @Test
     public void testGenerateCustomerTokenFromPassword() throws IOException {
         final TokenResponse response = this.api.generateCustomerTokenFromPassword("john2000doepass", "john2000doe@domain.com");
         assertNotNull(response);
@@ -1292,7 +1358,7 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("john2001doe@domain.com", "en_US", "GBP", "PL", "john2001doepass", "john2001doe");
+        final CustomerData customerData = new CustomerData("user@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
         assertTrue(response.result.token.length() > 0);
@@ -1321,6 +1387,4 @@ public class CleengImplTest {
         assertNotNull("Response object should not be null", response);
         assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
-
-
 }
