@@ -286,6 +286,14 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public BooleanResponse updateCustomerPassword(String customerEmail, String resetPasswordToken, String newPassword) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("updateCustomerPassword", new ResetPasswordParams(this.publisherToken, customerEmail, resetPasswordToken, newPassword))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
 	public TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,

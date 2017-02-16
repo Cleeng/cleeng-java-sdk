@@ -897,8 +897,6 @@ public class CleengImplTest {
         assertTrue("List should contain items", response.result.url.length() > 0);
     }
 
-    private String token;
-
     @Test
     public void testGenerateCustomerToken() throws IOException {
 
@@ -906,7 +904,6 @@ public class CleengImplTest {
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
-        this.token = response.result.token;
     }
 
     @Test
@@ -932,6 +929,20 @@ public class CleengImplTest {
         }
 
         assertEquals("Tokens array should match", 101, tokens.size());
+    }
+
+    @Test
+    public void testUpdateCustomerPassword() throws IOException {
+
+        final String customerEmail = "yesionuk@gmail.com";
+        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String newPassword = "newpass2001";
+
+        final BooleanResponse response = this.api.updateCustomerPassword(customerEmail, resetPasswordToken, newPassword);
+
+        assertNotNull(response);
+        assertNull(response.error);
+        assertTrue(response.result.success);
     }
 
     @Test
@@ -1323,10 +1334,11 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("john2001doe@domain.com", "en_US", "GBP", "PL", "john2001doepass", "john2001doe");
+        final CustomerData customerData = new CustomerData("yesionuk@gmail.com", "en_US", "GBP", "PL", "myoriginalpass", "yesion2017");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
         assertTrue(response.result.token.length() > 0);
+        //DtNKiS4HJnZch7uqRJOkOH6Sgy4BAiPsWoj9aAf5Rkcvazae
     }
 
     @Test
