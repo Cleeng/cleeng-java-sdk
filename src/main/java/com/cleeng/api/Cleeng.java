@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,6 +34,26 @@ public interface Cleeng {
 	void createSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates a subscription offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing offer data
+	 * @param offerId offer id
+	 * @return
+	 */
+	OfferResponse updateSubscriptionOffer(SubscriptionOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates subscription offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a single offer.<br/>
 	 * <br/>
 	 *
@@ -50,6 +71,25 @@ public interface Cleeng {
 	 * @throws InterruptedException
 	 */
 	void createSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Updates a single offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing single offer data
+	 * @return
+	 */
+	SingleOfferResponse updateSingleOffer(String offerId, SingleOfferData offerData) throws IOException;
+
+	/**
+	 * Updates single offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates an event offer.<br/>
@@ -71,6 +111,26 @@ public interface Cleeng {
 	void createEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates an event offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing event offer data
+	 * @param offerId offer Id
+	 * @return
+	 */
+	EventOfferResponse updateEventOffer(EventOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates event offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a rental offer.<br/>
 	 * <br/>
 	 *
@@ -90,6 +150,26 @@ public interface Cleeng {
 	void createRentalOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates a rental offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing rental offer data
+	 * @param offerId offer Id
+	 * @return
+	 */
+	RentalOfferResponse updateRentalOffer(RentalOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates rental offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateRentalOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Creates a pass offer.<br/>
 	 * <br/>
 	 *
@@ -97,6 +177,26 @@ public interface Cleeng {
 	 * @return
 	 */
 	PassOfferResponse createPassOffer(PassOfferData offerData) throws IOException;
+
+	/**
+	 * Updates a pass offer.<br/>
+	 * <br/>
+	 *
+	 * @param offerData domain object representing pass offer data
+	 * @param offerId offer Id
+	 * @return
+	 */
+	public OfferResponse updatePassOffer(PassOfferData offerData, String offerId) throws IOException;
+
+	/**
+	 * Updates pass offers (async)
+	 * <br/>
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updatePassOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Creates pass offers (async).<br/>
@@ -198,7 +298,7 @@ public interface Cleeng {
 	 * @param customerEmail customer's email
 	 * @return
 	 */
-	GenerateCustomerTokenResponse generateCustomerToken(String customerEmail) throws IOException;
+	TokenResponse generateCustomerToken(String customerEmail) throws IOException;
 
 	/**
 	 * Generates a customer token (async)<br/>
@@ -208,6 +308,80 @@ public interface Cleeng {
 	 * @return
 	 */
 	void generateCustomerTokenAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Requests user's password reset.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @return
+	 */
+	BooleanResponse requestPasswordReset(String customerEmail) throws IOException;
+
+	/**
+	 * Requests user's password reset (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void requestPasswordResetAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Updates user's password.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @param resetPasswordToken token received on email
+	 * @param newPassword new password
+	 * @return
+	 */
+	BooleanResponse updateCustomerPassword(String customerEmail, String resetPasswordToken, String newPassword) throws IOException;
+
+	/**
+	 * Updates customer password (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Generates a customer token from facebook.<br/>
+	 * <br/>
+	 *
+	 * @param facebookId facebook login
+	 * @return
+	 */
+	TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException;
+
+	/**
+	 * Generates a customer token from facebook (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncTokenRequest objects
+	 * @return
+	 */
+	void generateCustomerTokenFromFacebookAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Generates a customer token from password.<br/>
+	 * <br/>
+	 *
+	 * @param password password
+	 * @return
+	 */
+	TokenResponse generateCustomerTokenFromPassword(String password, String customerEmail) throws IOException;
+
+	/**
+	 * Generates a customer token from password (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncTokenRequest objects
+	 * @return
+	 */
+	void generateCustomerTokenFromPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Gets access status.<br/>
@@ -247,4 +421,115 @@ public interface Cleeng {
 	 * @return
 	 */
 	void getAccessibleTagsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Get customer<br/>
+	 * <br/>
+	 *
+	 * @param customerToken customer's token
+	 * @return
+	 */
+	GetCustomerResponse getCustomer(String customerToken) throws IOException;
+
+	/**
+	 * Get customer (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void getCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Creates Vod offer<br/>
+	 * <br/>
+	 *
+	 * @param offerData vod offer data
+	 * @return
+	 */
+	VodOfferResponse createVodOffer(VodOfferData offerData) throws IOException;
+
+	/**
+	 * Creates Vod offer (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Gets Vod offer<br/>
+	 * <br/>
+	 *
+	 * @param offerId an id of an offer
+	 * @return
+	 */
+	public VodOfferResponse getVodOffer(String offerId) throws IOException;
+
+	/**
+	 * Gets Vod offer (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void getVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Updates Vod offer<br/>
+	 * <br/>
+	 *
+	 * @param offerId offer id
+	 * @param offerData vod offer data
+	 * @return
+	 */
+	public VodOfferResponse updateVodOffer(String offerId, VodOfferData offerData) throws IOException;
+
+	/**
+	 * Updates Vod offer(s) (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Generates a checkout url
+	 *
+	 * @param customerEmail vod offer data
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public GenerateCheckoutUrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException;
+
+	/**
+	 * Generates checkout urls (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void generateCheckoutUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Registers a customer
+	 *
+	 * @param data customer data
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public TokenResponse registerCustomer(CustomerData data) throws IOException;
+
+	/**
+	 * Registers customers (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
