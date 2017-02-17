@@ -64,7 +64,7 @@ public class HttpClient {
         try {
             httpClient.start();
             final CountDownLatch latch = new CountDownLatch(requests.size());
-            for ( int i = 0; i < requests.size(); i++ ) {
+            for (int i = 0; i < requests.size(); i++) {
                 AsyncRequest request = requests.get(i);
                 request.latch = latch;
                 request.callback.useNonBlockingMode = this.useNonBlockingMode;
@@ -72,10 +72,10 @@ public class HttpClient {
                 HttpPost post = new HttpPost(request.endpoint);
                 post.setHeader("Content-Type", "application/json");
                 Gson gson = new GsonBuilder().create();
-                String json = gson.toJson( request.data );
-                post.setEntity( new StringEntity( json, "UTF-8" ));
-                request.callback.setClient( httpClient );
-                httpClient.execute( post, request.callback );
+                String json = gson.toJson(request.data);
+                post.setEntity(new StringEntity(json, "UTF-8"));
+                request.callback.setClient(httpClient);
+                httpClient.execute(post, request.callback);
             }
             if (this.useNonBlockingMode == false) {
                 latch.await();

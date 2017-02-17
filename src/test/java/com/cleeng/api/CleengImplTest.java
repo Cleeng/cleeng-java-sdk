@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("unchecked")
 public class CleengImplTest {
@@ -1431,5 +1432,32 @@ public class CleengImplTest {
         final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
+    }
+
+    @Test
+    public void testGetAccessStatusForDevice() throws IOException {
+        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
+        assertNotNull(response);
+        assertFalse(response.result.accessGranted);
+    }
+
+    @Test
+    public void testGetAccessStatusForDeviceAsync() throws IOException, InterruptedException {
+        final CountDownLatch lock = new CountDownLatch(1);
+        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
+        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "2", "roku");
+        final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
+        final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback2 = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(params, callback));
+        requests.add(new AsyncRequest(params2, callback2));
+        this.api.getAccessStatusForDeviceAsync(requests);
+        lock.await(2, TimeUnit.SECONDS);
+        final GetAccessStatusForDeviceResponse response = callback.getResponse();
+        final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
+        assertNotNull(response);
+        assertNotNull(response2);
+        assertFalse(response.result.accessGranted);
+        assertFalse(response2.result.accessGranted);
     }
 }
