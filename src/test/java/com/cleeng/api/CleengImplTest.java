@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("unchecked")
 public class CleengImplTest {
@@ -1431,5 +1432,13 @@ public class CleengImplTest {
         final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
+    }
+
+    @Test
+    public void testGetAccessStatusForDevice() throws IOException {
+
+        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
+        assertNotNull(response);
+        assertFalse(response.result.accessGranted);
     }
 }
