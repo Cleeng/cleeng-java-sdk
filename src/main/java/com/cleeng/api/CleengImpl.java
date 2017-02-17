@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CleengImpl implements Cleeng {
