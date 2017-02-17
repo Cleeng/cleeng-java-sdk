@@ -568,4 +568,25 @@ public interface Cleeng {
 	 * @return
 	 */
 	void listOfferIdsByVideoIdAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Checks whether access to offer is granted<br/>
+	 * <br/>
+	 *
+	 * @param customerToken customer token
+	 * @param offerId offer id
+	 * @param deviceId device id
+	 * @param deviceType device type
+	 * @return
+	 */
+	GetAccessStatusForDeviceResponse getAccessStatusForDevice(String customerToken, String offerId, String deviceId, String deviceType) throws IOException;
+
+	/**
+	 * Checks whether access to offer is granted<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void getAccessStatusForDeviceAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }

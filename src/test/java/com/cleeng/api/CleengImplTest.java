@@ -1135,7 +1135,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testCustomer() throws IOException {
+    public void testGetCustomer() throws IOException {
 
         final GetCustomerResponse response = this.api.getCustomer("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI");
         assertNotNull(response.result);
