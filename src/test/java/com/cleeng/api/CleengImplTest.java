@@ -1411,4 +1411,12 @@ public class CleengImplTest {
         assertNotNull(response);
         assertTrue(response.result.url.length() > 0);
     }
+
+    @Test
+    public void testlistOfferIdsByVideoId() throws IOException {
+
+        final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");
+        assertNotNull(response);
+        assertTrue(response.result.offerIds.size() > 0);
+    }
 }
