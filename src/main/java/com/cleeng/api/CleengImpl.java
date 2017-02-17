@@ -529,4 +529,20 @@ public class CleengImpl implements Cleeng {
 		}
 		this.client.invokeAsync(requests);
 	}
+
+	public GetAccessStatusForDeviceResponse getAccessStatusForDevice(String customerToken, String offerId, String deviceId, String deviceType) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("getAccessStatusForDevice", new GetAccessStatusForDeviceParams(customerToken, offerId, deviceId, deviceType))
+		);
+		return gson.fromJson(response, GetAccessStatusForDeviceResponse.class);
+	}
+
+	public void getAccessStatusForDeviceAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("getAccessStatusForDevice", ((GetAccessStatusForDeviceParams) ((AsyncRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
 }
