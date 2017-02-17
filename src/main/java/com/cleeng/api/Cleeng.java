@@ -531,4 +531,41 @@ public interface Cleeng {
 	 * @return
 	 */
 	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Generates my account url<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer email
+	 * @param modules lis of modules
+	 * @return
+	 */
+	UrlResponse generateMyAccountUrl(String customerEmail, List<String> modules) throws IOException;
+
+	/**
+	 * Generates my account url (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void generateMyAccountUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Gets offerIds by video id<br/>
+	 * <br/>
+	 *
+	 * @param videoId video Id
+	 * @return
+	 */
+	ListOfferIdsByVideoIdResponse listOfferIdsByVideoId(String videoId) throws IOException;
+
+	/**
+	 * Gets offerIds by video id (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void listOfferIdsByVideoIdAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
