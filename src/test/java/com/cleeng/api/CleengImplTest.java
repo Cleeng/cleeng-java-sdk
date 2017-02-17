@@ -1413,9 +1413,22 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testlistOfferIdsByVideoId() throws IOException {
-
+    public void testListOfferIdsByVideoId() throws IOException {
         final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");
+        assertNotNull(response);
+        assertTrue(response.result.offerIds.size() > 0);
+    }
+
+    @Test
+    public void testListOfferIdsByVideoIdAsync() throws IOException, InterruptedException {
+        final CountDownLatch lock = new CountDownLatch(1);
+        final VideoIdParams input = new VideoIdParams("7777");
+        final AsyncRequestCallback<ListOfferIdsByVideoIdResponse> callback = new AsyncRequestCallback<ListOfferIdsByVideoIdResponse>(ListOfferIdsByVideoIdResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.listOfferIdsByVideoIdAsync(requests);
+        lock.await(2, TimeUnit.SECONDS);
+        final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
     }

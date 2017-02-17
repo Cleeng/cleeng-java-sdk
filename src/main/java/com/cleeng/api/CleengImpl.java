@@ -524,7 +524,8 @@ public class CleengImpl implements Cleeng {
 	public void listOfferIdsByVideoIdAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("listOfferIdsByVideoId", new VideoIdParams(this.publisherToken, (String) ((AsyncRequest) request).input));
+			request.data = new JSONRPCRequest("listOfferIdsByVideoId", new VideoIdParams(this.publisherToken,
+					((VideoIdParams) ((AsyncRequest) request).input).videoId));
 		}
 		this.client.invokeAsync(requests);
 	}
