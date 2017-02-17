@@ -1,7 +1,6 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -1321,7 +1320,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateCheckoutUrl() throws IOException {
 
-        final GenerateCheckoutUrlResponse response = this.api.generateCheckoutUrl("testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
+        final UrlResponse response = this.api.generateCheckoutUrl("testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
 
         assertNotNull("Response object should not be null", response);
         assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
@@ -1330,17 +1329,17 @@ public class CleengImplTest {
     @Test
     public void testGenerateCheckoutUrlAsync() throws IOException, InterruptedException {
 
-        final AsyncRequestCallback<GenerateCheckoutUrlResponse> callback = new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class);
+        final AsyncRequestCallback<UrlResponse> callback = new AsyncRequestCallback<UrlResponse>(UrlResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), callback));
-        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
-        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<GenerateCheckoutUrlResponse>(GenerateCheckoutUrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
 
         this.api.generateCheckoutUrlAsync(requests);
 
         callback.getCountdownLatch().await();
 
-        final GenerateCheckoutUrlResponse response = callback.getResponse();
+        final UrlResponse response = callback.getResponse();
 
         assertNotNull("Response object should not be null", response);
         assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);

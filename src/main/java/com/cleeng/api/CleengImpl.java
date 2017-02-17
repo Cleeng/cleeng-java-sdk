@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CleengImpl implements Cleeng {
@@ -57,7 +58,9 @@ public class CleengImpl implements Cleeng {
 	public void updateSubscriptionOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new OfferRequest("updateSubscriptionOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+			request.data = new OfferRequest("updateSubscriptionOffer", new UpdateOfferParams(this.publisherToken,
+					((AsyncUpdateOfferRequest) request).offerData,
+					((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -89,7 +92,9 @@ public class CleengImpl implements Cleeng {
 	public void updateSingleOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new OfferRequest("updateSingleOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+			request.data = new OfferRequest("updateSingleOffer", new UpdateOfferParams(this.publisherToken,
+					((AsyncUpdateOfferRequest) request).offerData,
+					((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -121,7 +126,9 @@ public class CleengImpl implements Cleeng {
 	public void updateEventOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new OfferRequest("updateEventOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+			request.data = new OfferRequest("updateEventOffer", new UpdateOfferParams(this.publisherToken,
+					((AsyncUpdateOfferRequest) request).offerData,
+					((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -153,7 +160,9 @@ public class CleengImpl implements Cleeng {
 	public void updateRentalOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new OfferRequest("updateRentalOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+			request.data = new OfferRequest("updateRentalOffer", new UpdateOfferParams(this.publisherToken,
+					((AsyncUpdateOfferRequest) request).offerData,
+					((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -185,7 +194,9 @@ public class CleengImpl implements Cleeng {
 	public void updatePassOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new OfferRequest("updatePassOffer", new UpdateOfferParams(this.publisherToken, ((AsyncUpdateOfferRequest) request).offerData, ((AsyncUpdateOfferRequest) request).offerId));
+			request.data = new OfferRequest("updatePassOffer", new UpdateOfferParams(this.publisherToken,
+					((AsyncUpdateOfferRequest) request).offerData,
+					((AsyncUpdateOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -201,7 +212,9 @@ public class CleengImpl implements Cleeng {
 	public void listSubscriptionOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, (Criteria) ((AsyncListRequest) request).input, ((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit));
+			request.data = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken,
+					(Criteria) ((AsyncListRequest) request).input,
+					((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -217,7 +230,10 @@ public class CleengImpl implements Cleeng {
 	public void listSingleOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new ListRequest("listSingleOffers", ListParams.create(this.publisherToken, (Criteria) ((AsyncListRequest) request).input, ((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit));
+			request.data = new ListRequest("listSingleOffers", ListParams.create(this.publisherToken,
+					(Criteria) ((AsyncListRequest) request).input,
+					((AsyncListRequest) request).offset,
+					((AsyncListRequest) request).limit));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -233,7 +249,9 @@ public class CleengImpl implements Cleeng {
 	public void listPassOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new ListRequest("listPassOffers", ListParams.create(this.publisherToken, (Criteria) ((AsyncListRequest) request).input, ((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit));
+			request.data = new ListRequest("listPassOffers", ListParams.create(this.publisherToken,
+					(Criteria) ((AsyncListRequest) request).input,
+					((AsyncListRequest) request).offset, ((AsyncListRequest) request).limit));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -249,7 +267,9 @@ public class CleengImpl implements Cleeng {
 	public void prepareRemoteAuthAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new PrepareRemoteAuthRequest("prepareRemoteAuth", PrepareRemoteAuthParams.create(this.publisherToken, ((AsyncPrepareRemoteAuthRequest) request).customerData, ((AsyncPrepareRemoteAuthRequest) request).flowDescription));
+			request.data = new PrepareRemoteAuthRequest("prepareRemoteAuth", PrepareRemoteAuthParams.create(this.publisherToken,
+					((AsyncPrepareRemoteAuthRequest) request).customerData,
+					((AsyncPrepareRemoteAuthRequest) request).flowDescription));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -297,7 +317,10 @@ public class CleengImpl implements Cleeng {
 	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("updateCustomerPassword", new ResetPasswordParams(this.publisherToken, ((ResetPasswordParams) ((AsyncRequest) request).input).customerEmail, ((ResetPasswordParams) ((AsyncRequest) request).input).resetPasswordToken, ((ResetPasswordParams) ((AsyncRequest) request).input).newPassword));
+			request.data = new JSONRPCRequest("updateCustomerPassword", new ResetPasswordParams(this.publisherToken,
+					((ResetPasswordParams) ((AsyncRequest) request).input).customerEmail,
+					((ResetPasswordParams) ((AsyncRequest) request).input).resetPasswordToken,
+					((ResetPasswordParams) ((AsyncRequest) request).input).newPassword));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -313,7 +336,8 @@ public class CleengImpl implements Cleeng {
 	public void generateCustomerTokenFromFacebookAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken, ((AsyncTokenRequest) request).input));
+			request.data = new JSONRPCRequest("generateCustomerTokenFromFacebook", GenerateCustomerTokenFromFacebookParams.create(this.publisherToken,
+					((AsyncTokenRequest) request).input));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -329,7 +353,8 @@ public class CleengImpl implements Cleeng {
 	public void generateCustomerTokenFromPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).password, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).customerEmail));
+			request.data = new JSONRPCRequest("generateCustomerTokenFromPassword", GenerateCustomerTokenFromPasswordParams.create(this.publisherToken,
+					((AsyncGenerateCustomerTokenFromPasswordRequest) request).password, ((AsyncGenerateCustomerTokenFromPasswordRequest) request).customerEmail));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -345,7 +370,8 @@ public class CleengImpl implements Cleeng {
 	public void getAccessStatusAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GetAccessStatusRequest("getAccessStatus", new GetAccessStatusParams(((AsyncGetAccessStatusRequest) request).customerToken, ((AsyncGetAccessStatusRequest) request).offerId, ((AsyncGetAccessStatusRequest) request).ipAddress));
+			request.data = new GetAccessStatusRequest("getAccessStatus", new GetAccessStatusParams(((AsyncGetAccessStatusRequest) request).customerToken,
+					((AsyncGetAccessStatusRequest) request).offerId, ((AsyncGetAccessStatusRequest) request).ipAddress));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -361,7 +387,8 @@ public class CleengImpl implements Cleeng {
 	public void getAccessibleTagsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GetAccessibleTagsRequest("getAccessibleTags", new GetAccessibleTagsParams(((AsyncGetAccessibleTagsRequest) request).publisherToken, ((AsyncGetAccessibleTagsRequest) request).customerToken));
+			request.data = new GetAccessibleTagsRequest("getAccessibleTags", new GetAccessibleTagsParams(((AsyncGetAccessibleTagsRequest) request).publisherToken,
+					((AsyncGetAccessibleTagsRequest) request).customerToken));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -393,7 +420,9 @@ public class CleengImpl implements Cleeng {
 	public void createVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new VodOfferRequest("createVodOffer", new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken, ((AsyncCreateVodOfferRequest) request).offerData));
+			request.data = new VodOfferRequest("createVodOffer",
+					new CreateVodOfferParams(((AsyncCreateVodOfferRequest) request).publisherToken,
+					((AsyncCreateVodOfferRequest) request).offerData));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -409,7 +438,8 @@ public class CleengImpl implements Cleeng {
 	public void getVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GetVodOfferRequest("getVodOffer", new GetVodOfferParams(((AsyncGetVodOfferRequest) request).publisherToken, ((AsyncGetVodOfferRequest) request).offerId));
+			request.data = new GetVodOfferRequest("getVodOffer", new GetVodOfferParams(((AsyncGetVodOfferRequest) request).publisherToken,
+					((AsyncGetVodOfferRequest) request).offerId));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -425,23 +455,25 @@ public class CleengImpl implements Cleeng {
 	public void updateVodOfferAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new VodOfferRequest("updateVodOffer", new UpdateVodOfferParams(((AsyncUpdateVodOfferRequest) request).publisherToken, ((AsyncUpdateVodOfferRequest) request).offerData, ((AsyncUpdateVodOfferRequest) request).offerIdString));
+			request.data = new VodOfferRequest("updateVodOffer", new UpdateVodOfferParams(((AsyncUpdateVodOfferRequest) request).publisherToken,
+					((AsyncUpdateVodOfferRequest) request).offerData, ((AsyncUpdateVodOfferRequest) request).offerIdString));
 		}
 		this.client.invokeAsync(requests);
 	}
 
-	public GenerateCheckoutUrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException {
+	public UrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new GenerateCheckoutUrlRequest("generateCheckoutUrl", new GenerateCheckoutUrlParams(publisherToken, customerEmail, flowDescription))
 		);
-		return gson.fromJson(response, GenerateCheckoutUrlResponse.class);
+		return gson.fromJson(response, UrlResponse.class);
 	}
 
 	public void generateCheckoutUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new GenerateCheckoutUrlRequest("generateCheckoutUrl", new GenerateCheckoutUrlParams(((AsyncGenerateCheckoutUrlRequest) request).publisherToken, ((AsyncGenerateCheckoutUrlRequest) request).customerEmail, ((AsyncGenerateCheckoutUrlRequest) request).flowDescription));
+			request.data = new GenerateCheckoutUrlRequest("generateCheckoutUrl", new GenerateCheckoutUrlParams(((AsyncGenerateCheckoutUrlRequest) request).publisherToken,
+					((AsyncGenerateCheckoutUrlRequest) request).customerEmail, ((AsyncGenerateCheckoutUrlRequest) request).flowDescription));
 		}
 		this.client.invokeAsync(requests);
 	}
@@ -457,7 +489,26 @@ public class CleengImpl implements Cleeng {
 	public void registerCustomerAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken, (CustomerData) ((AsyncRequest) request).input));
+			request.data = new JSONRPCRequest("registerCustomer", new RegisterCustomerParams(this.publisherToken,
+					(CustomerData) ((AsyncRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public UrlResponse generateMyAccountUrl(String customerEmail, ArrayList<String> modules) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("generateMyAccountUrl", new GenerateMyAccountUrlParams(this.publisherToken, customerEmail, modules))
+		);
+		return gson.fromJson(response, UrlResponse.class);
+	}
+
+	public void generateMyAccountUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("generateMyAccountUrl", new GenerateMyAccountUrlParams(this.publisherToken,
+					((GenerateMyAccountUrlParams) ((AsyncRequest) request).input).customerEmail,
+					((GenerateMyAccountUrlParams) ((AsyncRequest) request).input).modules));
 		}
 		this.client.invokeAsync(requests);
 	}

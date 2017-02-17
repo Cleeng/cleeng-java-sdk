@@ -1,7 +1,6 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
 import java.util.List;
@@ -503,7 +502,7 @@ public interface Cleeng {
 	 * @return
 	 * @throws IOException
 	 */
-	public GenerateCheckoutUrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException;
+	public UrlResponse generateCheckoutUrl(String customerEmail, FlowDescription flowDescription) throws IOException;
 
 	/**
 	 * Generates checkout urls (async)<br/>
