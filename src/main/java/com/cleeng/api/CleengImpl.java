@@ -495,7 +495,7 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public UrlResponse generateMyAccountUrl(String customerEmail, ArrayList<String> modules) throws IOException {
+	public UrlResponse generateMyAccountUrl(String customerEmail, List<String> modules) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
 				new JSONRPCRequest("generateMyAccountUrl", new GenerateMyAccountUrlParams(this.publisherToken, customerEmail, modules))

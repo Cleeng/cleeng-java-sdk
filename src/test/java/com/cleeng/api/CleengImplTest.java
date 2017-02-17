@@ -1386,4 +1386,29 @@ public class CleengImplTest {
         assertNotNull("Response object should not be null", response);
         assertTrue("Response token should have lenght > 0", response.result.token.length() > 0);
     }
+
+    @Test
+    public void testGenerateMyAccountUrl() throws IOException {
+
+        final String customerEmail = "testjohndoe2@gmail.com";
+        final List<String> modules = new ArrayList<String>();
+        final UrlResponse response = this.api.generateMyAccountUrl(customerEmail, modules);
+        assertNotNull(response);
+        assertTrue(response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testGenerateMyAccountUrlAsync() throws IOException, InterruptedException {
+        final CountDownLatch lock = new CountDownLatch(1);
+        final List<String> modules = new ArrayList<String>();
+        final GenerateMyAccountUrlParams input = new GenerateMyAccountUrlParams("testjohndoe2@gmail.com", modules);
+        final AsyncRequestCallback<UrlResponse> callback = new AsyncRequestCallback<UrlResponse>(UrlResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.generateMyAccountUrlAsync(requests);
+        lock.await(2, TimeUnit.SECONDS);
+        final UrlResponse response = callback.getResponse();
+        assertNotNull(response);
+        assertTrue(response.result.url.length() > 0);
+    }
 }
