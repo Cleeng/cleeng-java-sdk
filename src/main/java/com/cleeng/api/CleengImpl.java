@@ -512,4 +512,20 @@ public class CleengImpl implements Cleeng {
 		}
 		this.client.invokeAsync(requests);
 	}
+
+	public ListOfferIdsByVideoIdResponse listOfferIdsByVideoId(String videoId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("listOfferIdsByVideoId", new VideoIdParams(this.publisherToken, videoId))
+		);
+		return gson.fromJson(response, ListOfferIdsByVideoIdResponse.class);
+	}
+
+	public void listOfferIdsByVideoIdAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("listOfferIdsByVideoId", new VideoIdParams(this.publisherToken, (String) ((AsyncRequest) request).input));
+		}
+		this.client.invokeAsync(requests);
+	}
 }
