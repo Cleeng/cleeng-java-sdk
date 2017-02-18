@@ -833,6 +833,38 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testListVodOffers() throws IOException {
+
+        final Criteria criteria = new Criteria(true);
+        final ListVodOffersResponse response = this.api.listVodOffers(criteria, 0, 10);
+        assertNotNull(response);
+        assertEquals("list length should match", 10, response.result.items.size());
+    }
+
+    @Test
+    public void testListVodOffersAsync() throws IOException, InterruptedException {
+
+        final AsyncRequestCallback<ListVodOffersResponse> callback = new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncListRequest(new Criteria(true), callback, 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class), 0, 10));
+        requests.add(new AsyncListRequest(new Criteria(true), new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class), 0, 10));
+
+        this.api.listVodOffersAsync(requests);
+
+        callback.getCountdownLatch().await();
+
+        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+
+        final ListVodOffersResponse response = callback.getResponse();
+
+        assertNotNull("Response object should not be null", response);
+        assertTrue("List should contain items", response.result.items.size() > 0);
+    }
+
+    @Test
     public void testListPassOffers() throws IOException {
 
         final Criteria criteria = new Criteria(true);

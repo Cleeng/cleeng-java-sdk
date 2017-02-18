@@ -250,6 +250,27 @@ public interface Cleeng {
 	void listSingleOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Lists vod offers.<br/>
+	 * <br/>
+	 *
+	 * @param criteria domain object representing search criteria
+	 * @param offset pagination offset
+	 * @param limit pagination's items per page
+	 * @return
+	 */
+	ListVodOffersResponse listVodOffers(Criteria criteria, int offset, int limit) throws IOException;
+
+	/**
+	 * Lists vod offers (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncListRequest objects
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void listVodOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Lists pass offers.<br/>
 	 * <br/>
 	 *
