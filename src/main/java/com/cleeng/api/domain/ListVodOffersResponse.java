@@ -4,5 +4,5 @@ import org.jsonrpc.JSONRPCMessage;
 
 public class ListVodOffersResponse extends JSONRPCMessage {
 
-    public ListVodOfferResult result;
+    public ListVodOffersResult result;
 }
