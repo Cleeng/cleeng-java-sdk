@@ -6,4 +6,6 @@ import java.util.List;
 public class ListVodOffersResult implements Serializable {
 
     public List<Vod> items;
+
+    public int totalItemCount;
 }
