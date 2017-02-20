@@ -14,8 +14,8 @@ public class SingleOfferResult extends BaseOfferData {
     public String country;
     public String currency;
     public boolean active;
-    public long createdAt;
-    public long updatedAt;
+    public String createdAt;
+    public String updatedAt;
     public double applicableTaxRate;
     public int socialCommissionRate;
     public int averageRating;
