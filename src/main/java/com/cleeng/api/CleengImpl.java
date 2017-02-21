@@ -26,6 +26,7 @@ public class CleengImpl implements Cleeng {
 					  int connectTimeout,
 					  int retryCount,
 					  int useNonBlockingMode) {
+		this.config = new Config();
 		if (propertiesPath != null) {
 			this.initProps(propertiesPath);
 		}
@@ -58,10 +59,22 @@ public class CleengImpl implements Cleeng {
 		try {
 			input = new FileInputStream(propertiesPath);
 			properties.load(input);
-			this.config = new Config(Integer.parseInt(properties.getProperty("socketTimeout")),
-					Integer.parseInt(properties.getProperty("connectionTimeout")),
-					Integer.parseInt(properties.getProperty("retryCount")),
-					Boolean.parseBoolean(properties.getProperty("useNonBlockingMode")));
+			try {
+				this.config.socketTimeout = Integer.parseInt(properties.getProperty("socketTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.connectionTimeout = Integer.parseInt(properties.getProperty("connectionTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.retryCount = Integer.parseInt(properties.getProperty("retryCount"));
+			} catch (NumberFormatException e) {
+
+			}
+			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
 		} catch (IOException e) {
 			System.out.println("Config file not found!");
 		} finally {

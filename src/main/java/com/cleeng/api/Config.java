@@ -13,4 +13,8 @@ public class Config {
         this.retryCount = retryCount;
         this.useNonBlockingMode = useNonBlockingMode;
     }
+
+    public Config() {
+
+    }
 }
