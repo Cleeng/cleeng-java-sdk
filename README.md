@@ -8,9 +8,6 @@ Example usage:
 	// Initialize API
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
     				.setPropertiesPath("src/main/resources/config.properties")
-  					.setUseNonBlockingMode(1)
-  					.setSocketTimeout(3000)
-  					.setConnectTimeout(5000)
   					.setRetryCount(10)
                     .build();
 
