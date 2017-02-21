@@ -23,7 +23,6 @@ import java.util.concurrent.CountDownLatch;
 
 public class HttpClient {
 
-    public boolean useNonBlockingMode = false;
     public Config config;
 
     public synchronized String invoke(String endpoint, Serializable request) throws IOException {
@@ -33,7 +32,7 @@ public class HttpClient {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
             Gson gson = new GsonBuilder().create();
-            String json = gson.toJson( request );
+            String json = gson.toJson(request);
             post.setEntity(new StringEntity(json, "UTF-8"));
             RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(this.config.socketTimeout)
@@ -73,7 +72,7 @@ public class HttpClient {
             for (int i = 0; i < requests.size(); i++) {
                 AsyncRequest request = requests.get(i);
                 request.latch = latch;
-                request.callback.useNonBlockingMode = this.useNonBlockingMode;
+                request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
                 request.callback.setCountdownLatch(latch);
                 HttpPost post = new HttpPost(request.endpoint);
                 post.setHeader("Content-Type", "application/json");
@@ -83,11 +82,11 @@ public class HttpClient {
                 request.callback.setClient(httpClient);
                 httpClient.execute(post, request.callback);
             }
-            if (this.useNonBlockingMode == false) {
+            if (this.config.useNonBlockingMode == false) {
                 latch.await();
             }
         } finally {
-            if (this.useNonBlockingMode == false) {
+            if (this.config.useNonBlockingMode == false) {
                 httpClient.close();
             }
         }

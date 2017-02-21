@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface Cleeng {
 
-	public void setNonBlockingMode();
-
 	/**
 	 * Creates a subscription offer.<br/>
 	 * <br/>

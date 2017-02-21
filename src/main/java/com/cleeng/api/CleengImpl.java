@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
 
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,23 +19,49 @@ public class CleengImpl implements Cleeng {
 	private HttpClient client;
 	private Config config;
 
-	public CleengImpl(final String platformUrl) {
-		this.initProps();
+	public CleengImpl(String platformUrl,
+					  String publisherToken,
+					  String propertiesPath,
+					  int socketTimeout,
+					  int connectTimeout,
+					  int retryCount,
+					  int useNonBlockingMode) {
+		if (propertiesPath != null) {
+			this.initProps(propertiesPath);
+		}
+		if (socketTimeout > 0) {
+			this.config.socketTimeout = socketTimeout;
+		}
+		if (connectTimeout > 0) {
+			this.config.connectionTimeout = connectTimeout;
+		}
+		if (retryCount > 0) {
+			this.config.retryCount = retryCount;
+		}
+		if (useNonBlockingMode != -1) {
+			if (useNonBlockingMode == 1) {
+				this.config.useNonBlockingMode = true;
+			} else if (useNonBlockingMode == 0) {
+				this.config.useNonBlockingMode = false;
+			}
+		}
 		this.gson = new GsonBuilder().create();
 		this.client = new HttpClient();
 		this.client.config = config;
 		this.platformUrl = platformUrl;
+		this.publisherToken = publisherToken;
 	}
 
-	private void initProps() {
+	private void initProps(String propertiesPath) {
 		Properties properties = new Properties();
 		InputStream input = null;
 		try {
-			input = new FileInputStream("src/main/resources/config.properties");
+			input = new FileInputStream(propertiesPath);
 			properties.load(input);
 			this.config = new Config(Integer.parseInt(properties.getProperty("socketTimeout")),
-					Integer.parseInt( properties.getProperty("connectionTimeout")),
-					Integer.parseInt( properties.getProperty("retryCount")));
+					Integer.parseInt(properties.getProperty("connectionTimeout")),
+					Integer.parseInt(properties.getProperty("retryCount")),
+					Boolean.parseBoolean(properties.getProperty("useNonBlockingMode")));
 		} catch (IOException e) {
 			System.out.println("Config file not found!");
 		} finally {
@@ -48,15 +73,6 @@ public class CleengImpl implements Cleeng {
 				}
 			}
 		}
-	}
-
-	public void setNonBlockingMode() {
-		this.client.useNonBlockingMode = true;
-	}
-
-	public CleengImpl(String platformUrl, String publisherToken) {
-		this(platformUrl);
-		this.publisherToken = publisherToken;
 	}
 
 	public OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException {
