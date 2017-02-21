@@ -1439,7 +1439,7 @@ public class CleengImplTest {
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
         this.api.generateMyAccountUrlAsync(requests);
-        lock.await(2, TimeUnit.SECONDS);
+        lock.await(3, TimeUnit.SECONDS);
         final UrlResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.url.length() > 0);
@@ -1484,7 +1484,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        lock.await(2, TimeUnit.SECONDS);
+        lock.await(3, TimeUnit.SECONDS);
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
