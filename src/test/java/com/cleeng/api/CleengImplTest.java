@@ -1460,7 +1460,7 @@ public class CleengImplTest {
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
         this.api.listOfferIdsByVideoIdAsync(requests);
-        lock.await(2, TimeUnit.SECONDS);
+        lock.await(3, TimeUnit.SECONDS);
         final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
