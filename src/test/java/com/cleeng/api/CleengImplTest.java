@@ -1,6 +1,8 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
+import com.nurkiewicz.asyncretry.RetryExecutor;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -8,12 +10,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -1491,5 +1495,26 @@ public class CleengImplTest {
         assertNotNull(response2);
         assertFalse(response.result.accessGranted);
         assertFalse(response2.result.accessGranted);
+    }
+
+    @Test
+    public void testAsyncRetry() throws InterruptedException {
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(SocketException.class)
+                .withExponentialBackoff(500, 2) //500ms times 2 after each retry
+                .withMaxDelay(10_000) //10 seconds
+                .withUniformJitter() //add between +/- 100 ms randomly
+                .withMaxRetries(2);
+
+        final CompletableFuture<Socket> future = executor.getWithRetry(() -> new Socket("echo.websocket.org", 80));
+        future.thenAccept(socket -> System.out.println("Connected! " + socket));
+
+        lock.await(10, TimeUnit.SECONDS);
+
+        assertTrue(true);
     }
 }
