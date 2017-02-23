@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 public class HttpClient {
 
@@ -90,5 +91,24 @@ public class HttpClient {
                 httpClient.close();
             }
         }
+    }
+
+    //TODO: figure out when to close http connection
+    @SuppressWarnings("unchecked")
+    public synchronized Future<HttpResponse> invokeAsync(AsyncRequest request) throws IOException, InterruptedException {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(this.config.socketTimeout)
+                .setConnectTimeout(this.config.connectionTimeout).build();
+        CloseableHttpAsyncClient httpClient = HttpAsyncClientBuilder.create()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+        httpClient.start();
+        HttpPost post = new HttpPost(request.endpoint);
+        post.setHeader("Content-Type", "application/json");
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(request.data);
+        post.setEntity(new StringEntity(json, "UTF-8"));
+        request.callback.setClient(httpClient);
+        return httpClient.execute(post, request.callback);
     }
 }

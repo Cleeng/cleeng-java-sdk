@@ -3,6 +3,8 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
 import com.nurkiewicz.asyncretry.RetryExecutor;
+import org.apache.http.HttpMessage;
+import org.apache.http.HttpResponse;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -1516,5 +1518,36 @@ public class CleengImplTest {
         lock.await(10, TimeUnit.SECONDS);
 
         assertTrue(true);
+    }
+
+    //Async http retry playground below
+
+    @Test
+    public void testAsyncHttpRetry() throws InterruptedException {
+
+        final CountDownLatch lock = new CountDownLatch(1);
+
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(IOException.class, InterruptedException.class)
+                .withExponentialBackoff(500, 2) //500ms times 2 after each retry
+                .withMaxDelay(10_000) //10 seconds
+                .withUniformJitter() //add between +/- 100 ms randomly
+                .withMaxRetries(5);
+
+        final CompletableFuture<CompletableFuture<HttpResponse>> future = executor.getWithRetry(() -> asyncHttp());
+        future.thenAccept(data -> System.out.println("Completed! " + data));
+
+        lock.await(10, TimeUnit.SECONDS);
+
+        assertTrue(true);
+    }
+
+    //TODO: use any Http client that supports CompletableFuture like this: https://github.com/AsyncHttpClient/async-http-client
+    public Future<HttpResponse> asyncHttp() throws IOException, InterruptedException {
+        final VideoIdParams input = new VideoIdParams("7777");
+        final AsyncRequestCallback<ListOfferIdsByVideoIdResponse> callback = new AsyncRequestCallback<ListOfferIdsByVideoIdResponse>(ListOfferIdsByVideoIdResponse.class);
+        final AsyncRequest request = new AsyncRequest(input, callback);
+        return this.api.getClient().invokeAsync(request);
     }
 }

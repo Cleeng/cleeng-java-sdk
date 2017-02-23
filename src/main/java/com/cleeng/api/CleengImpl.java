@@ -53,39 +53,8 @@ public class CleengImpl implements Cleeng {
 		this.publisherToken = publisherToken;
 	}
 
-	private void initProps(String propertiesPath) {
-		Properties properties = new Properties();
-		InputStream input = null;
-		try {
-			input = new FileInputStream(propertiesPath);
-			properties.load(input);
-			try {
-				this.config.socketTimeout = Integer.parseInt(properties.getProperty("socketTimeout"));
-			} catch (NumberFormatException e) {
-
-			}
-			try {
-				this.config.connectionTimeout = Integer.parseInt(properties.getProperty("connectionTimeout"));
-			} catch (NumberFormatException e) {
-
-			}
-			try {
-				this.config.retryCount = Integer.parseInt(properties.getProperty("retryCount"));
-			} catch (NumberFormatException e) {
-
-			}
-			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
-		} catch (IOException e) {
-			System.out.println("Config file not found!");
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-
-				}
-			}
-		}
+	public HttpClient getClient() {
+		return this.client;
 	}
 
 	public OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException {
@@ -620,5 +589,40 @@ public class CleengImpl implements Cleeng {
 			request.data = new JSONRPCRequest("getAccessStatusForDevice", ((GetAccessStatusForDeviceParams) ((AsyncRequest) request).input));
 		}
 		this.client.invokeAsync(requests);
+	}
+
+	private void initProps(String propertiesPath) {
+		Properties properties = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream(propertiesPath);
+			properties.load(input);
+			try {
+				this.config.socketTimeout = Integer.parseInt(properties.getProperty("socketTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.connectionTimeout = Integer.parseInt(properties.getProperty("connectionTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.retryCount = Integer.parseInt(properties.getProperty("retryCount"));
+			} catch (NumberFormatException e) {
+
+			}
+			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
+		} catch (IOException e) {
+			System.out.println("Config file not found!");
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
 	}
 }

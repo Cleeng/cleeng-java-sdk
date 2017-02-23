@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface Cleeng {
 
+	HttpClient getClient();
+
 	/**
 	 * Creates a subscription offer.<br/>
 	 * <br/>
