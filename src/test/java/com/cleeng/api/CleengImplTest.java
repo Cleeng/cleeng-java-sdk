@@ -3,8 +3,7 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
 import com.nurkiewicz.asyncretry.RetryExecutor;
-import org.apache.http.HttpMessage;
-import org.apache.http.HttpResponse;
+import org.asynchttpclient.*;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.SocketException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1499,55 +1497,88 @@ public class CleengImplTest {
         assertFalse(response2.result.accessGranted);
     }
 
-    @Test
-    public void testAsyncRetry() throws InterruptedException {
+    /********************************
+     *
+     * Async Retry playground below
+     *
+     ********************************/
 
-        final CountDownLatch lock = new CountDownLatch(1);
+    //Test RetryExecutor with successful socket connection on first attempt
+    @Test
+    public void testAsyncSocketRetry() throws InterruptedException {
 
         final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
                 .retryOn(SocketException.class)
-                .withExponentialBackoff(500, 2) //500ms times 2 after each retry
-                .withMaxDelay(10_000) //10 seconds
-                .withUniformJitter() //add between +/- 100 ms randomly
+                .withExponentialBackoff(500, 2)
+                .withMaxDelay(10_000)
+                .withUniformJitter()
                 .withMaxRetries(2);
 
         final CompletableFuture<Socket> future = executor.getWithRetry(() -> new Socket("echo.websocket.org", 80));
         future.thenAccept(socket -> System.out.println("Connected! " + socket));
 
-        lock.await(10, TimeUnit.SECONDS);
+        Thread.sleep(4000);
 
         assertTrue(true);
     }
 
-    //Async http retry playground below
-
+    //Test RetryExecutor with unsuccessful http get invocation attempts
     @Test
-    public void testAsyncHttpRetry() throws InterruptedException {
-
-        final CountDownLatch lock = new CountDownLatch(1);
+    public void testAsyncHttpGetRetry() throws InterruptedException {
 
         final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
-                .retryOn(IOException.class, InterruptedException.class)
-                .withExponentialBackoff(500, 2) //500ms times 2 after each retry
-                .withMaxDelay(10_000) //10 seconds
-                .withUniformJitter() //add between +/- 100 ms randomly
-                .withMaxRetries(5);
+                .retryOn(Exception.class)
+                .withMaxDelay(5_000)
+                .withMaxRetries(20);
 
-        final CompletableFuture<CompletableFuture<HttpResponse>> future = executor.getWithRetry(() -> asyncHttp());
+        final CompletableFuture<CompletableFuture<Response>> future = executor.getWithRetry(() -> asyncHttpGet());
         future.thenAccept(data -> System.out.println("Completed! " + data));
 
-        lock.await(10, TimeUnit.SECONDS);
+        Thread.sleep(30000);
 
         assertTrue(true);
     }
 
-    //TODO: use any Http client that supports CompletableFuture like this: https://github.com/AsyncHttpClient/async-http-client
-    public Future<HttpResponse> asyncHttp() throws IOException, InterruptedException {
-        final VideoIdParams input = new VideoIdParams("7777");
-        final AsyncRequestCallback<ListOfferIdsByVideoIdResponse> callback = new AsyncRequestCallback<ListOfferIdsByVideoIdResponse>(ListOfferIdsByVideoIdResponse.class);
-        final AsyncRequest request = new AsyncRequest(input, callback);
-        return this.api.getClient().invokeAsync(request);
+    public CompletableFuture<Response> asyncHttpGet() throws Exception {
+        AsyncHttpClient asyncHttpClient = new DefaultAsyncHttpClient();
+        CompletableFuture<Response> promise = asyncHttpClient
+                .prepareGet("http://www.robertjesionek.com/site.html")
+                .execute(
+                        new AsyncCompletionHandler<Response>() {
+
+                            @Override
+                            public Response onCompleted(Response response) throws Exception {
+                                System.out.println("Response code " + response.getStatusCode());
+                                return response;
+                            }
+
+                            @Override
+                            public State onStatusReceived(HttpResponseStatus status) throws Exception {
+                                if (status.getStatusCode() == 404) {
+                                    System.out.println("Status code: " + status.getStatusCode());
+                                    throw new Exception("Resource not found!");
+                                }
+                                return super.onStatusReceived(status);
+                            }
+
+                            @Override
+                            public void onThrowable(Throwable t) {
+                                System.out.println("Error while invoking resource...");
+                            }
+                        }
+                )
+                .toCompletableFuture()
+                .exceptionally(t -> {
+                    System.out.println("Throwable: " + t);
+                    return null;
+                })
+                .thenApply(resp -> {
+                    System.out.println("Response: " + resp.toString());
+                    return resp;
+                });
+        promise.join();
+        return promise;
     }
 }
