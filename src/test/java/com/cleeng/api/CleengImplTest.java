@@ -703,9 +703,7 @@ public class CleengImplTest {
 
         this.api.createPassOfferAsync(requests);
 
-        assertEquals(200, callback.get(10, TimeUnit.SECONDS).getStatusCode());
-
-        TimeUnit.SECONDS.sleep(20);
+        TimeUnit.SECONDS.sleep(40);
 
         final PassOfferResponse response = callback.getResponse();
 
