@@ -2,6 +2,8 @@ package com.cleeng.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
+import com.nurkiewicz.asyncretry.RetryExecutor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -18,7 +20,7 @@ import org.asynchttpclient.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 public class HttpClient {
 
@@ -35,7 +37,7 @@ public class HttpClient {
             post.setEntity(new StringEntity(json, "UTF-8"));
             RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(this.config.socketTimeout)
-                .setConnectTimeout(this.config.connectionTimeout)
+                .setConnectTimeout(this.config.connectTimeout)
                 .build();
             post.setConfig(requestConfig);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
@@ -57,7 +59,7 @@ public class HttpClient {
         }
     }
 
-    public synchronized void invokeAsync(AsyncRequest request, CountDownLatch latch, AsyncHttpClient httpClient) throws IOException, InterruptedException {
+    public synchronized CompletableFuture<Response> invokeAsync(AsyncRequest request, CountDownLatch latch, AsyncHttpClient httpClient) throws IOException, InterruptedException {
         request.latch = latch;
         request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
         request.callback.setCountdownLatch(latch);
@@ -82,18 +84,25 @@ public class HttpClient {
                 }
             }
         );
+        request.callback.join();
+        return request.callback;
     }
 
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
         final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
-        builder.setRequestTimeout(10);
-        builder.setConnectTimeout(this.config.connectionTimeout);
+        builder.setRequestTimeout(this.config.socketTimeout);
+        builder.setConnectTimeout(this.config.connectTimeout);
         final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
         final CountDownLatch latch = new CountDownLatch(requests.size());
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(Exception.class)
+                .withMaxRetries(this.config.retryCount);
         try {
             for (int i = 0; i < requests.size(); i++) {
-                this.invokeAsync(requests.get(i), latch, httpClient);
+                int x = i;
+                executor.getWithRetry(() -> this.invokeAsync(requests.get(x), latch, httpClient));
             }
             if (this.config.useNonBlockingMode == false) {
                 latch.await();

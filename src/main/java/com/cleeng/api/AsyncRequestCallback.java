@@ -65,5 +65,11 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
         return out;
     }
 
+    @Override
+    public boolean completeExceptionally(Throwable ex) {
+        System.out.println("Request completed with exception " + ex);
+        return super.completeExceptionally(ex);
+    }
+
     public boolean useNonBlockingMode = false;
 }
