@@ -12,15 +12,13 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.asynchttpclient.*;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
 
 public class HttpClient {
 
@@ -59,29 +57,43 @@ public class HttpClient {
         }
     }
 
+    public synchronized void invokeAsync(AsyncRequest request, CountDownLatch latch, AsyncHttpClient httpClient) throws IOException, InterruptedException {
+        request.latch = latch;
+        request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
+        request.callback.setCountdownLatch(latch);
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(request.data);
+        final BoundRequestBuilder builder = httpClient.preparePost(request.endpoint);
+        builder.addHeader("Content-Type", "application/json");
+        builder.setBody(json);
+        request.callback.setClient(httpClient);
+        builder.execute(
+            new AsyncCompletionHandler<Void>() {
+
+                @Override
+                public Void onCompleted(Response response) throws Exception {
+                    request.callback.complete(response);
+                    return null;
+                }
+
+                @Override
+                public void onThrowable(Throwable t) {
+                    request.callback.completeExceptionally(t);
+                }
+            }
+        );
+    }
+
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(this.config.socketTimeout)
-                .setConnectTimeout(this.config.connectionTimeout).build();
-        CloseableHttpAsyncClient httpClient = HttpAsyncClientBuilder.create()
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+        final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
+        builder.setRequestTimeout(10);
+        builder.setConnectTimeout(this.config.connectionTimeout);
+        final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
+        final CountDownLatch latch = new CountDownLatch(requests.size());
         try {
-            httpClient.start();
-            final CountDownLatch latch = new CountDownLatch(requests.size());
             for (int i = 0; i < requests.size(); i++) {
-                AsyncRequest request = requests.get(i);
-                request.latch = latch;
-                request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
-                request.callback.setCountdownLatch(latch);
-                HttpPost post = new HttpPost(request.endpoint);
-                post.setHeader("Content-Type", "application/json");
-                Gson gson = new GsonBuilder().create();
-                String json = gson.toJson(request.data);
-                post.setEntity(new StringEntity(json, "UTF-8"));
-                request.callback.setClient(httpClient);
-                httpClient.execute(post, request.callback);
+                this.invokeAsync(requests.get(i), latch, httpClient);
             }
             if (this.config.useNonBlockingMode == false) {
                 latch.await();
@@ -91,24 +103,5 @@ public class HttpClient {
                 httpClient.close();
             }
         }
-    }
-
-    //TODO: figure out when to close http connection
-    @SuppressWarnings("unchecked")
-    public synchronized Future<HttpResponse> invokeAsync(AsyncRequest request) throws IOException, InterruptedException {
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(this.config.socketTimeout)
-                .setConnectTimeout(this.config.connectionTimeout).build();
-        CloseableHttpAsyncClient httpClient = HttpAsyncClientBuilder.create()
-                .setDefaultRequestConfig(requestConfig)
-                .build();
-        httpClient.start();
-        HttpPost post = new HttpPost(request.endpoint);
-        post.setHeader("Content-Type", "application/json");
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(request.data);
-        post.setEntity(new StringEntity(json, "UTF-8"));
-        request.callback.setClient(httpClient);
-        return httpClient.execute(post, request.callback);
     }
 }
