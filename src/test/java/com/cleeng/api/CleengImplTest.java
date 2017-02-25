@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.SocketException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1480,7 +1479,6 @@ public class CleengImplTest {
 
     @Test
     public void testGetAccessStatusForDeviceAsync() throws IOException, InterruptedException {
-        final CountDownLatch lock = new CountDownLatch(1);
         final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
         final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "2", "roku");
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
@@ -1489,7 +1487,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        lock.await(10, TimeUnit.SECONDS);
+        TimeUnit.SECONDS.sleep(10);
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
@@ -1506,6 +1504,7 @@ public class CleengImplTest {
 
     //Test RetryExecutor with successful socket connection on first attempt
     @Test
+    @Ignore
     public void testAsyncSocketRetry() throws InterruptedException {
 
         final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -1526,6 +1525,7 @@ public class CleengImplTest {
 
     //Test RetryExecutor with unsuccessful http get invocation attempts
     @Test
+    @Ignore
     public void testAsyncHttpGetRetry() throws InterruptedException {
 
         final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
