@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -660,7 +661,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testCreatePassOfferAsync() throws IOException, InterruptedException {
+    public void testCreatePassOfferAsync() throws TimeoutException, InterruptedException, IOException, ExecutionException {
 
         final PassOfferData offerData = new PassOfferData(12.34,
                 null,
@@ -703,9 +704,9 @@ public class CleengImplTest {
 
         this.api.createPassOfferAsync(requests);
 
-        requests.get(0).latch.await();
+        assertEquals(200, callback.get(10, TimeUnit.SECONDS).getStatusCode());
 
-        assertEquals("Lock queue should be empty", 0, requests.get(0).latch.getCount());
+        TimeUnit.SECONDS.sleep(20);
 
         final PassOfferResponse response = callback.getResponse();
 
@@ -1488,7 +1489,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        lock.await(30, TimeUnit.SECONDS);
+        lock.await(10, TimeUnit.SECONDS);
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);

@@ -91,7 +91,7 @@ public class HttpClient {
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
         final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
-        builder.setRequestTimeout(this.config.socketTimeout);
+        builder.setRequestTimeout(this.config.requestTimeout);
         builder.setConnectTimeout(this.config.connectTimeout);
         final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
         final CountDownLatch latch = new CountDownLatch(requests.size());
@@ -100,9 +100,8 @@ public class HttpClient {
                 .retryOn(Exception.class)
                 .withMaxRetries(this.config.retryCount);
         try {
-            for (int i = 0; i < requests.size(); i++) {
-                int x = i;
-                executor.getWithRetry(() -> this.invokeAsync(requests.get(x), latch, httpClient));
+            for (AsyncRequest request : requests) {
+                executor.getWithRetry(() -> this.invokeAsync(request, latch, httpClient));
             }
             if (this.config.useNonBlockingMode == false) {
                 latch.await();

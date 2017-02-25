@@ -590,13 +590,13 @@ public class CleengImpl implements Cleeng {
 	public void getAccessStatusForDeviceAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("getAccessStatusForDevice", ((GetAccessStatusForDeviceParams) ((AsyncRequest) request).input));
+			request.data = new JSONRPCRequest("getAccessStatusForDevice", request.input);
 		}
 		this.client.invokeAsync(requests);
 	}
 
 	private void initProps(String propertiesPath) {
-		Properties properties = new Properties();
+		final Properties properties = new Properties();
 		InputStream input = null;
 		try {
 			input = new FileInputStream(propertiesPath);
