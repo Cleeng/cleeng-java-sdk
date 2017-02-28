@@ -45,7 +45,6 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
     @Override
     public boolean complete(final Response response) {
         final boolean out = super.complete(response);
-        this._countdownLatch.countDown();
         System.out.println("Completed async request: " + response.getStatusCode() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
         try {
             this._response = response.getResponseBody();
@@ -62,6 +61,7 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
                 }
             }
         }
+        this._countdownLatch.countDown();
         return out;
     }
 
