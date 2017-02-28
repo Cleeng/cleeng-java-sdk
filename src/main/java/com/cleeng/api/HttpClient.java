@@ -2,6 +2,8 @@ package com.cleeng.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
+import com.nurkiewicz.asyncretry.RetryExecutor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -11,30 +13,34 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.util.EntityUtils;
+import org.asynchttpclient.*;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 public class HttpClient {
 
-    public boolean useNonBlockingMode = false;
+    public Config config;
 
     public synchronized String invoke(String endpoint, Serializable request) throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create()
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(this.config.retryCount, false))
+                .build()) {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
             Gson gson = new GsonBuilder().create();
-            String json = gson.toJson( request );
-            post.setEntity( new StringEntity( json, "UTF-8" ));
+            String json = gson.toJson(request);
+            post.setEntity(new StringEntity(json, "UTF-8"));
+            RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(this.config.socketTimeout)
+                .setConnectTimeout(this.config.connectTimeout)
+                .build();
+            post.setConfig(requestConfig);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
                 @Override
                 public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
                     StatusLine statusLine = httpResponse.getStatusLine();
@@ -53,35 +59,55 @@ public class HttpClient {
         }
     }
 
+    public synchronized CompletableFuture<Response> invokeAsync(AsyncRequest request, CountDownLatch latch, AsyncHttpClient httpClient) throws IOException, InterruptedException {
+        request.latch = latch;
+        request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
+        request.callback.setCountdownLatch(latch);
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(request.data);
+        final BoundRequestBuilder builder = httpClient.preparePost(request.endpoint);
+        builder.addHeader("Content-Type", "application/json");
+        builder.setBody(json);
+        request.callback.setClient(httpClient);
+        builder.execute(
+            new AsyncCompletionHandler<Void>() {
+
+                @Override
+                public Void onCompleted(Response response) throws Exception {
+                    request.callback.complete(response);
+                    return null;
+                }
+
+                @Override
+                public void onThrowable(Throwable t) {
+                    request.callback.completeExceptionally(t);
+                }
+            }
+        );
+        request.callback.join();
+        return request.callback;
+    }
+
     @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(2000)
-                .setConnectTimeout(5000).build();
-        CloseableHttpAsyncClient httpClient = HttpAsyncClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+        final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
+        builder.setRequestTimeout(this.config.requestTimeout);
+        builder.setConnectTimeout(this.config.connectTimeout);
+        final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
+        final CountDownLatch latch = new CountDownLatch(requests.size());
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(Exception.class)
+                .withMaxRetries(this.config.retryCount);
         try {
-            httpClient.start();
-            final CountDownLatch latch = new CountDownLatch(requests.size());
-            for (int i = 0; i < requests.size(); i++) {
-                AsyncRequest request = requests.get(i);
-                request.latch = latch;
-                request.callback.useNonBlockingMode = this.useNonBlockingMode;
-                request.callback.setCountdownLatch(latch);
-                HttpPost post = new HttpPost(request.endpoint);
-                post.setHeader("Content-Type", "application/json");
-                Gson gson = new GsonBuilder().create();
-                String json = gson.toJson(request.data);
-                post.setEntity(new StringEntity(json, "UTF-8"));
-                request.callback.setClient(httpClient);
-                httpClient.execute(post, request.callback);
+            for (AsyncRequest request : requests) {
+                executor.getWithRetry(() -> this.invokeAsync(request, latch, httpClient));
             }
-            if (this.useNonBlockingMode == false) {
+            if (this.config.useNonBlockingMode == false) {
                 latch.await();
             }
         } finally {
-            if (this.useNonBlockingMode == false) {
+            if (this.config.useNonBlockingMode == false) {
                 httpClient.close();
             }
         }

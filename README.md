@@ -6,8 +6,10 @@ See https://developers.cleeng.com/v3/Reference for details on the Cleeng API.
 Example usage:
 
 	// Initialize API
-	String publisherToken = "MyPublisherToken";
-	Cleeng api = CleengFactory.createProductionApi(publisherToken);
+    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+    				.setPropertiesPath("src/main/resources/config.properties")
+  					.setRetryCount(10)
+                    .build();
 
 	// Create subscription offer
     final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,

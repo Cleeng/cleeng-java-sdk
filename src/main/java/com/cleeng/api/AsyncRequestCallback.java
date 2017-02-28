@@ -2,16 +2,14 @@ package com.cleeng.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.util.EntityUtils;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.Response;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
+public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
 
     private Gson gson;
 
@@ -20,9 +18,9 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
         this._responseClass = responseClass;
     }
 
-    private CloseableHttpAsyncClient _client;
+    private AsyncHttpClient _client;
 
-    public void setClient(CloseableHttpAsyncClient client) {
+    public void setClient(AsyncHttpClient client) {
         this._client = client;
     }
 
@@ -45,12 +43,11 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
     }
 
     @Override
-    public void completed(final HttpResponse response) {
-        this._countdownLatch.countDown();
-        System.out.println("Completed async request: " + response.getStatusLine() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
-        final HttpEntity entity = response.getEntity();
+    public boolean complete(final Response response) {
+        final boolean out = super.complete(response);
+        System.out.println("Completed async request: " + response.getStatusCode() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
         try {
-            this._response = EntityUtils.toString(entity);
+            this._response = response.getResponseBody();
         } catch (Exception e) {
 
         }
@@ -64,16 +61,14 @@ public class AsyncRequestCallback<T> implements FutureCallback<HttpResponse> {
                 }
             }
         }
+        this._countdownLatch.countDown();
+        return out;
     }
 
     @Override
-    public void failed(final Exception ex) {
-
-    }
-
-    @Override
-    public void cancelled() {
-
+    public boolean completeExceptionally(Throwable ex) {
+        System.out.println("Request completed with exception " + ex);
+        return super.completeExceptionally(ex);
     }
 
     public boolean useNonBlockingMode = false;
