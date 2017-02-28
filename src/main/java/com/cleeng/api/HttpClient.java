@@ -88,7 +88,6 @@ public class HttpClient {
         return request.callback;
     }
 
-    @SuppressWarnings("unchecked")
     public synchronized void invokeAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
         final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
         builder.setRequestTimeout(this.config.requestTimeout);
