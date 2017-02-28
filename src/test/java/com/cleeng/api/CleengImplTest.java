@@ -564,12 +564,8 @@ public class CleengImplTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void testCreatePassOfferAsync() throws TimeoutException, InterruptedException, IOException, ExecutionException {
-
-=======
     public void testCreatePassOfferAsync() throws IOException, InterruptedException {
->>>>>>> 27994b1... updated tests
+
         final PassOfferData offerData = new PassOfferData(12.34,
                 null,
                 1900000000,
@@ -607,13 +603,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class)));
         requests.add(new AsyncRequest(offerData, new AsyncRequestCallback<PassOfferResponse>(PassOfferResponse.class)));
         this.api.createPassOfferAsync(requests);
-<<<<<<< HEAD
-
-        TimeUnit.SECONDS.sleep(40);
-
-=======
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
->>>>>>> 27994b1... updated tests
         final PassOfferResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
         assertEquals("Active should match", true, response.result.active);
@@ -1224,11 +1214,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-<<<<<<< HEAD
-        TimeUnit.SECONDS.sleep(10);
-=======
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
->>>>>>> 27994b1... updated tests
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
@@ -1237,97 +1223,9 @@ public class CleengImplTest {
         assertFalse(response2.result.accessGranted);
     }
 
-<<<<<<< HEAD
-    /********************************
-     *
-     * Async Retry playground below
-     *
-     ********************************/
-
-    //Test RetryExecutor with successful socket connection on first attempt
-    @Test
-    @Ignore
-    public void testAsyncSocketRetry() throws InterruptedException {
-
-        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
-                .retryOn(SocketException.class)
-                .withExponentialBackoff(500, 2)
-                .withMaxDelay(10_000)
-                .withUniformJitter()
-                .withMaxRetries(2);
-
-        final CompletableFuture<Socket> future = executor.getWithRetry(() -> new Socket("echo.websocket.org", 80));
-        future.thenAccept(socket -> System.out.println("Connected! " + socket));
-
-        Thread.sleep(4000);
-
-        assertTrue(true);
-    }
-
-    //Test RetryExecutor with unsuccessful http get invocation attempts
-    @Test
-    @Ignore
-    public void testAsyncHttpGetRetry() throws InterruptedException {
-
-        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
-                .retryOn(Exception.class)
-                .withMaxDelay(5_000)
-                .withMaxRetries(20);
-
-        final CompletableFuture<CompletableFuture<Response>> future = executor.getWithRetry(() -> asyncHttpGet());
-        future.thenAccept(data -> System.out.println("Completed! " + data));
-
-        Thread.sleep(30000);
-
-        assertTrue(true);
-    }
-
-    public CompletableFuture<Response> asyncHttpGet() throws Exception {
-        AsyncHttpClient asyncHttpClient = new DefaultAsyncHttpClient();
-        CompletableFuture<Response> promise = asyncHttpClient
-                .prepareGet("http://www.robertjesionek.com/site.html")
-                .execute(
-                        new AsyncCompletionHandler<Response>() {
-
-                            @Override
-                            public Response onCompleted(Response response) throws Exception {
-                                System.out.println("Response code " + response.getStatusCode());
-                                return response;
-                            }
-
-                            @Override
-                            public State onStatusReceived(HttpResponseStatus status) throws Exception {
-                                if (status.getStatusCode() == 404) {
-                                    System.out.println("Status code: " + status.getStatusCode());
-                                    throw new Exception("Resource not found!");
-                                }
-                                return super.onStatusReceived(status);
-                            }
-
-                            @Override
-                            public void onThrowable(Throwable t) {
-                                System.out.println("Error while invoking resource...");
-                            }
-                        }
-                )
-                .toCompletableFuture()
-                .exceptionally(t -> {
-                    System.out.println("Throwable: " + t);
-                    return null;
-                })
-                .thenApply(resp -> {
-                    System.out.println("Response: " + resp.toString());
-                    return resp;
-                });
-        promise.join();
-        return promise;
-=======
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
         System.out.println("Awaiting asynchronous response(s): " + (long) sleepTime + " [millisec]");
         return (long) sleepTime;
->>>>>>> 27994b1... updated tests
     }
 }
