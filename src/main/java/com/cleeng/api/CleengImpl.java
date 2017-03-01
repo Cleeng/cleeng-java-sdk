@@ -607,7 +607,7 @@ public class CleengImpl implements Cleeng {
 
 			}
 			try {
-				this.config.connectTimeout = Integer.parseInt(properties.getProperty("connectionTimeout"));
+				this.config.connectTimeout = Integer.parseInt(properties.getProperty("connectTimeout"));
 			} catch (NumberFormatException e) {
 
 			}

@@ -14,10 +14,12 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.asynchttpclient.*;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.*;
@@ -28,8 +30,23 @@ public class HttpClient {
     public Config config;
 
     public synchronized String invoke(String endpoint, Serializable request) throws IOException {
+        final StandardHttpRequestRetryHandler retryHandler =
+                new StandardHttpRequestRetryHandler(this.config.retryCount, true)
+                {
+                    @Override
+                    public boolean retryRequest(
+                            final IOException exception,
+                            final int executionCount,
+                            final HttpContext context)
+                    {
+                        if (executionCount < this.getRetryCount()) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
         try (CloseableHttpClient httpClient = HttpClientBuilder.create()
-                .setRetryHandler(new DefaultHttpRequestRetryHandler(this.config.retryCount, false))
+                .setRetryHandler(retryHandler)
                 .build()) {
             HttpPost post = new HttpPost(endpoint);
             post.setHeader("Content-Type", "application/json");
@@ -56,7 +73,11 @@ public class HttpClient {
                     return EntityUtils.toString(entity);
                 }
             };
-            return httpClient.execute(post, responseHandler);
+            try {
+                return httpClient.execute(post, responseHandler);
+            } catch (InterruptedIOException exception) {
+                return null;
+            }
         }
     }
 
