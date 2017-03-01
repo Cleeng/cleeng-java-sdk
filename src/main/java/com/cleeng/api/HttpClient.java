@@ -81,7 +81,9 @@ public class HttpClient {
         }
     }
 
-    public synchronized CompletableFuture<Response> invokeAsync(AsyncRequest request, CountDownLatch latch, AsyncHttpClient httpClient) throws IOException, InterruptedException {
+    public synchronized CompletableFuture<Response> invokeAsync(AsyncRequest request,
+                                                                CountDownLatch latch,
+                                                                AsyncHttpClient httpClient) throws IOException, InterruptedException {
         request.latch = latch;
         request.callback.useNonBlockingMode = this.config.useNonBlockingMode;
         request.callback.setCountdownLatch(latch);
