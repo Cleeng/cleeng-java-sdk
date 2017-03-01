@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.asynchttpclient.*;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.*;
@@ -74,7 +75,7 @@ public class HttpClient {
             };
             try {
                 return httpClient.execute(post, responseHandler);
-            } catch (Exception e) {
+            } catch (InterruptedIOException exception) {
                 return null;
             }
         }
