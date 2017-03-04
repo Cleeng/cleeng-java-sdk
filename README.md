@@ -3,7 +3,7 @@
 Full Java SDK you can find here: https://github.com/Cleeng/cleeng-java-sdk/
 ---
 # SDK Configuration
-You can configure the api via either providing the path to config.properties file or by explicitly invoking other setters from the CleengBuilder class. Below is the example config.properties file content:
+You can configure the SDK via either providing the path to config.properties file or by explicitly invoking other setters from the CleengBuilder class. Below is the example config.properties file content:
 ```
 socketTimeout=3000
 connectTimeout=100
