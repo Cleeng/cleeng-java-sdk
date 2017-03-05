@@ -82,7 +82,7 @@ Determines whether to block the code execution until request completes. This set
     this.api.createSubscriptionOfferAsync(requests);
 ```
 # Notes
-The Cleeng Java SDK is accompanied by the strong battery of unit tests. See src/test/java/com/cleeng/api/CleengImplTest.java for detailed information on how to invoke request payloads and invoke specific methods. See [API Reference](https://developers.cleeng.com/v3/Reference) for details on the Cleeng API.
+The Cleeng Java SDK is accompanied by the strong battery of unit tests. See src/test/java/com/cleeng/api/CleengImplTest.java for detailed information on how to construct request payloads and invoke specific methods. See [API Reference](https://developers.cleeng.com/v3/Reference) for details on the Cleeng API.
 
 All functions in the API documentation have been implemented as public methods on a class implementing Cleeng interface.
 
