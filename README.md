@@ -93,7 +93,7 @@ Instead of duplicating all class & type information once more in this file, plea
 Note that most error conditions raise exceptions which have to be handled properly by you, the programmer.
 
 # Building the SDK
-The Cleeng Java SDK can be built from the source code with Maven. In order to make a clean build, execute ```mvn clean install``` command. This command will download all required dependencies, compile the SDK and package it to ```cleeng-java-sdk-{version}-jar-with-dependencies.jar``` file and place it in your local Maven repository ($HOME/.m2/ by default).
+The Cleeng Java SDK can be built from the source code with Maven. In order to make a clean build, execute ```mvn clean install``` command. This command will download all required dependencies, compile the SDK, package it to ```cleeng-java-sdk-{version}-jar-with-dependencies.jar``` file and place it in your local Maven repository ($HOME/.m2/ by default).
 
 There are a few example Java programs in the jar file, that you can run as follows:
 
