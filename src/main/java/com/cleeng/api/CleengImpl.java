@@ -5,8 +5,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 public class CleengImpl implements Cleeng {
 
@@ -14,20 +17,48 @@ public class CleengImpl implements Cleeng {
 	private String platformUrl;
 	private Gson gson;
 	private HttpClient client;
+	private Config config;
 
-	public CleengImpl(final String platformUrl) {
+	public CleengImpl(String platformUrl,
+					  String publisherToken,
+					  String propertiesPath,
+					  int socketTimeout,
+					  int connectTimeout,
+					  int requestTimeout,
+					  int retryCount,
+					  int useNonBlockingMode) {
+		this.config = new Config();
+		if (propertiesPath != null) {
+			this.initProps(propertiesPath);
+		}
+		if (socketTimeout > 0) {
+			this.config.socketTimeout = socketTimeout;
+		}
+		if (connectTimeout > 0) {
+			this.config.connectTimeout = connectTimeout;
+		}
+		if (requestTimeout > 0) {
+			this.config.requestTimeout = requestTimeout;
+		}
+		if (retryCount > 0) {
+			this.config.retryCount = retryCount;
+		}
+		if (useNonBlockingMode != -1) {
+			if (useNonBlockingMode == 1) {
+				this.config.useNonBlockingMode = true;
+			} else if (useNonBlockingMode == 0) {
+				this.config.useNonBlockingMode = false;
+			}
+		}
 		this.gson = new GsonBuilder().create();
 		this.client = new HttpClient();
+		this.client.config = config;
 		this.platformUrl = platformUrl;
-	}
-
-	public void setNonBlockingMode() {
-		this.client.useNonBlockingMode = true;
-	}
-
-	public CleengImpl(String platformUrl, String publisherToken) {
-		this(platformUrl);
 		this.publisherToken = publisherToken;
+	}
+
+	public HttpClient getClient() {
+		return this.client;
 	}
 
 	public OfferResponse createSubscriptionOffer(SubscriptionOfferData offerData) throws IOException {
@@ -559,8 +590,48 @@ public class CleengImpl implements Cleeng {
 	public void getAccessStatusForDeviceAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("getAccessStatusForDevice", ((GetAccessStatusForDeviceParams) ((AsyncRequest) request).input));
+			request.data = new JSONRPCRequest("getAccessStatusForDevice", request.input);
 		}
 		this.client.invokeAsync(requests);
+	}
+
+	private void initProps(String propertiesPath) {
+		final Properties properties = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream(propertiesPath);
+			properties.load(input);
+			try {
+				this.config.socketTimeout = Integer.parseInt(properties.getProperty("socketTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.connectTimeout = Integer.parseInt(properties.getProperty("connectTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.requestTimeout = Integer.parseInt(properties.getProperty("requestTimeout"));
+			} catch (NumberFormatException e) {
+
+			}
+			try {
+				this.config.retryCount = Integer.parseInt(properties.getProperty("retryCount"));
+			} catch (NumberFormatException e) {
+
+			}
+			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
+		} catch (IOException e) {
+			System.out.println("Config file not found or invalid.");
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
 	}
 }
