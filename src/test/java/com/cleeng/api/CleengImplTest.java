@@ -2,10 +2,7 @@ package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
 import com.cleeng.api.domain.async.*;
-import org.junit.Ignore;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -1222,6 +1219,36 @@ public class CleengImplTest {
         assertNotNull(response2);
         assertFalse(response.result.accessGranted);
         assertFalse(response2.result.accessGranted);
+    }
+
+    @Test
+    public void testInvokeBatchAsync() throws IOException, InterruptedException {
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+        final BatchRequest request = new BatchRequest("https://sandbox.cleeng.com/api/3.0/json-rpc");
+        final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
+        createOffer.id = "0";
+        final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
+        listOffers.id = "1";
+        final AsyncRequestCallback<BatchResponse> callback = new AsyncRequestCallback<BatchResponse>(BatchResponse.class);
+        request.addRequest(createOffer);
+        request.addRequest(listOffers);
+        request.callback = callback;
+        this.api.getClient().invokeBatchAsync(request);
+        TimeUnit.SECONDS.sleep(8);
+        final BatchResponse response = callback.getResponse();
+        Assert.assertNotNull(response);
     }
 
     private long getSleepTime(int requests) {
