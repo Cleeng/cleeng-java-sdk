@@ -2,19 +2,21 @@ package com.cleeng.api.domain.async;
 
 import org.jsonrpc.JSONRPCMessage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BatchRequest {
+public class BatchRequest extends AsyncRequest {
 
-    public List<JSONRPCMessage> requests;
+    private List<JSONRPCMessage> requests;
 
     public BatchRequest() {
-
+        super();
     }
 
-    public BatchRequest(List<JSONRPCMessage> requests) {
-        this.requests = requests;
+    public BatchRequest(String endpoint) {
+        super();
+        this.endpoint = endpoint;
     }
 
     public void addRequest(JSONRPCMessage request) {
@@ -22,5 +24,6 @@ public class BatchRequest {
             this.requests = new ArrayList<JSONRPCMessage>();
         }
         this.requests.add(request);
+        this.input = (Serializable) this.requests;
     }
 }

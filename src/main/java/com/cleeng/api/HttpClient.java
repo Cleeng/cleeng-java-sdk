@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.async.AsyncRequest;
+import com.cleeng.api.domain.async.BatchRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
@@ -61,7 +62,7 @@ public class HttpClient {
             post.setConfig(requestConfig);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
                 @Override
-                public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+                public String handleResponse(HttpResponse httpResponse) throws IOException {
                     StatusLine statusLine = httpResponse.getStatusLine();
                     HttpEntity entity = httpResponse.getEntity();
                     if (statusLine.getStatusCode() >= 300) {
@@ -137,5 +138,25 @@ public class HttpClient {
         }
     }
 
-    //public synchronized void invokeBatchAsync(List<AsyncRe>)
+    public synchronized void invokeBatchAsync(BatchRequest request) throws IOException, InterruptedException {
+        final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
+        builder.setRequestTimeout(this.config.requestTimeout);
+        builder.setConnectTimeout(this.config.connectTimeout);
+        final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(Exception.class)
+                .withMaxRetries(this.config.retryCount);
+        try {
+            executor.getWithRetry(() -> this.invokeAsync(request, latch, httpClient));
+            if (this.config.useNonBlockingMode == false) {
+                latch.await();
+            }
+        } finally {
+            if (this.config.useNonBlockingMode == false) {
+                httpClient.close();
+            }
+        }
+    }
 }
