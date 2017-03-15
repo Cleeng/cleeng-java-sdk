@@ -30,4 +30,8 @@ public class BatchRequest extends AsyncRequest {
     public int size() {
         return this.requests.size();
     }
+
+    public List<JSONRPCMessage> getRequests() {
+        return this.requests;
+    }
 }
