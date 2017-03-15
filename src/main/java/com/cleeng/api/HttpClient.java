@@ -137,5 +137,5 @@ public class HttpClient {
         }
     }
 
-    public synchronized void invokeBatchAsync(List<AsyncRe>)
+    //public synchronized void invokeBatchAsync(List<AsyncRe>)
 }
