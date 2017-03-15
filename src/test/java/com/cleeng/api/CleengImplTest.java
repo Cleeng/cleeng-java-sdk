@@ -1241,7 +1241,7 @@ public class CleengImplTest {
         createOffer.id = "0";
         final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
         listOffers.id = "1";
-        final AsyncRequestCallback<BatchResponse> callback = new AsyncRequestCallback<BatchResponse>(BatchResponse.class);
+        final BatchAsyncRequestCallback callback = new BatchAsyncRequestCallback();
         request.addRequest(createOffer);
         request.addRequest(listOffers);
         request.callback = callback;
