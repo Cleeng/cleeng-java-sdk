@@ -1,6 +1,9 @@
 package com.cleeng.api.domain.async;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCResponse;
 
-public class BatchResponse extends JSONRPCMessage {
+import java.util.ArrayList;
+
+public class BatchResponse extends ArrayList<JSONRPCResponse> {
+
 }

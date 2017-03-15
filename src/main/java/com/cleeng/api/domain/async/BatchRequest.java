@@ -26,4 +26,8 @@ public class BatchRequest extends AsyncRequest {
         this.requests.add(request);
         this.data = (Serializable) this.requests;
     }
+
+    public int size() {
+        return this.requests.size();
+    }
 }

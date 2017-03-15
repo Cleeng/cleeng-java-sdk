@@ -1246,9 +1246,10 @@ public class CleengImplTest {
         request.addRequest(listOffers);
         request.callback = callback;
         this.api.invokeBatchAsync(request);
-        TimeUnit.SECONDS.sleep(8);
+        TimeUnit.SECONDS.sleep(4);
         final BatchResponse response = callback.getResponse();
         Assert.assertNotNull(response);
+        Assert.assertEquals("Number of responses should match number of requests in a batch", request.size(), response.size());
     }
 
     private long getSleepTime(int requests) {
