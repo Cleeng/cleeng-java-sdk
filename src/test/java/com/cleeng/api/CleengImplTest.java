@@ -1249,7 +1249,7 @@ public class CleengImplTest {
         TimeUnit.SECONDS.sleep(4);
         final BatchResponse response = callback.getResponse();
         Assert.assertNotNull(response);
-        Assert.assertEquals("Number of responses should match number of requests in a batch", request.size(), response.size());
+        Assert.assertEquals("Number of responses should match number of requests in a batch", request.size(), response.responses.size());
     }
 
     private long getSleepTime(int requests) {

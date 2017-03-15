@@ -1,7 +1,5 @@
 package com.cleeng.api.domain;
 
-import com.google.gson.internal.LinkedTreeMap;
-
 import java.util.List;
 
 public class OfferResult extends BaseOfferData {
@@ -25,12 +23,5 @@ public class OfferResult extends BaseOfferData {
 
     public OfferResult() {
 
-    }
-
-    public OfferResult(LinkedTreeMap<String, String> input) {
-
-        //TODO: check if there is a better option...
-        this.id = input.get("id");
-        this.publisherEmail = input.get("publisherEmail");
     }
 }
