@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.cleeng.api.domain.async.*;
 import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;

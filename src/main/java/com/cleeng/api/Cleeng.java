@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.cleeng.api.domain.async.AsyncRequest;
 
 import java.io.IOException;
 import java.util.List;

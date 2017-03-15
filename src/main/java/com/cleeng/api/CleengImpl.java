@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.cleeng.api.domain.async.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;

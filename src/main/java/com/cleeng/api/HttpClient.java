@@ -1,5 +1,6 @@
 package com.cleeng.api;
 
+import com.cleeng.api.domain.async.AsyncRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
@@ -135,4 +136,6 @@ public class HttpClient {
             }
         }
     }
+
+    public synchronized void invokeBatchAsync(List<AsyncRe>)
 }

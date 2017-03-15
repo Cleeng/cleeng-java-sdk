@@ -1,6 +1,6 @@
 package com.cleeng.api.examples;
 
-import com.cleeng.api.AsyncRequest;
+import com.cleeng.api.domain.async.AsyncRequest;
 import com.cleeng.api.AsyncRequestCallback;
 import com.cleeng.api.Cleeng;
 import com.cleeng.api.CleengFactory;
