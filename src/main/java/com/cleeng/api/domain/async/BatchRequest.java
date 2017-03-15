@@ -24,6 +24,6 @@ public class BatchRequest extends AsyncRequest {
             this.requests = new ArrayList<JSONRPCMessage>();
         }
         this.requests.add(request);
-        this.input = (Serializable) this.requests;
+        this.data = (Serializable) this.requests;
     }
 }

@@ -596,6 +596,10 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public void invokeBatchAsync(BatchRequest request) throws IOException, InterruptedException {
+		this.client.invokeBatchAsync(request);
+	}
+
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();
 		InputStream input = null;

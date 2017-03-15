@@ -1245,7 +1245,7 @@ public class CleengImplTest {
         request.addRequest(createOffer);
         request.addRequest(listOffers);
         request.callback = callback;
-        this.api.getClient().invokeBatchAsync(request);
+        this.api.invokeBatchAsync(request);
         TimeUnit.SECONDS.sleep(8);
         final BatchResponse response = callback.getResponse();
         Assert.assertNotNull(response);

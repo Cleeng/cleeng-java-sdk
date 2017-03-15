@@ -2,6 +2,7 @@ package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
 import com.cleeng.api.domain.async.AsyncRequest;
+import com.cleeng.api.domain.async.BatchRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -611,4 +612,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	void getAccessStatusForDeviceAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Invokes a batch request (async)<br/>
+	 * <br/>
+	 *
+	 * @param request object containing a collection of individual requests
+	 * @return
+	 */
+	void invokeBatchAsync(BatchRequest request) throws IOException, InterruptedException;
 }
