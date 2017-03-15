@@ -1236,7 +1236,7 @@ public class CleengImplTest {
             "whitelist",
             Arrays.asList("PL", "DE")
         );
-        final BatchRequest request = new BatchRequest("https://sandbox.cleeng.com/api/3.0/json-rpc");
+        final BatchRequest request = new BatchRequest();
         final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
         createOffer.id = "0";
         final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
