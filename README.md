@@ -81,6 +81,47 @@ Determines whether to block the code execution until request completes. This set
 // Exectute an asynchronous, non blocking http call
     this.api.createSubscriptionOfferAsync(requests);
 ```
+---
+# Example asynchronous batch request usage:
+```
+// Initialize API
+    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+        .setPropertiesPath("src/main/resources/config.properties")
+        .build();
+
+// Construct request payload
+	SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+			"week",
+			"title",
+			"http://www.someurl.com",
+			"description",
+			null,
+			0,
+			9,
+			Arrays.asList("Sport"),
+			true,
+			"whitelist",
+			Arrays.asList("PL", "DE")
+	);
+
+// Create requests
+	OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(publisherToken, offerData));
+	ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(publisherToken, new Criteria(true), 0, 10));
+
+// Construct batch
+	BatchAsyncRequest batch = new BatchAsyncRequest();
+
+// Insert requests to batch
+	batch.addRequest(createOffer);
+	batch.addRequest(listOffers);
+
+// Exectute an asynchronous, non blocking batch call.
+	api.invokeBatchAsync(batch);
+
+// Once batch request completes, BatchResponse is available through getResponse() method call.
+	TimeUnit.SECONDS.sleep(4);
+	BatchResponse response = batch.getResponse();
+```
 # Notes
 The Cleeng Java SDK is accompanied by the strong battery of unit tests. See src/test/java/com/cleeng/api/CleengImplTest.java for detailed information on how to construct request payloads and invoke specific methods. See [API Reference](https://developers.cleeng.com/v3/Reference) for details on the Cleeng API.
 
