@@ -1,15 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class PrepareRemoteAuthRequest extends JSONRPCMessage {
-
-    public String method;
-    public PrepareRemoteAuthParams params;
-
-    public PrepareRemoteAuthRequest() {
-
-    }
+public class PrepareRemoteAuthRequest extends JSONRPCRequest {
 
     public PrepareRemoteAuthRequest(String method, PrepareRemoteAuthParams params) {
         super("1", "2.0");

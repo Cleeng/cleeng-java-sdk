@@ -1,15 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class GetAccessibleTagsRequest extends JSONRPCMessage {
-
-    public String method;
-    public GetAccessibleTagsParams params;
-
-    public GetAccessibleTagsRequest() {
-
-    }
+public class GetAccessibleTagsRequest extends JSONRPCRequest {
 
     public GetAccessibleTagsRequest(String method, GetAccessibleTagsParams params) {
         super("1", "2.0");

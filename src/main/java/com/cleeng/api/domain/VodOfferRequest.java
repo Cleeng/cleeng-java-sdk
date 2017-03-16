@@ -1,16 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class VodOfferRequest extends JSONRPCMessage {
-
-    public String method;
-
-    public CreateVodOfferParams params;
-
-    public VodOfferRequest() {
-
-    }
+public class VodOfferRequest extends JSONRPCRequest {
 
     public VodOfferRequest(String method, CreateVodOfferParams params) {
         super("1", "2.0");
