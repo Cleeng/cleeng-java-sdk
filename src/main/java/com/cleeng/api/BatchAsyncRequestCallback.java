@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,14 +31,14 @@ public class BatchAsyncRequestCallback extends AsyncRequestCallback<BatchRespons
         for (int i = 0; i < o.size(); i++) {
             JsonElement element = o.get(i);
             for (int j = 0; j < this.requests.size(); j++) {
-                JSONRPCMessage r = this.requests.get(j);
+                JSONRPCRequest r = (JSONRPCRequest) this.requests.get(j);
                 if (element.isJsonObject()) {
                     JsonObject res = element.getAsJsonObject();
                     if (res.get("id").getAsString().equals(r.id)) {
-                        String responseTypeName = this.mapper.map(r.getClass().getName());
+                        String responseTypeName = this.mapper.map(r.method);
                         if (responseTypeName != null) {
                             try {
-                                System.out.println("Processing" + responseTypeName);
+                                System.out.println("Processing " + responseTypeName);
                                 Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
                                 batchResponse.responses.add(payload);
                             } catch (ClassNotFoundException e) {

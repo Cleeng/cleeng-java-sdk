@@ -13,11 +13,12 @@ public class ResponseMapper {
         this.build();
     }
 
-    public String map(String request) {
-        return this.map.get(request);
+    public String map(String methodName) {
+        return this.map.get(methodName);
     }
 
     private void build() {
-        this.map.put("com.cleeng.api.domain.OfferRequest", "com.cleeng.api.domain.OfferResponse");
+        this.map.put("createSubscriptionOffer", "com.cleeng.api.domain.OfferResponse");
+        this.map.put("listSubscriptionOffers", "com.cleeng.api.domain.ListSubscriptionOffersResponse");
     }
 }
