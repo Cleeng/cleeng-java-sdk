@@ -1,4 +1,6 @@
-package com.cleeng.api;
+package com.cleeng.api.domain.async;
+
+import com.cleeng.api.AsyncRequestCallback;
 
 import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;

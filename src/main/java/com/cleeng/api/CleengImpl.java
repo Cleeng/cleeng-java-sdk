@@ -1,6 +1,7 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
+import com.cleeng.api.domain.async.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jsonrpc.JSONRPCRequest;
@@ -593,6 +594,10 @@ public class CleengImpl implements Cleeng {
 			request.data = new JSONRPCRequest("getAccessStatusForDevice", request.input);
 		}
 		this.client.invokeAsync(requests);
+	}
+
+	public void invokeBatchAsync(BatchAsyncRequest batch) throws IOException, InterruptedException {
+		this.client.invokeBatchAsync(batch, this.platformUrl);
 	}
 
 	private void initProps(String propertiesPath) {

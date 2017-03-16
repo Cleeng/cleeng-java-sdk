@@ -1,11 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class OfferRequest extends JSONRPCMessage {
-
-    public String method;
-    public OfferParams params;
+public class OfferRequest extends JSONRPCRequest {
 
     public OfferRequest(String method, OfferParams params) {
         super("1", "2.0");

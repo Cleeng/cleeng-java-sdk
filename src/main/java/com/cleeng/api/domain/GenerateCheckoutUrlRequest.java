@@ -1,15 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class GenerateCheckoutUrlRequest extends JSONRPCMessage {
-
-    public String method;
-    public GenerateCheckoutUrlParams params;
-
-    public GenerateCheckoutUrlRequest() {
-
-    }
+public class GenerateCheckoutUrlRequest extends JSONRPCRequest {
 
     public GenerateCheckoutUrlRequest(String method, GenerateCheckoutUrlParams params) {
         super("1", "2.0");

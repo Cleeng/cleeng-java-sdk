@@ -1,5 +1,6 @@
 package com.cleeng.api;
 
+import com.cleeng.api.domain.async.AsyncRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
@@ -60,7 +61,7 @@ public class HttpClient {
             post.setConfig(requestConfig);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
                 @Override
-                public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+                public String handleResponse(HttpResponse httpResponse) throws IOException {
                     StatusLine statusLine = httpResponse.getStatusLine();
                     HttpEntity entity = httpResponse.getEntity();
                     if (statusLine.getStatusCode() >= 300) {
@@ -134,5 +135,60 @@ public class HttpClient {
                 httpClient.close();
             }
         }
+    }
+
+    public synchronized  void invokeBatchAsync(BatchAsyncRequest callback, String platformUrl) throws IOException, InterruptedException {
+        final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
+        builder.setRequestTimeout(this.config.requestTimeout);
+        builder.setConnectTimeout(this.config.connectTimeout);
+        final AsyncHttpClient httpClient = new DefaultAsyncHttpClient(builder.build());
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final RetryExecutor executor = new AsyncRetryExecutor(scheduler)
+                .retryOn(Exception.class)
+                .withMaxRetries(this.config.retryCount);
+
+        try {
+            executor.getWithRetry(() -> this.invokeAsync(callback, latch, httpClient, platformUrl));
+            if (this.config.useNonBlockingMode == false) {
+                latch.await();
+            }
+        } finally {
+            if (this.config.useNonBlockingMode == false) {
+                httpClient.close();
+            }
+        }
+    }
+
+    public synchronized CompletableFuture<Response> invokeAsync(BatchAsyncRequest request,
+                                                                CountDownLatch latch,
+                                                                AsyncHttpClient httpClient,
+                                                                String platformUrl) throws IOException, InterruptedException {
+        request.setCountdownLatch(latch);
+        request.useNonBlockingMode = this.config.useNonBlockingMode;
+        request.setCountdownLatch(latch);
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(request.getRequests());
+        final BoundRequestBuilder builder = httpClient.preparePost(platformUrl);
+        builder.addHeader("Content-Type", "application/json");
+        builder.setBody(json);
+        request.setClient(httpClient);
+        builder.execute(
+                new AsyncCompletionHandler<Void>() {
+
+                    @Override
+                    public Void onCompleted(Response response) throws Exception {
+                        request.complete(response);
+                        return null;
+                    }
+
+                    @Override
+                    public void onThrowable(Throwable t) {
+                        request.completeExceptionally(t);
+                    }
+                }
+        );
+        request.join();
+        return request;
     }
 }

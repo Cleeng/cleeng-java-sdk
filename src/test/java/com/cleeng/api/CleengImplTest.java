@@ -1,10 +1,8 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import org.junit.Ignore;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import com.cleeng.api.domain.async.*;
+import org.junit.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -1191,7 +1189,7 @@ public class CleengImplTest {
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
         this.api.listOfferIdsByVideoIdAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(2000);
+        TimeUnit.MILLISECONDS.sleep(4000);
         final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
@@ -1221,6 +1219,33 @@ public class CleengImplTest {
         assertNotNull(response2);
         assertFalse(response.result.accessGranted);
         assertFalse(response2.result.accessGranted);
+    }
+
+    @Test
+    public void testInvokeBatchAsync() throws IOException, InterruptedException {
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+            "week",
+            "title",
+            "http://www.someurl.com",
+            "description",
+            null,
+            0,
+            9,
+            Arrays.asList("Sport"),
+            true,
+            "whitelist",
+            Arrays.asList("PL", "DE")
+        );
+        final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
+        final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
+        final BatchAsyncRequest batch = new BatchAsyncRequest();
+        batch.addRequest(createOffer);
+        batch.addRequest(listOffers);
+        this.api.invokeBatchAsync(batch);
+        TimeUnit.SECONDS.sleep(4);
+        final BatchResponse response = batch.getResponse();
+        Assert.assertNotNull(response);
+        Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
     }
 
     private long getSleepTime(int requests) {
