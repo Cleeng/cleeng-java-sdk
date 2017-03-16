@@ -23,7 +23,7 @@ Determines the number of time the library will retry when an exception is throw 
 Determines whether to block the code execution until request completes. This setting only applies to asynchronous methods, as synchronous ones are blocking only.
 
 ---
-# Example usage with synchronous, blocking method call:
+# Example usage with synchronous, blocking method call
 ```
 // Initialize API with the config.properties path. As an example, the code below overrides the retry count and connect timeout settings.
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -51,7 +51,7 @@ Determines whether to block the code execution until request completes. This set
 	final OfferResponse response = this.api.createSubscriptionOffer(offerData);
 ```
 ---
-# Example usage with asynchronous, non blocking method call:
+# Example usage with asynchronous, non blocking method call
 ```
 // Initialize API
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -82,7 +82,7 @@ Determines whether to block the code execution until request completes. This set
     this.api.createSubscriptionOfferAsync(requests);
 ```
 ---
-# Example asynchronous batch request usage:
+# Example asynchronous/non blocking batch request usage
 ```
 // Initialize API
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -127,7 +127,9 @@ The Cleeng Java SDK is accompanied by the strong battery of unit tests. See src/
 
 All functions in the API documentation have been implemented as public methods on a class implementing Cleeng interface.
 
-There are two kinds of these methods, synchronous ones and their asynchronous sibilings that can be recognized by the 'async' suffix in the method name.
+There are two basic kinds of these methods, synchronous ones and their asynchronous sibilings that can be recognized by the 'async' suffix in the method name.
+
+There is also a way to send a collection of different requests in one batch asynchronously through '''invokeBatchAsync''' method. Please see "Example asynchronous batch request usage" above.
 
 Instead of duplicating all class & type information once more in this file, please refer to the file src/main/java/com/cleeng/api/Cleeng.java for the method signatures, and to src/main/java/com/cleeng/api/domain/*.java for the classes used for parameters and return values. The names map directly to the documentation available at API Reference.
 
