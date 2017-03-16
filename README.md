@@ -129,7 +129,7 @@ All functions in the API documentation have been implemented as public methods o
 
 There are two basic kinds of these methods, synchronous ones and their asynchronous sibilings that can be recognized by the 'async' suffix in the method name.
 
-There is also a way to send a collection of different requests in one batch asynchronously through '''invokeBatchAsync''' method. Please see "Example asynchronous batch request usage" above.
+There is also a way to send a collection of different requests in one batch asynchronously through 'invokeBatchAsync' method. Please see "Example asynchronous batch request usage" above.
 
 Instead of duplicating all class & type information once more in this file, please refer to the file src/main/java/com/cleeng/api/Cleeng.java for the method signatures, and to src/main/java/com/cleeng/api/domain/*.java for the classes used for parameters and return values. The names map directly to the documentation available at API Reference.
 
