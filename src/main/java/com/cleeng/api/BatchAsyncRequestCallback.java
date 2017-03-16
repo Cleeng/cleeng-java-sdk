@@ -35,11 +35,16 @@ public class BatchAsyncRequestCallback extends AsyncRequestCallback<BatchRespons
                     JsonObject res = element.getAsJsonObject();
                     if (res.get("id").getAsString().equals(r.id)) {
                         String responseTypeName = this.mapper.map(r.getClass().getName());
-                        try {
-                            Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
-                            batchResponse.responses.add(payload);
-                        } catch (ClassNotFoundException e) {
-                            System.out.println("Class not found: " + e);
+                        if (responseTypeName != null) {
+                            try {
+                                System.out.println("Processing" + responseTypeName);
+                                Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
+                                batchResponse.responses.add(payload);
+                            } catch (ClassNotFoundException e) {
+                                System.out.println("Class not found: " + e);
+                            }
+                        } else {
+                            System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());
                         }
                     }
                 }
