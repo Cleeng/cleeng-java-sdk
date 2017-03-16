@@ -23,7 +23,7 @@ Determines the number of time the library will retry when an exception is throw 
 Determines whether to block the code execution until request completes. This setting only applies to asynchronous methods, as synchronous ones are blocking only.
 
 ---
-# Example usage with synchronous, blocking method call
+# Example usage with synchronous/blocking method call
 ```
 // Initialize API with the config.properties path. As an example, the code below overrides the retry count and connect timeout settings.
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -51,7 +51,7 @@ Determines whether to block the code execution until request completes. This set
 	final OfferResponse response = this.api.createSubscriptionOffer(offerData);
 ```
 ---
-# Example usage with asynchronous, non blocking method call
+# Example usage with asynchronous/non blocking method call
 ```
 // Initialize API
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
