@@ -1,7 +1,5 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.OfferRequest;
-import com.cleeng.api.domain.OfferResponse;
 import com.cleeng.api.domain.async.BatchResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -9,11 +7,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jsonrpc.JSONRPCMessage;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class BatchAsyncRequestCallback extends AsyncRequestCallback<BatchResponse> {
 
     private List<JSONRPCMessage> requests;
+
+    private ResponseMapper mapper = new ResponseMapper();
 
     public BatchAsyncRequestCallback(List<JSONRPCMessage> requests) {
 
@@ -33,10 +34,12 @@ public class BatchAsyncRequestCallback extends AsyncRequestCallback<BatchRespons
                 if (element.isJsonObject()) {
                     JsonObject res = element.getAsJsonObject();
                     if (res.get("id").getAsString().equals(r.id)) {
-                        //TODO: Mapper will handle OfferRequest/OfferResponse mapping
-                        if (r instanceof OfferRequest) {
-                            OfferResponse resPayload = this.gson.fromJson(res, OfferResponse.class);
-                            batchResponse.responses.add(resPayload);
+                        String responseTypeName = this.mapper.map(r.getClass().getName());
+                        try {
+                            Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
+                            batchResponse.responses.add(payload);
+                        } catch (ClassNotFoundException e) {
+                            System.out.println("Class not found: " + e);
                         }
                     }
                 }
