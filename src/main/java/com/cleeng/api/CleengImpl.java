@@ -596,9 +596,8 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public void invokeBatchAsync(BatchRequest request) throws IOException, InterruptedException {
-		request.endpoint = this.platformUrl;
-		this.client.invokeBatchAsync(request);
+	public void invokeBatchAsync(BatchAsyncRequest batch) throws IOException, InterruptedException {
+		this.client.invokeBatchAsync(batch, this.platformUrl);
 	}
 
 	private void initProps(String propertiesPath) {

@@ -1236,20 +1236,18 @@ public class CleengImplTest {
             "whitelist",
             Arrays.asList("PL", "DE")
         );
-        final BatchRequest request = new BatchRequest();
         final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
         createOffer.id = "0";
         final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
         listOffers.id = "1";
-        request.addRequest(createOffer);
-        request.addRequest(listOffers);
-        final BatchAsyncRequestCallback callback = new BatchAsyncRequestCallback(request.getRequests());
-        request.callback = callback;
-        this.api.invokeBatchAsync(request);
+        final BatchAsyncRequest batch = new BatchAsyncRequest();
+        batch.addRequest(createOffer);
+        batch.addRequest(listOffers);
+        this.api.invokeBatchAsync(batch);
         TimeUnit.SECONDS.sleep(4);
-        final BatchResponse response = callback.getResponse();
+        final BatchResponse response = batch.getResponse();
         Assert.assertNotNull(response);
-        Assert.assertEquals("Number of responses should match number of requests in a batch", request.size(), response.responses.size());
+        Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
     }
 
     private long getSleepTime(int requests) {

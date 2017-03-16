@@ -9,19 +9,35 @@ import org.jsonrpc.JSONRPCMessage;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BatchAsyncRequestCallback extends AsyncRequestCallback<BatchResponse> {
+public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
 
     private List<JSONRPCMessage> requests;
 
     private ResponseMapper mapper = new ResponseMapper();
 
-    public BatchAsyncRequestCallback(List<JSONRPCMessage> requests) {
+    public BatchAsyncRequest() {
+
+        super(BatchResponse.class);
+
+        this.requests = new ArrayList<JSONRPCMessage>();
+    }
+
+    public BatchAsyncRequest(List<JSONRPCMessage> requests) {
 
         super(BatchResponse.class);
 
         this.requests = requests;
+    }
+
+    public void addRequest(JSONRPCRequest request) {
+        this.requests.add(request);
+    }
+
+    public List<JSONRPCMessage> getRequests() {
+        return this.requests;
     }
 
     public BatchResponse getResponse() {
