@@ -31,10 +31,7 @@ public class CleengJavaAPIBatchExampleAsync {
         );
 
         OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(publisherToken, offerData));
-        createOffer.id = "0";
-
         ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(publisherToken, new Criteria(true), 0, 10));
-        listOffers.id = "1";
 
         BatchAsyncRequest batch = new BatchAsyncRequest();
         batch.addRequest(createOffer);

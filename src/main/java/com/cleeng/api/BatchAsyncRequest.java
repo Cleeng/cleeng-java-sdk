@@ -18,6 +18,8 @@ public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
 
     private ResponseMapper mapper = new ResponseMapper();
 
+    private int count = 0;
+
     public BatchAsyncRequest() {
 
         super(BatchResponse.class);
@@ -33,7 +35,9 @@ public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
     }
 
     public void addRequest(JSONRPCRequest request) {
+        request.id = Integer.toString(this.count);
         this.requests.add(request);
+        this.count++;
     }
 
     public List<JSONRPCMessage> getRequests() {
@@ -58,7 +62,7 @@ public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
                                 Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
                                 batchResponse.responses.add(payload);
                             } catch (ClassNotFoundException e) {
-                                System.out.println("Class not found: " + e);
+                                System.out.println("Class not found " + e);
                             }
                         } else {
                             System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());

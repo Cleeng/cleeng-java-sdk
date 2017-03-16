@@ -1237,9 +1237,7 @@ public class CleengImplTest {
             Arrays.asList("PL", "DE")
         );
         final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
-        createOffer.id = "0";
         final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
-        listOffers.id = "1";
         final BatchAsyncRequest batch = new BatchAsyncRequest();
         batch.addRequest(createOffer);
         batch.addRequest(listOffers);
