@@ -620,4 +620,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	void invokeBatchAsync(BatchAsyncRequest batch) throws IOException, InterruptedException;
+
+	/**
+	 * Invokes a batch request<br/>
+	 * <br/>
+	 *
+	 * @param batch object containing a collection of individual requests
+	 * @return
+	 */
+	public BatchResponse invokeBatch(BatchRequest batch) throws IOException;
 }

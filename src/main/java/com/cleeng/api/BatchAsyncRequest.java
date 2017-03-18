@@ -1,6 +1,6 @@
 package com.cleeng.api;
 
-import com.cleeng.api.domain.async.BatchResponse;
+import com.cleeng.api.domain.BatchResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

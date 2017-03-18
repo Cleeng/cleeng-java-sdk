@@ -1248,6 +1248,31 @@ public class CleengImplTest {
         Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
     }
 
+    @Test
+    public void testInvokeBatch() throws IOException, InterruptedException {
+        final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+                "week",
+                "title",
+                "http://www.someurl.com",
+                "description",
+                null,
+                0,
+                9,
+                Arrays.asList("Sport"),
+                true,
+                "whitelist",
+                Arrays.asList("PL", "DE")
+        );
+        final OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(this.publisherToken, offerData));
+        final ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(this.publisherToken, new Criteria(true), 0, 10));
+        final BatchRequest batch = new BatchRequest();
+        batch.addRequest(createOffer);
+        batch.addRequest(listOffers);
+        final BatchResponse response = this.api.invokeBatch(batch);
+        Assert.assertNotNull(response);
+        Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
+    }
+
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
         System.out.println("Awaiting asynchronous response(s): " + (long) sleepTime + " [millisec]");

@@ -1,15 +1,12 @@
 package com.cleeng.api.examples;
 
-import com.cleeng.api.BatchAsyncRequest;
 import com.cleeng.api.Cleeng;
 import com.cleeng.api.CleengFactory;
 import com.cleeng.api.domain.*;
-import com.cleeng.api.domain.BatchResponse;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-public class CleengJavaAPIBatchExampleAsync {
+public class CleengJavaAPIBatchExample {
 
     public static void main(String args[]) throws Exception {
 
@@ -33,18 +30,12 @@ public class CleengJavaAPIBatchExampleAsync {
         OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(publisherToken, offerData));
         ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(publisherToken, new Criteria(true), 0, 10));
 
-        BatchAsyncRequest batch = new BatchAsyncRequest();
+        BatchRequest batch = new BatchRequest();
         batch.addRequest(createOffer);
         batch.addRequest(listOffers);
 
-        api.invokeBatchAsync(batch);
-
-        TimeUnit.SECONDS.sleep(4);
-
-        final BatchResponse response = batch.getResponse();
+        BatchResponse response = api.invokeBatch(batch);
 
         System.out.println("Done. Number of responses available: " + response.responses.size());
-
-        System.exit(0);
     }
 }
