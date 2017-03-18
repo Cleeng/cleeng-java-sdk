@@ -1,20 +1,12 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class GetCustomerRequest extends JSONRPCMessage {
-
-    public String method;
-    public GetCustomerParams params;
-
-    public GetCustomerRequest() {
-
-    }
+public class GetCustomerRequest extends JSONRPCRequest {
 
     public GetCustomerRequest(String method, GetCustomerParams params) {
         super("1", "2.0");
         this.method = method;
         this.params = params;
     }
-
 }

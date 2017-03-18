@@ -6,7 +6,7 @@ Full Java SDK you can find here: https://github.com/Cleeng/cleeng-java-sdk/
 You can configure the SDK with CleengBuilder class by either providing the path to config.properties file or by using setters related to configuration properties. Below is the default config file with configuration properties:
 ```
 socketTimeout=3000
-connectTimeout=100
+connectTimeout=400
 requestTimeout=3000
 retryCount=10
 useNonBlockingMode=true
@@ -23,7 +23,7 @@ Determines the number of time the library will retry when an exception is throw 
 Determines whether to block the code execution until request completes. This setting only applies to asynchronous methods, as synchronous ones are blocking only.
 
 ---
-# Example usage with synchronous, blocking method call:
+# Example usage with synchronous/blocking method call
 ```
 // Initialize API with the config.properties path. As an example, the code below overrides the retry count and connect timeout settings.
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -51,7 +51,7 @@ Determines whether to block the code execution until request completes. This set
 	final OfferResponse response = this.api.createSubscriptionOffer(offerData);
 ```
 ---
-# Example usage with asynchronous, non blocking method call:
+# Example usage with asynchronous/non blocking method call
 ```
 // Initialize API
     Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
@@ -81,12 +81,92 @@ Determines whether to block the code execution until request completes. This set
 // Exectute an asynchronous, non blocking http call
     this.api.createSubscriptionOfferAsync(requests);
 ```
+---
+# Example asynchronous/non blocking batch request usage
+```
+// Initialize API
+    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+        .setPropertiesPath("src/main/resources/config.properties")
+        .build();
+
+// Construct request payload
+	SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+			"week",
+			"title",
+			"http://www.someurl.com",
+			"description",
+			null,
+			0,
+			9,
+			Arrays.asList("Sport"),
+			true,
+			"whitelist",
+			Arrays.asList("PL", "DE")
+	);
+
+// Create requests
+	OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(publisherToken, offerData));
+	ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(publisherToken, new Criteria(true), 0, 10));
+
+// Construct batch
+	BatchAsyncRequest batch = new BatchAsyncRequest();
+
+// Insert requests to batch
+	batch.addRequest(createOffer);
+	batch.addRequest(listOffers);
+
+// Exectute an asynchronous, non blocking batch call.
+	api.invokeBatchAsync(batch);
+
+// Once batch request completes, BatchResponse is available through getResponse() method call.
+	TimeUnit.SECONDS.sleep(4);
+	BatchResponse response = batch.getResponse();
+```
+---
+# Example synchronous/blocking batch request usage
+```
+// Initialize API
+    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+        .setPropertiesPath("src/main/resources/config.properties")
+        .build();
+
+// Construct request payload
+	SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
+			"week",
+			"title",
+			"http://www.someurl.com",
+			"description",
+			null,
+			0,
+			9,
+			Arrays.asList("Sport"),
+			true,
+			"whitelist",
+			Arrays.asList("PL", "DE")
+	);
+
+// Create requests
+	OfferRequest createOffer = new OfferRequest("createSubscriptionOffer", OfferParams.create(publisherToken, offerData));
+	ListRequest listOffers = new ListRequest("listSubscriptionOffers", ListParams.create(publisherToken, new Criteria(true), 0, 10));
+
+// Construct batch
+	BatchRequest batch = new BatchRequest();
+
+// Insert requests to batch
+	batch.addRequest(createOffer);
+	batch.addRequest(listOffers);
+
+// Exectute an synchronous/blocking batch call.
+	BatchResponse = api.invokeBatch(batch);
+```
 # Notes
 The Cleeng Java SDK is accompanied by the strong battery of unit tests. See src/test/java/com/cleeng/api/CleengImplTest.java for detailed information on how to construct request payloads and invoke specific methods. See [API Reference](https://developers.cleeng.com/v3/Reference) for details on the Cleeng API.
 
 All functions in the API documentation have been implemented as public methods on a class implementing Cleeng interface.
 
-There are two kinds of these methods, synchronous ones and their asynchronous sibilings that can be recognized by the 'async' suffix in the method name.
+There are two basic kinds of these methods, synchronous ones and their asynchronous sibilings that can be recognized by the 'async' suffix in the method name.
+
+There is also a way to send a collection of different requests in one batch through either 'invokeBatchAsync' or 'invokeBatch' methods. Please see "Example asynchronous/non blocking batch request usage" and "Example synchronous/blocking batch request usage" sections above.
 
 Instead of duplicating all class & type information once more in this file, please refer to the file src/main/java/com/cleeng/api/Cleeng.java for the method signatures, and to src/main/java/com/cleeng/api/domain/*.java for the classes used for parameters and return values. The names map directly to the documentation available at API Reference.
 
@@ -100,3 +180,7 @@ There are a few example Java programs in the jar file, that you can run as follo
 ```java -cp path/to/cleeng-java-sdk-{version}-jar-with-dependencies.jar com/cleeng/api/examples/CleengJavaAPIExample```
 
 ```java -cp path/to/cleeng-java-sdk-{version}-jar-with-dependencies.jar com/cleeng/api/examples/CleengJavaAPIExampleAsync```
+
+```java -cp path/to/cleeng-java-sdk-{version}-jar-with-dependencies.jar com/cleeng/api/examples/CleengJavaAPIBatchExample```
+
+```java -cp path/to/cleeng-java-sdk-{version}-jar-with-dependencies.jar com/cleeng/api/examples/CleengJavaAPIBatchExampleAsync```

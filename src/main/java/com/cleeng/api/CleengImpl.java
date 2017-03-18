@@ -1,13 +1,14 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.cleeng.api.domain.async.*;
+import com.google.gson.*;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
 
@@ -593,6 +594,42 @@ public class CleengImpl implements Cleeng {
 			request.data = new JSONRPCRequest("getAccessStatusForDevice", request.input);
 		}
 		this.client.invokeAsync(requests);
+	}
+
+	public void invokeBatchAsync(BatchAsyncRequest batch) throws IOException, InterruptedException {
+		this.client.invokeBatchAsync(batch, this.platformUrl);
+	}
+
+	public BatchResponse invokeBatch(BatchRequest batch) throws IOException {
+		final ResponseMapper mapper = new ResponseMapper();
+		final String response = this.client.invokeBatch(batch, this.platformUrl);
+		final BatchResponse batchResponse = new BatchResponse();
+		final JsonParser parser = new JsonParser();
+		final JsonArray o = parser.parse(response).getAsJsonArray();
+		for (int i = 0; i < o.size(); i++) {
+			JsonElement element = o.get(i);
+			for (int j = 0; j < batch.getRequests().size(); j++) {
+				JSONRPCRequest r = (JSONRPCRequest) batch.getRequests().get(j);
+				if (element.isJsonObject()) {
+					JsonObject res = element.getAsJsonObject();
+					if (res.get("id").getAsString().equals(r.id)) {
+						String responseTypeName = mapper.map(r.method);
+						if (responseTypeName != null) {
+							try {
+								System.out.println("Processing " + responseTypeName);
+								Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
+								batchResponse.responses.add(payload);
+							} catch (ClassNotFoundException e) {
+								System.out.println("Class not found " + e);
+							}
+						} else {
+							System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());
+						}
+					}
+				}
+			}
+		}
+		return batchResponse;
 	}
 
 	private void initProps(String propertiesPath) {

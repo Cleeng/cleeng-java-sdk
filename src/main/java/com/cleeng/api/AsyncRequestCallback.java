@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
 
-    private Gson gson;
+    protected Gson gson;
 
     public AsyncRequestCallback(Class<T> responseClass) {
         this.gson = new GsonBuilder().create();
@@ -34,9 +34,9 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
         return this._countdownLatch;
     }
 
-    private String _response;
+    protected String _response;
 
-    private Class<T> _responseClass;
+    protected Class<T> _responseClass;
 
     public T getResponse() {
         return gson.fromJson( this._response, this._responseClass );
