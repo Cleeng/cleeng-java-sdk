@@ -1,4 +1,4 @@
-package com.cleeng.api.domain.async;
+package com.cleeng.api.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package com.cleeng.api;
 
+import com.cleeng.api.domain.BatchRequest;
 import com.cleeng.api.domain.async.AsyncRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +22,6 @@ import org.asynchttpclient.*;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -30,7 +30,11 @@ public class HttpClient {
 
     public Config config;
 
-    public synchronized String invoke(String endpoint, Serializable request) throws IOException {
+    public synchronized String invokeBatch(BatchRequest request, String platformUrl) throws IOException {
+        return this.invoke(platformUrl, request.getRequests());
+    }
+
+    public synchronized String invoke(String endpoint, Object request) throws IOException {
         final StandardHttpRequestRetryHandler retryHandler =
                 new StandardHttpRequestRetryHandler(this.config.retryCount, true)
                 {
