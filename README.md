@@ -27,7 +27,7 @@ Determines whether to block the code execution until request completes. This set
 # Example usage with synchronous/blocking method call
 ```
 // Initialize API with the config.properties path. As an example, the code below overrides the retry count and connect timeout settings.
-    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+    Cleeng api = return new CleengBuilder("IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
         .setPropertiesPath("src/main/resources/config.properties")
         .setConnectTimeout(200)
   		.setRetryCount(20)
@@ -55,7 +55,7 @@ Determines whether to block the code execution until request completes. This set
 # Example usage with asynchronous/non blocking method call
 ```
 // Initialize API
-    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+    Cleeng api = return new CleengBuilder("IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
         .setPropertiesPath("src/main/resources/config.properties")
         .build();
 
@@ -86,7 +86,7 @@ Determines whether to block the code execution until request completes. This set
 # Example asynchronous/non blocking batch request usage
 ```
 // Initialize API
-    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+    Cleeng api = return new CleengBuilder("IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
         .setPropertiesPath("src/main/resources/config.properties")
         .build();
 
@@ -127,7 +127,7 @@ Determines whether to block the code execution until request completes. This set
 # Example synchronous/blocking batch request usage
 ```
 // Initialize API
-    Cleeng api = return new CleengBuilder("https://sandbox.cleeng.com/api/3.0/json-rpc", "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
+    Cleeng api = return new CleengBuilder("IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30")
         .setPropertiesPath("src/main/resources/config.properties")
         .build();
 
