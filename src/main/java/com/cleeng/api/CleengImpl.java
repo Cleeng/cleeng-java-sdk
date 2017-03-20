@@ -21,6 +21,8 @@ public class CleengImpl implements Cleeng {
 	private Config config;
 
 	public CleengImpl(String platformUrl,
+					  String platformUrlSandbox,
+					  boolean useSandbox,
 					  String publisherToken,
 					  String propertiesPath,
 					  int socketTimeout,
@@ -44,6 +46,13 @@ public class CleengImpl implements Cleeng {
 		if (retryCount > 0) {
 			this.config.retryCount = retryCount;
 		}
+		if (platformUrl != null) {
+			this.config.platformUrl = platformUrl;
+		}
+		if (platformUrlSandbox != null) {
+			this.config.platformUrlSandbox = platformUrlSandbox;
+		}
+		this.config.useSandbox = useSandbox;
 		if (useNonBlockingMode != -1) {
 			if (useNonBlockingMode == 1) {
 				this.config.useNonBlockingMode = true;
@@ -53,8 +62,8 @@ public class CleengImpl implements Cleeng {
 		}
 		this.gson = new GsonBuilder().create();
 		this.client = new HttpClient();
-		this.client.config = config;
-		this.platformUrl = platformUrl;
+		this.client.config = this.config;
+		this.platformUrl = (useSandbox == true) ? this.config.platformUrlSandbox : this.config.platformUrl;
 		this.publisherToken = publisherToken;
 	}
 
@@ -659,6 +668,8 @@ public class CleengImpl implements Cleeng {
 
 			}
 			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
+			this.config.platformUrl = properties.getProperty("platformUrl");
+			this.config.platformUrlSandbox = properties.getProperty("platformUrlSandbox");
 		} catch (IOException e) {
 			System.out.println("Config file not found or invalid.");
 		} finally {
