@@ -11,6 +11,8 @@ connectTimeout=400
 requestTimeout=3000
 retryCount=10
 useNonBlockingMode=true
+platformUrl=https://cleeng.com/api/3.0/json-rpc
+platformUrlSandbox=https://sandbox.cleeng.com/api/3.0/json-rpc
 ```
 ## socketTimeout
 Defines the socket timeout in milliseconds, which is the timeout for waiting for data or, put differently, a maximum period inactivity between two consecutive data packets). This configuration setting only applies to synchronous method calls.
@@ -22,6 +24,10 @@ Determines the maximum time in millisecond the callback waits until the response
 Determines the number of time the library will retry when an exception is throw by the remote http server. This configuration setting applies to both synchronous and asynchronous method calls.
 ## useNonBlockingMode
 Determines whether to block the code execution until request completes. This setting only applies to asynchronous methods, as synchronous ones are blocking only.
+## platformUrl
+Determines the URL of the production platform.
+## platformUrlSandbox
+Determines the URL of the sandbox platform.
 
 ---
 # Example usage with synchronous/blocking method call
