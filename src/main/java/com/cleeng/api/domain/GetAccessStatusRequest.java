@@ -1,11 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class GetAccessStatusRequest extends JSONRPCMessage {
-
-    public String method;
-    public GetAccessStatusParams params;
+public class GetAccessStatusRequest extends JSONRPCRequest {
 
     public GetAccessStatusRequest() {
 

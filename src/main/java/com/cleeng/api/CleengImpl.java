@@ -1,13 +1,14 @@
 package com.cleeng.api;
 
 import com.cleeng.api.domain.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.cleeng.api.domain.async.*;
+import com.google.gson.*;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,6 +21,8 @@ public class CleengImpl implements Cleeng {
 	private Config config;
 
 	public CleengImpl(String platformUrl,
+					  String platformUrlSandbox,
+					  boolean useSandbox,
 					  String publisherToken,
 					  String propertiesPath,
 					  int socketTimeout,
@@ -43,6 +46,13 @@ public class CleengImpl implements Cleeng {
 		if (retryCount > 0) {
 			this.config.retryCount = retryCount;
 		}
+		if (platformUrl != null) {
+			this.config.platformUrl = platformUrl;
+		}
+		if (platformUrlSandbox != null) {
+			this.config.platformUrlSandbox = platformUrlSandbox;
+		}
+		this.config.useSandbox = useSandbox;
 		if (useNonBlockingMode != -1) {
 			if (useNonBlockingMode == 1) {
 				this.config.useNonBlockingMode = true;
@@ -52,8 +62,8 @@ public class CleengImpl implements Cleeng {
 		}
 		this.gson = new GsonBuilder().create();
 		this.client = new HttpClient();
-		this.client.config = config;
-		this.platformUrl = platformUrl;
+		this.client.config = this.config;
+		this.platformUrl = (useSandbox == true) ? this.config.platformUrlSandbox : this.config.platformUrl;
 		this.publisherToken = publisherToken;
 	}
 
@@ -595,6 +605,42 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public void invokeBatchAsync(BatchAsyncRequest batch) throws IOException, InterruptedException {
+		this.client.invokeBatchAsync(batch, this.platformUrl);
+	}
+
+	public BatchResponse invokeBatch(BatchRequest batch) throws IOException {
+		final ResponseMapper mapper = new ResponseMapper();
+		final String response = this.client.invokeBatch(batch, this.platformUrl);
+		final BatchResponse batchResponse = new BatchResponse();
+		final JsonParser parser = new JsonParser();
+		final JsonArray o = parser.parse(response).getAsJsonArray();
+		for (int i = 0; i < o.size(); i++) {
+			JsonElement element = o.get(i);
+			for (int j = 0; j < batch.getRequests().size(); j++) {
+				JSONRPCRequest r = (JSONRPCRequest) batch.getRequests().get(j);
+				if (element.isJsonObject()) {
+					JsonObject res = element.getAsJsonObject();
+					if (res.get("id").getAsString().equals(r.id)) {
+						String responseTypeName = mapper.map(r.method);
+						if (responseTypeName != null) {
+							try {
+								System.out.println("Processing " + responseTypeName);
+								Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
+								batchResponse.responses.add(payload);
+							} catch (ClassNotFoundException e) {
+								System.out.println("Class not found " + e);
+							}
+						} else {
+							System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());
+						}
+					}
+				}
+			}
+		}
+		return batchResponse;
+	}
+
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();
 		InputStream input = null;
@@ -622,6 +668,8 @@ public class CleengImpl implements Cleeng {
 
 			}
 			this.config.useNonBlockingMode = Boolean.parseBoolean(properties.getProperty("useNonBlockingMode"));
+			this.config.platformUrl = properties.getProperty("platformUrl");
+			this.config.platformUrlSandbox = properties.getProperty("platformUrlSandbox");
 		} catch (IOException e) {
 			System.out.println("Config file not found or invalid.");
 		} finally {

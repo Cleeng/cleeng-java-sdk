@@ -1,11 +1,8 @@
 package com.cleeng.api.domain;
 
-import org.jsonrpc.JSONRPCMessage;
+import org.jsonrpc.JSONRPCRequest;
 
-public class ListRequest extends JSONRPCMessage {
-
-    public String method;
-    public ListParams params;
+public class ListRequest extends JSONRPCRequest {
 
     public ListRequest(String method, ListParams params) {
         super("1", "2.0");

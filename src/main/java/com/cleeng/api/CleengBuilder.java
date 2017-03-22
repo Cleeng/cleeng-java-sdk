@@ -8,11 +8,12 @@ public class CleengBuilder {
     private int requestTimeout = -1;
     private int retryCount = 0;
     private String platformUrl;
+    private String platformUrlSandbox;
     private String publisherToken;
     private int useNonBlockingMode = 1;
+    private boolean useSandbox = false;
 
-    public CleengBuilder(String platformUrl, String publisherToken) {
-        this.platformUrl = platformUrl;
+    public CleengBuilder(String publisherToken) {
         this.publisherToken = publisherToken;
     }
 
@@ -41,6 +42,21 @@ public class CleengBuilder {
         return this;
     }
 
+    public CleengBuilder setPlatformUrl(String value) {
+        this.platformUrl = value;
+        return this;
+    }
+
+    public CleengBuilder setPlatformUrlSandbox(String value) {
+        this.platformUrlSandbox = value;
+        return this;
+    }
+
+    public CleengBuilder setUseSandbox(boolean value) {
+        this.useSandbox = value;
+        return this;
+    }
+
     /**
      *
      * @param value - indicating whether to block: 0 - block (override properties), 1: do not block (override properties), -1: does not specify (properties still will be used to set this, if not found in properties it will be set to not block)
@@ -53,6 +69,8 @@ public class CleengBuilder {
 
     public Cleeng build() {
         return new CleengImpl(this.platformUrl,
+                this.platformUrlSandbox,
+                this.useSandbox,
                 this.publisherToken,
                 this.propertiesPath,
                 this.socketTimeout,
