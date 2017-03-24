@@ -1,5 +1,6 @@
 # Cleeng Java SDK
 [![Build Status](https://travis-ci.org/Cleeng/cleeng-java-sdk.svg?branch=master)](https://travis-ci.org/Cleeng/cleeng-java-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/Cleeng/cleeng-java-sdk/badge.svg?branch=master)](https://coveralls.io/github/Cleeng/cleeng-java-sdk?branch=master)
 
 Full Java SDK you can find here: https://github.com/Cleeng/cleeng-java-sdk/
 ---
