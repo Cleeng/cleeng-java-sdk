@@ -1,3 +1,5 @@
+[![Cleeng](https://cdn-statics.cleeng.com/branding/images/cleeng-logo.png?v=634f83148f)](http://www.cleeng.com)
+
 # Cleeng Java SDK
 [![Build Status](https://travis-ci.org/Cleeng/cleeng-java-sdk.svg?branch=master)](https://travis-ci.org/Cleeng/cleeng-java-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/Cleeng/cleeng-java-sdk/badge.svg?branch=master)](https://coveralls.io/github/Cleeng/cleeng-java-sdk?branch=master)
