@@ -1,5 +1,5 @@
 # Cleeng Java SDK
-[![Cleeng](https://cdn-statics.cleeng.com/branding/images/cleeng-logo.png?v=634f83148f)](http://www.cleeng.com)
+[![Build Status](https://travis-ci.org/Cleeng/cleeng-java-sdk.svg?branch=master)](https://travis-ci.org/Cleeng/cleeng-java-sdk)
 
 Full Java SDK you can find here: https://github.com/Cleeng/cleeng-java-sdk/
 ---
