@@ -31,7 +31,6 @@ public class CleengImplTest {
     @Before
     public void setUp() throws MalformedURLException {
         this.api = CleengFactory.createSandboxApi(publisherToken);
-        System.out.println("Setting up...");
     }
 
     @After
