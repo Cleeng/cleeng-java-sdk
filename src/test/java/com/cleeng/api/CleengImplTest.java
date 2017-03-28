@@ -34,6 +34,7 @@ public class CleengImplTest {
 
     @After
     public void tearDown() {
+
         this.api = null;
     }
 
