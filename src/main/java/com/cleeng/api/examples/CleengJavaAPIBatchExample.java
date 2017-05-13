@@ -3,10 +3,14 @@ package com.cleeng.api.examples;
 import com.cleeng.api.Cleeng;
 import com.cleeng.api.CleengFactory;
 import com.cleeng.api.domain.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
 public class CleengJavaAPIBatchExample {
+
+    private static final Logger logger = LogManager.getLogger(CleengJavaAPIBatchExample.class);
 
     public static void main(String args[]) throws Exception {
 
@@ -36,6 +40,6 @@ public class CleengJavaAPIBatchExample {
 
         BatchResponse response = api.invokeBatch(batch);
 
-        System.out.println("Done. Number of responses available: " + response.responses.size());
+        logger.info("Done. Number of responses available: " + response.responses.size());
     }
 }

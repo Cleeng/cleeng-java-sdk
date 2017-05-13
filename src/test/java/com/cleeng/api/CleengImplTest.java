@@ -1279,7 +1279,6 @@ public class CleengImplTest {
 
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
-        System.out.println("Awaiting asynchronous response(s): " + (long) sleepTime + " [millisec]");
         return (long) sleepTime;
     }
 }
