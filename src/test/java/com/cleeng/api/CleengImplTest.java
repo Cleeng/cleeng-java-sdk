@@ -22,10 +22,11 @@ import static org.junit.Assert.assertFalse;
 public class CleengImplTest {
 
     private String publisherToken = "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30";
+    private String customerToken = "H1vV9WyS18ETxUTuItOnoCcukoQFfyF_DWaBDw9nU3JRvIYm";
 
     private Cleeng api;
 
-    private double sleepRatio = 0.8;
+    private double sleepRatio = 1;
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -897,7 +898,7 @@ public class CleengImplTest {
 
     @Test
     public void testGetAccessStatus() throws IOException {
-        final GetAccessStatusResponse response = this.api.getAccessStatus("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71");
+        final GetAccessStatusResponse response = this.api.getAccessStatus(this.customerToken, "A334745341_PL", "78.129.213.71");
         assertNotNull(response.result);
         assertEquals("Access granted should match", false, response.result.accessGranted);
         assertEquals("ExpiresAt should match", 0, response.result.expiresAt);
@@ -908,8 +909,8 @@ public class CleengImplTest {
     public void testGetAccessStatusAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<GetAccessStatusResponse> callback = new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncGetAccessStatusRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", callback));
-        requests.add(new AsyncGetAccessStatusRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "78.129.213.71", new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class)));
+        requests.add(new AsyncGetAccessStatusRequest(this.customerToken, "A334745341_PL", "78.129.213.71", callback));
+        requests.add(new AsyncGetAccessStatusRequest(this.customerToken, "A334745341_PL", "78.129.213.71", new AsyncRequestCallback<GetAccessStatusResponse>(GetAccessStatusResponse.class)));
         this.api.getAccessStatusAsync(requests);
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessStatusResponse response = callback.getResponse();
@@ -919,7 +920,7 @@ public class CleengImplTest {
 
     @Test
     public void testGetAccessibleTags() throws IOException {
-        final GetAccessibleTagsResponse response = this.api.getAccessibleTags(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI");
+        final GetAccessibleTagsResponse response = this.api.getAccessibleTags(this.publisherToken, this.customerToken);
         assertNotNull(response.result);
         assertNotNull(response.result.tags);
     }
@@ -928,9 +929,9 @@ public class CleengImplTest {
     public void testGetAccessibleTagsAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<GetAccessibleTagsResponse> callback = new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
-        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
-        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, "Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, this.customerToken, callback));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, this.customerToken, new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
+        requests.add(new AsyncGetAccessibleTagsRequest(this.publisherToken, this.customerToken, new AsyncRequestCallback<GetAccessibleTagsResponse>(GetAccessibleTagsResponse.class)));
         this.api.getAccessibleTagsAsync(requests);
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessibleTagsResponse response = callback.getResponse();
@@ -940,7 +941,7 @@ public class CleengImplTest {
 
     @Test
     public void testGetCustomer() throws IOException {
-        final GetCustomerResponse response = this.api.getCustomer("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI");
+        final GetCustomerResponse response = this.api.getCustomer(this.customerToken);
         assertNotNull(response.result);
     }
 
@@ -948,14 +949,15 @@ public class CleengImplTest {
     public void testGetCustomerAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<GetCustomerResponse> callback = new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", callback));
-        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
-        requests.add(new AsyncRequest("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
+        requests.add(new AsyncRequest(this.customerToken, callback));
+        requests.add(new AsyncRequest(this.customerToken, new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
+        requests.add(new AsyncRequest(this.customerToken, new AsyncRequestCallback<GetCustomerResponse>(GetCustomerResponse.class)));
         this.api.getCustomerAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
+        long sleepTime = getSleepTime(requests.size());
+        TimeUnit.MILLISECONDS.sleep(sleepTime);
         final GetCustomerResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
-        assertEquals("List should contain items", "US", response.result.country);
+        assertEquals("List should contain items", "PL", response.result.country);
     }
 
     @Test
@@ -1119,6 +1121,7 @@ public class CleengImplTest {
         final UUID uuid = UUID.randomUUID();
         final CustomerData customerData = new CustomerData(uuid.toString() + "@domain.com", "en_US", "GBP", "PL", "xxxxxxxxxxxxx");
         final TokenResponse response = this.api.registerCustomer(customerData);
+        this.customerToken = response.result.token;
         assertNotNull(response);
         assertTrue(response.result.token.length() > 0);
     }
@@ -1189,7 +1192,7 @@ public class CleengImplTest {
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
         this.api.listOfferIdsByVideoIdAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(4000);
+        TimeUnit.MILLISECONDS.sleep(8000);
         final ListOfferIdsByVideoIdResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue(response.result.offerIds.size() > 0);
@@ -1197,15 +1200,15 @@ public class CleengImplTest {
 
     @Test
     public void testGetAccessStatusForDevice() throws IOException {
-        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
+        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice(this.customerToken, "A334745341_PL", "1", "roku");
         assertNotNull(response);
         assertFalse(response.result.accessGranted);
     }
 
     @Test
     public void testGetAccessStatusForDeviceAsync() throws IOException, InterruptedException {
-        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "1", "roku");
-        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams("Apx8VULFtQJgyQmuM4Jha3uLIJJQCmfnEGwFnxIFiBlPxGcI", "A334745341_PL", "2", "roku");
+        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "1", "roku");
+        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "2", "roku");
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback2 = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
