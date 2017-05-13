@@ -1186,6 +1186,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListOfferIdsByVideoIdAsync() throws IOException, InterruptedException {
         final VideoIdParams input = new VideoIdParams("7777");
         final AsyncRequestCallback<ListOfferIdsByVideoIdResponse> callback = new AsyncRequestCallback<ListOfferIdsByVideoIdResponse>(ListOfferIdsByVideoIdResponse.class);
