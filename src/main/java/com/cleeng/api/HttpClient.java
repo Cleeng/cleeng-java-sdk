@@ -18,6 +18,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asynchttpclient.*;
 
 import java.io.IOException;
@@ -27,6 +29,8 @@ import java.util.concurrent.*;
 
 @SuppressWarnings("unchecked")
 public class HttpClient {
+
+    private static final Logger logger = LogManager.getLogger(HttpClient.class);
 
     public Config config;
 
@@ -69,7 +73,7 @@ public class HttpClient {
                     StatusLine statusLine = httpResponse.getStatusLine();
                     HttpEntity entity = httpResponse.getEntity();
                     if (statusLine.getStatusCode() >= 300) {
-                        System.out.println(" Server returned response code: " + statusLine.getStatusCode() + " reason: " + statusLine.getReasonPhrase());
+                        logger.error(" Server returned response code: " + statusLine.getStatusCode() + " reason: " + statusLine.getReasonPhrase());
                         throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
                     }
                     if (entity == null) {

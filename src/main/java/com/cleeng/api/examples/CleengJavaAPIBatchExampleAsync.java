@@ -5,11 +5,15 @@ import com.cleeng.api.Cleeng;
 import com.cleeng.api.CleengFactory;
 import com.cleeng.api.domain.*;
 import com.cleeng.api.domain.BatchResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class CleengJavaAPIBatchExampleAsync {
+
+    private static final Logger logger = LogManager.getLogger(CleengJavaAPIBatchExampleAsync.class);
 
     public static void main(String args[]) throws Exception {
 
@@ -43,7 +47,7 @@ public class CleengJavaAPIBatchExampleAsync {
 
         final BatchResponse response = batch.getResponse();
 
-        System.out.println("Done. Number of responses available: " + response.responses.size());
+        logger.info("Done. Number of responses available: " + response.responses.size());
 
         System.exit(0);
     }

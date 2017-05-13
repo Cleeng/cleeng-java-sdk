@@ -3,6 +3,8 @@ package com.cleeng.api;
 import com.cleeng.api.domain.*;
 import com.cleeng.api.domain.async.*;
 import com.google.gson.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsonrpc.JSONRPCRequest;
 
 import java.io.FileInputStream;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class CleengImpl implements Cleeng {
+
+	private static final Logger logger = LogManager.getLogger(CleengImpl.class);
 
 	private String publisherToken;
 	private String platformUrl;
@@ -625,14 +629,14 @@ public class CleengImpl implements Cleeng {
 						String responseTypeName = mapper.map(r.method);
 						if (responseTypeName != null) {
 							try {
-								System.out.println("Processing " + responseTypeName);
+								logger.info("Processing " + responseTypeName);
 								Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
 								batchResponse.responses.add(payload);
 							} catch (ClassNotFoundException e) {
-								System.out.println("Class not found " + e);
+								logger.error("Class not found " + e);
 							}
 						} else {
-							System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());
+							logger.warn("Mapper did not contain a response type for " + r.getClass().getTypeName());
 						}
 					}
 				}
@@ -671,7 +675,7 @@ public class CleengImpl implements Cleeng {
 			this.config.platformUrl = properties.getProperty("platformUrl");
 			this.config.platformUrlSandbox = properties.getProperty("platformUrlSandbox");
 		} catch (IOException e) {
-			System.out.println("Config file not found or invalid.");
+			logger.error("Config file not found or invalid.");
 		} finally {
 			if (input != null) {
 				try {

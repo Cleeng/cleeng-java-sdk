@@ -2,6 +2,8 @@ package com.cleeng.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.Response;
 
@@ -10,6 +12,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
 public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
+
+    private static final Logger logger = LogManager.getLogger(AsyncRequestCallback.class);
 
     protected Gson gson;
 
@@ -45,7 +49,7 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
     @Override
     public boolean complete(final Response response) {
         final boolean out = super.complete(response);
-        System.out.println("Completed async request: " + response.getStatusCode() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
+        logger.info("Completed async request: " + response.getStatusCode() + " count: " + this._countdownLatch.getCount() + " response: " + this._responseClass.getCanonicalName());
         try {
             this._response = response.getResponseBody();
         } catch (Exception e) {
@@ -54,10 +58,10 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
         if (this.useNonBlockingMode == true) {
             if (this._countdownLatch.getCount() == 0) {
                 try {
-                    System.out.println("Closing connection...");
+                    logger.info("Closing connection...");
                     this._client.close();
                 } catch (IOException e) {
-                    System.out.println("Failed to close http connection...");
+                    logger.error("Failed to close http connection...");
                 }
             }
         }
@@ -67,7 +71,7 @@ public class AsyncRequestCallback<T> extends CompletableFuture<Response> {
 
     @Override
     public boolean completeExceptionally(Throwable ex) {
-        System.out.println("Request completed with exception " + ex);
+        logger.error("Request completed with exception " + ex);
         return super.completeExceptionally(ex);
     }
 

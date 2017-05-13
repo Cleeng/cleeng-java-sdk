@@ -6,12 +6,16 @@ import com.cleeng.api.Cleeng;
 import com.cleeng.api.CleengFactory;
 import com.cleeng.api.domain.OfferResponse;
 import com.cleeng.api.domain.SubscriptionOfferData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 class CleengJavaAPIExampleAsync {
+
+    private static final Logger logger = LogManager.getLogger(CleengJavaAPIExampleAsync.class);
 
     public static void main(String args[]) throws Exception {
 
@@ -40,7 +44,7 @@ class CleengJavaAPIExampleAsync {
 
         Thread.sleep(2000);
 
-        System.out.println("Done. Created offer id: " + callback.getResponse().result.id);
+        logger.info("Done. Created offer id: " + callback.getResponse().result.id);
 
         System.exit(0);
     }
