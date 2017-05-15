@@ -1179,6 +1179,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListOfferIdsByVideoId() throws IOException {
         final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");
         assertNotNull(response);
