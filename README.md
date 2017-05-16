@@ -33,6 +33,43 @@ Determines the URL of the production platform.
 Determines the URL of the sandbox platform.
 
 ---
+# Logging
+Cleeng Java SDK depends on Log4J in order to provide logging capability. It is configured to log events to both the system console and cleeng.log file, which can be found in a folder containing the SDK build.
+Log4J configuration for the SDK can be found in 'src/main/resources'. Feel free to remove ```<AppenderRef ref="File"/>``` elements in order to stop logging to a file.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="filename">target/cleeng.log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="File" fileName="${filename}">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
+---
 # Example usage with synchronous/blocking method call
 ```
 // Initialize API with the config.properties path. As an example, the code below overrides the retry count and connect timeout settings.
