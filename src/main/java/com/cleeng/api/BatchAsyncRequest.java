@@ -5,6 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsonrpc.JSONRPCMessage;
 import org.jsonrpc.JSONRPCRequest;
 
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
+
+    private static final Logger logger = LogManager.getLogger(BatchAsyncRequest.class);
 
     private List<JSONRPCMessage> requests;
 
@@ -58,14 +62,14 @@ public class BatchAsyncRequest extends AsyncRequestCallback<BatchResponse> {
                         String responseTypeName = this.mapper.map(r.method);
                         if (responseTypeName != null) {
                             try {
-                                System.out.println("Processing " + responseTypeName);
+                                logger.info("Processing " + responseTypeName);
                                 Serializable payload = (Serializable) this.gson.fromJson(res, Class.forName(responseTypeName));
                                 batchResponse.responses.add(payload);
                             } catch (ClassNotFoundException e) {
-                                System.out.println("Class not found " + e);
+                                logger.error("Class not found " + e);
                             }
                         } else {
-                            System.out.println("Mapper did not contain a response type for " + r.getClass().getTypeName());
+                            logger.warn("Mapper did not contain a response type for " + r.getClass().getTypeName());
                         }
                     }
                 }

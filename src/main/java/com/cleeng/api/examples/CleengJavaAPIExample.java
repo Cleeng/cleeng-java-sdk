@@ -6,8 +6,12 @@ import java.util.Arrays;
 import com.cleeng.api.*;
 import com.cleeng.api.domain.OfferResponse;
 import com.cleeng.api.domain.SubscriptionOfferData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 class CleengJavaAPIExample {
+
+    private static final Logger logger = LogManager.getLogger(CleengJavaAPIExample.class);
 
     public static void main(String args[]) throws Exception {
 
@@ -29,6 +33,6 @@ class CleengJavaAPIExample {
         );
         final OfferResponse response = api.createSubscriptionOffer(offerData);
 
-        System.out.println("Done. Created offer id: " + response.result.id);
+        logger.info("Done. Created offer id: " + response.result.id);
     }
 }
