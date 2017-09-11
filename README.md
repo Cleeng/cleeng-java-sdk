@@ -232,3 +232,14 @@ There are a few example Java programs in the jar file, that you can run as follo
 
 ```java -cp path/to/cleeng-java-sdk-{version}-jar-with-dependencies.jar com/cleeng/api/examples/CleengJavaAPIBatchExampleAsync```
 
+# Import Cleeng SDK library to your Maven project
+Cleeng SDK library is available remotely on Central Repository. To use it in your project add following code to your pom.xml file in ```<dependencies>``` section:
+```
+<dependency>
+    <groupId>com.cleeng</groupId>
+    <artifactId>cleeng-java-sdk</artifactId>
+    <version>2.4.0</version>
+</dependency>
+```
+After adding that part, rebuild or refresh your project to be sure that Cleeng SDK repository has been downloaded.
+If your IDE enables auto-import, you can instantly use library in the whole project. Otherwise, it has to be imported into java file manually.
