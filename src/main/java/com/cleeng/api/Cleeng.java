@@ -369,6 +369,25 @@ public interface Cleeng {
 	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates user's email.<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @param newEmail new email
+	 * @return
+	 */
+	BooleanResponse updateCustomerEmail(String customerEmail, String newEmail) throws IOException;
+
+	/**
+	 * Updates customer email (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateCustomerEmailAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Generates a customer token from facebook.<br/>
 	 * <br/>
 	 *

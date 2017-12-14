@@ -388,6 +388,24 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public BooleanResponse updateCustomerEmail(String customerEmail, String newEmail) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("updateCustomerEmail", new UpdateCustomerEmailParams(this.publisherToken, customerEmail, newEmail))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void updateCustomerEmailAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("updateCustomerEmail", new UpdateCustomerEmailParams(this.publisherToken,
+				((UpdateCustomerEmailParams) ((AsyncRequest) request).input).customerEmail,
+				((UpdateCustomerEmailParams) ((AsyncRequest) request).input).newEmail));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public TokenResponse generateCustomerTokenFromFacebook(String facebookId) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
