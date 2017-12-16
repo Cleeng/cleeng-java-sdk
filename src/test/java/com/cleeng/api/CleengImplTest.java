@@ -830,24 +830,14 @@ public class CleengImplTest {
     }
 
     @Test
-    @Ignore
     public void testUpdateCustomerEmail() throws IOException, InterruptedException {
-        final String customerEmail = "user2@gmail.com";
-        final String newEmail = "john2000doe@domain.com";
-        final BooleanResponse response = this.api.updateCustomerEmail(customerEmail, newEmail);
-        assertNotNull(response);
-        assertNull(response.error);
-        assertTrue(response.result.success);
-    }
-
-    @Test
-    @Ignore
-    public void testUpdateCustomerEmailAsync() throws IOException, InterruptedException {
-        final String customerEmail = "user3@gmail.com";
-        final String newEmail = "user2@gmail.com";
+        final BooleanResponse syncResponse = this.api.updateCustomerEmail("john2000doe@domain.com", "john2002doe@domain.com");
+        assertNotNull(syncResponse);
+        assertNull(syncResponse.error);
+        assertTrue(syncResponse.result.success);
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncRequest(new UpdateCustomerEmailParams(customerEmail, newEmail), callback));
+        requests.add(new AsyncRequest(new UpdateCustomerEmailParams("john2002doe@domain.com", "john2000doe@domain.com"), callback));
         this.api.updateCustomerEmailAsync(requests);
         TimeUnit.SECONDS.sleep(5);
         final BooleanResponse response = callback.getResponse();
