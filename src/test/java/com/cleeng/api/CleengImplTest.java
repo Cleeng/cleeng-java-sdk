@@ -830,6 +830,21 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateCustomerEmail() throws IOException, InterruptedException {
+        final BooleanResponse syncResponse = this.api.updateCustomerEmail("john2000doe@domain.com", "john2002doe@domain.com");
+        assertNotNull(syncResponse);
+        assertNull(syncResponse.error);
+        assertTrue(syncResponse.result.success);
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(new UpdateCustomerEmailParams("john2002doe@domain.com", "john2000doe@domain.com"), callback));
+        this.api.updateCustomerEmailAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final BooleanResponse response = callback.getResponse();
+        assertTrue(response.result.success);
+    }
+
+    @Test
     public void testRequestPasswordReset() throws IOException {
         final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
         assertNotNull(response);
