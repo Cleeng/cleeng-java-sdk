@@ -1224,10 +1224,9 @@ public class CleengImplTest {
 
     @Test
     public void testGetPaymentDetails() throws IOException {
-        final String userEmail = "johndoe@gmail.com";
-        //TODO: this needs to be purchased offer
-        final String offerId = "S441150250_PL";
-        final PaymentDetailsResponse response = this.api.getPaymentDetails(userEmail, offerId);
+        String offerId = "S972283213_PL";
+        String customerEmail = "john2001doe@domain.com";
+        final PaymentDetailsResponse response = this.api.getPaymentDetails(customerEmail, offerId);
         assertNotNull(response);
     }
 
