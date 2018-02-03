@@ -845,6 +845,16 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
+
+        String offerId = "S972283213_PL";
+        String customerEmail = "john2001doe@domain.com";
+        UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1517356800");
+        final UpdateCustomerSubscriptionResponse response = this.api.updateCustomerSubscription(offerId, customerEmail, offerData);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
     public void testRequestPasswordReset() throws IOException {
         final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
         assertNotNull(response);
