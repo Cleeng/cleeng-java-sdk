@@ -1223,6 +1223,15 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGetPaymentDetails() throws IOException {
+        final String userEmail = "johndoe@gmail.com";
+        //TODO: this needs to be purchased offer
+        final String offerId = "S441150250_PL";
+        final PaymentDetailsResponse response = this.api.getPaymentDetails(userEmail, offerId);
+        assertNotNull(response);
+    }
+
+    @Test
     @Ignore
     public void testListOfferIdsByVideoId() throws IOException {
         final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");
