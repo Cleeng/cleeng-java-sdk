@@ -959,7 +959,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessStatusResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
-        assertTrue("List should contain items", response.result.accessGranted == false);
+        assertTrue("Access should be granted", response.result.accessGranted);
     }
 
     @Test
