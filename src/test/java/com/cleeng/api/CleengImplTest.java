@@ -944,8 +944,8 @@ public class CleengImplTest {
     public void testGetAccessStatus() throws IOException {
         final GetAccessStatusResponse response = this.api.getAccessStatus(this.customerToken, "A334745341_PL", "78.129.213.71");
         assertNotNull(response.result);
-        assertEquals("Access granted should match", false, response.result.accessGranted);
-        assertEquals("ExpiresAt should match", 0, response.result.expiresAt);
+        assertEquals("Access granted should match", true, response.result.accessGranted);
+        assertEquals("ExpiresAt should match", 1519237275, response.result.expiresAt);
         assertEquals("PurchasedDirectly should match", false, response.result.purchasedDirectly);
     }
 
