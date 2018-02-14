@@ -862,6 +862,18 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateCustomerSubscriptionAsync() throws IOException, InterruptedException {
+        final AsyncRequestCallback<UpdateCustomerSubscriptionResponse> callback = new AsyncRequestCallback<UpdateCustomerSubscriptionResponse>(UpdateCustomerSubscriptionResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(new UpdateCustomerSubscriptionParams("john2001doe@domain.com", "S972283213_PL", new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800")), callback));
+        this.api.updateCustomerSubscriptionAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final UpdateCustomerSubscriptionResponse response = callback.getResponse();
+        Assert.assertNotNull(response);
+        Assert.assertEquals("Response status should be cancelled", "cancelled", response.result.status);
+    }
+
+    @Test
     public void testRequestPasswordReset() throws IOException {
         final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
         assertNotNull(response);

@@ -13,8 +13,15 @@ public class UpdateCustomerSubscriptionParams implements Serializable {
                                             String customerEmail,
                                             String offerId,
                                             UpdateCustomerSubscriptionOfferData subscriptionData) {
-
         this.publisherToken = publisherToken;
+        this.customerEmail = customerEmail;
+        this.offerId = offerId;
+        this.subscriptionData = subscriptionData;
+    }
+
+    public UpdateCustomerSubscriptionParams(String customerEmail,
+                                            String offerId,
+                                            UpdateCustomerSubscriptionOfferData subscriptionData) {
         this.customerEmail = customerEmail;
         this.offerId = offerId;
         this.subscriptionData = subscriptionData;
