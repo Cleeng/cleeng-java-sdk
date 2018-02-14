@@ -845,13 +845,20 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
+    public void testGenerateCheckoutUrlForSubscription() throws IOException {
+        final UrlResponse response = this.api.generateCheckoutUrl("john2001doe@domain.com", new FlowDescription("S972283213_PL", "http://www.someurl.com"));
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
 
+    @Test
+    public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
         String offerId = "S972283213_PL";
         String customerEmail = "john2001doe@domain.com";
-        UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1517356800");
+        UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800");
         final UpdateCustomerSubscriptionResponse response = this.api.updateCustomerSubscription(offerId, customerEmail, offerData);
         Assert.assertNotNull(response);
+        Assert.assertEquals("Response status should be cancelled", "cancelled", response.result.status);
     }
 
     @Test
