@@ -1,3 +1,3 @@
 language: java
 jdk: oraclejdk8
-script: "mvn clean test jacoco:report coveralls:report -Dgpg.skip=true"
+script: "mvn clean test jacoco:report coveralls:report"

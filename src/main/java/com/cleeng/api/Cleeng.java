@@ -369,6 +369,26 @@ public interface Cleeng {
 	public void updateCustomerPasswordAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Updates customer's subscription.<br/>
+	 * <br/>
+	 *
+	 * @param offerId offer Id
+	 * @param customerEmail customer email
+	 * @param offerData offer data
+	 * @return
+	 */
+	UpdateCustomerSubscriptionResponse updateCustomerSubscription(String offerId, String customerEmail, UpdateCustomerSubscriptionOfferData offerData) throws IOException;
+
+	/**
+	 * Updates customer's subscription (async).<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void updateCustomerSubscriptionAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Updates user's email.<br/>
 	 * <br/>
 	 *
