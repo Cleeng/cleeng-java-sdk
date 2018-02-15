@@ -1261,7 +1261,7 @@ public class CleengImplTest {
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
