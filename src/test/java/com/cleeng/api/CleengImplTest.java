@@ -1245,31 +1245,29 @@ public class CleengImplTest {
     }
 
     @Test
-    @Ignore
     public void testGetAccessStatusForDevice() throws IOException {
-        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice(this.customerToken, "A334745341_PL", "1", "roku");
+        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice(this.customerToken, "S222742070_PL", "1", "roku");
         assertNotNull(response);
-        assertFalse(response.result.accessGranted);
+        assertTrue(response.result.accessGranted);
     }
 
     @Test
-    @Ignore
     public void testGetAccessStatusForDeviceAsync() throws IOException, InterruptedException {
-        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "1", "roku");
-        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "2", "roku");
+        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams(this.customerToken, "S222742070_PL", "1", "roku");
+        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams(this.customerToken, "S222742070_PL", "1", "roku");
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback2 = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
+        TimeUnit.SECONDS.sleep(10);
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
         assertNotNull(response2);
-        assertFalse(response.result.accessGranted);
-        assertFalse(response2.result.accessGranted);
+        assertTrue(response.result.accessGranted);
+        assertTrue(response2.result.accessGranted);
     }
 
     @Test
