@@ -1224,9 +1224,26 @@ public class CleengImplTest {
 
     @Test
     public void testListPaymentDetails() throws IOException {
-        String offerId = "S972283213_PL";
         String customerEmail = "john2001doe@domain.com";
         final PaymentDetailsResponse response = this.api.listPaymentDetails(customerEmail);
+        assertNotNull(response);
+        assertEquals("Result should be an array of size 1", 1, response.result.size());
+        assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("paymentGateway should match", "adyen", response.result.get(0).paymentGateway);
+        assertEquals("paymentMethod should match", "paypal", response.result.get(0).paymentMethod);
+        assertEquals("cardExpirationDate should match", "01/50", response.result.get(0).cardExpirationDate);
+        assertEquals("cardLastFourDigits should match", "835774077", response.result.get(0).paymentDetailsId);
+    }
+
+    @Test
+    public void testListPaymentDetailsAsync() throws IOException, InterruptedException {
+        final PaymentDetailsParams input = new PaymentDetailsParams("john2001doe@domain.com");
+        final AsyncRequestCallback<PaymentDetailsResponse> callback = new AsyncRequestCallback<PaymentDetailsResponse>(PaymentDetailsResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.listPaymentDetailsAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final PaymentDetailsResponse response = callback.getResponse();
         assertNotNull(response);
         assertEquals("Result should be an array of size 1", 1, response.result.size());
         assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
