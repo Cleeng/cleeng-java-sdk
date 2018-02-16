@@ -613,20 +613,19 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public PaymentDetailsResponse getPaymentDetails(String userEmail, String offerId) throws IOException {
+	public PaymentDetailsResponse listPaymentDetails(String userEmail) throws IOException {
 		final String response = this.client.invoke(
 			this.platformUrl,
-			new JSONRPCRequest("getPaymentDetails", new PaymentDetailsParams(this.publisherToken, userEmail, offerId))
+			new JSONRPCRequest("listPaymentDetails", new PaymentDetailsParams(this.publisherToken, userEmail))
 		);
 		return gson.fromJson(response, PaymentDetailsResponse.class);
 	}
 
-	public void getPaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+	public void listPaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new JSONRPCRequest("getPaymentDetails", new PaymentDetailsParams(this.publisherToken,
-				((PaymentDetailsParams) ((AsyncRequest) request).input).userEmail,
-				((PaymentDetailsParams) ((AsyncRequest) request).input).offerId));
+			request.data = new JSONRPCRequest("listPaymentDetails", new PaymentDetailsParams(this.publisherToken,
+				((PaymentDetailsParams) ((AsyncRequest) request).input).userEmail));
 		}
 		this.client.invokeAsync(requests);
 	}

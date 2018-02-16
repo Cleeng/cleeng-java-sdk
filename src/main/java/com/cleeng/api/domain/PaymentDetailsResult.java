@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 public class PaymentDetailsResult implements Serializable {
 
-    public String lastFourCardDigits;
-    public String expirationDate;
+    public String paymentDetailsId;
+    public String paymentGateway;
     public String paymentMethod;
+    public String cardExpirationDate;
+    public String cardLastFourDigits;
 
 }

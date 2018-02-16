@@ -6,16 +6,14 @@ public class PaymentDetailsParams implements Serializable {
 
     public String publisherToken;
     public String userEmail;
-    public String offerId;
 
-    public PaymentDetailsParams(String publisherToken, String userEmail, String offerId) {
+    public PaymentDetailsParams(String publisherToken, String userEmail) {
 
         this.publisherToken = publisherToken;
         this.userEmail = userEmail;
-        this.offerId = offerId;
     }
 
-    public static PaymentDetailsParams create(String publisherToken, String userEmail, String offerId) {
-        return new PaymentDetailsParams(publisherToken, userEmail, offerId);
+    public static PaymentDetailsParams create(String publisherToken, String userEmail) {
+        return new PaymentDetailsParams(publisherToken, userEmail);
     }
 }
