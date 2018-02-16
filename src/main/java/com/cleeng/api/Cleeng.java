@@ -613,6 +613,24 @@ public interface Cleeng {
 	void generateMyAccountUrlAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Lists payment details<br/>
+	 * <br/>
+	 *
+	 * @param userEmail user's email
+	 * @return
+	 */
+	PaymentDetailsResponse listPaymentDetails(String userEmail) throws IOException;
+
+	/**
+	 * Lists payment details (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void listPaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Gets offerIds by video id<br/>
 	 * <br/>
 	 *
