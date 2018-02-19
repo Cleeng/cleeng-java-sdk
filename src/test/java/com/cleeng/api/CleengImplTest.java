@@ -845,6 +845,35 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGenerateCheckoutUrlForSubscription() throws IOException {
+        final UrlResponse response = this.api.generateCheckoutUrl("john2001doe@domain.com", new FlowDescription("S972283213_PL", "http://www.someurl.com"));
+        assertNotNull("Response object should not be null", response);
+        assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
+    }
+
+    @Test
+    public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
+        String offerId = "S972283213_PL";
+        String customerEmail = "john2001doe@domain.com";
+        UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800");
+        final UpdateCustomerSubscriptionResponse response = this.api.updateCustomerSubscription(offerId, customerEmail, offerData);
+        Assert.assertNotNull(response);
+        Assert.assertEquals("Response status should be cancelled", "cancelled", response.result.status);
+    }
+
+    @Test
+    public void testUpdateCustomerSubscriptionAsync() throws IOException, InterruptedException {
+        final AsyncRequestCallback<UpdateCustomerSubscriptionResponse> callback = new AsyncRequestCallback<UpdateCustomerSubscriptionResponse>(UpdateCustomerSubscriptionResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(new UpdateCustomerSubscriptionParams("john2001doe@domain.com", "S972283213_PL", new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800")), callback));
+        this.api.updateCustomerSubscriptionAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final UpdateCustomerSubscriptionResponse response = callback.getResponse();
+        Assert.assertNotNull(response);
+        Assert.assertEquals("Response status should be cancelled", "cancelled", response.result.status);
+    }
+
+    @Test
     public void testRequestPasswordReset() throws IOException {
         final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
         assertNotNull(response);
@@ -915,8 +944,8 @@ public class CleengImplTest {
     public void testGetAccessStatus() throws IOException {
         final GetAccessStatusResponse response = this.api.getAccessStatus(this.customerToken, "A334745341_PL", "78.129.213.71");
         assertNotNull(response.result);
-        assertEquals("Access granted should match", false, response.result.accessGranted);
-        assertEquals("ExpiresAt should match", 0, response.result.expiresAt);
+        assertEquals("Access granted should match", true, response.result.accessGranted);
+        assertEquals("ExpiresAt should match", 1519237275, response.result.expiresAt);
         assertEquals("PurchasedDirectly should match", false, response.result.purchasedDirectly);
     }
 
@@ -930,7 +959,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessStatusResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
-        assertTrue("List should contain items", response.result.accessGranted == false);
+        assertTrue("Access should be granted", response.result.accessGranted);
     }
 
     @Test
@@ -951,7 +980,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final GetAccessibleTagsResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
-        assertTrue("List should contain items", response.result.tags.size() == 0);
+        assertTrue("List should contain items", response.result.tags.size() > 0);
     }
 
     @Test
@@ -1194,6 +1223,37 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testListPaymentDetails() throws IOException {
+        String customerEmail = "john2001doe@domain.com";
+        final PaymentDetailsResponse response = this.api.listPaymentDetails(customerEmail);
+        assertNotNull(response);
+        assertEquals("Result should be an array of size 1", 1, response.result.size());
+        assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("paymentGateway should match", "adyen", response.result.get(0).paymentGateway);
+        assertEquals("paymentMethod should match", "paypal", response.result.get(0).paymentMethod);
+        assertEquals("cardExpirationDate should match", "01/50", response.result.get(0).cardExpirationDate);
+        assertEquals("cardLastFourDigits should match", "835774077", response.result.get(0).paymentDetailsId);
+    }
+
+    @Test
+    public void testListPaymentDetailsAsync() throws IOException, InterruptedException {
+        final PaymentDetailsParams input = new PaymentDetailsParams("john2001doe@domain.com");
+        final AsyncRequestCallback<PaymentDetailsResponse> callback = new AsyncRequestCallback<PaymentDetailsResponse>(PaymentDetailsResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.listPaymentDetailsAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final PaymentDetailsResponse response = callback.getResponse();
+        assertNotNull(response);
+        assertEquals("Result should be an array of size 1", 1, response.result.size());
+        assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("paymentGateway should match", "adyen", response.result.get(0).paymentGateway);
+        assertEquals("paymentMethod should match", "paypal", response.result.get(0).paymentMethod);
+        assertEquals("cardExpirationDate should match", "01/50", response.result.get(0).cardExpirationDate);
+        assertEquals("cardLastFourDigits should match", "835774077", response.result.get(0).paymentDetailsId);
+    }
+
+    @Test
     @Ignore
     public void testListOfferIdsByVideoId() throws IOException {
         final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");
@@ -1217,28 +1277,28 @@ public class CleengImplTest {
 
     @Test
     public void testGetAccessStatusForDevice() throws IOException {
-        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice(this.customerToken, "A334745341_PL", "1", "roku");
+        final GetAccessStatusForDeviceResponse response = this.api.getAccessStatusForDevice(this.customerToken, "S222742070_PL", "1", "roku");
         assertNotNull(response);
-        assertFalse(response.result.accessGranted);
+        assertTrue(response.result.accessGranted);
     }
 
     @Test
     public void testGetAccessStatusForDeviceAsync() throws IOException, InterruptedException {
-        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "1", "roku");
-        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams(this.customerToken, "A334745341_PL", "2", "roku");
+        final GetAccessStatusForDeviceParams params = new GetAccessStatusForDeviceParams(this.customerToken, "S222742070_PL", "1", "roku");
+        final GetAccessStatusForDeviceParams params2 = new GetAccessStatusForDeviceParams(this.customerToken, "S222742070_PL", "1", "roku");
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final AsyncRequestCallback<GetAccessStatusForDeviceResponse> callback2 = new AsyncRequestCallback<GetAccessStatusForDeviceResponse>(GetAccessStatusForDeviceResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(params, callback));
         requests.add(new AsyncRequest(params2, callback2));
         this.api.getAccessStatusForDeviceAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
+        TimeUnit.SECONDS.sleep(10);
         final GetAccessStatusForDeviceResponse response = callback.getResponse();
         final GetAccessStatusForDeviceResponse response2 = callback2.getResponse();
         assertNotNull(response);
         assertNotNull(response2);
-        assertFalse(response.result.accessGranted);
-        assertFalse(response2.result.accessGranted);
+        assertTrue(response.result.accessGranted);
+        assertTrue(response2.result.accessGranted);
     }
 
     @Test
