@@ -1254,6 +1254,26 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testDeletePaymentDetails() throws IOException {
+        final BooleanResponse response = this.api.deletePaymentDetails("738608716");
+        assertNotNull(response);
+        assertEquals("Should not be able to delete payment details associated with different publisher token", 5, response.error.code);
+    }
+
+    @Test
+    public void testDeletePaymentDetailsAsync() throws IOException, InterruptedException {
+        final DeletePaymentDetailsParams input = new DeletePaymentDetailsParams("738608716");
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.deletePaymentDetailsAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final BooleanResponse response = callback.getResponse();
+        assertNotNull(response);
+        assertEquals("Should not be able to delete payment details associated with different publisher token", 5, response.error.code);
+    }
+
+    @Test
     @Ignore
     public void testListOfferIdsByVideoId() throws IOException {
         final ListOfferIdsByVideoIdResponse response = this.api.listOfferIdsByVideoId("7777");

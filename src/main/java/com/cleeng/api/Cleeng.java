@@ -631,6 +631,24 @@ public interface Cleeng {
 	void listPaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Deletes payment details<br/>
+	 * <br/>
+	 *
+	 * @param paymentDetailsId Id of payment details
+	 * @return
+	 */
+	BooleanResponse deletePaymentDetails(String paymentDetailsId) throws IOException;
+
+	/**
+	 * Deletes payment details (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void deletePaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Gets offerIds by video id<br/>
 	 * <br/>
 	 *
