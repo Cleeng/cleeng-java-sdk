@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("unchecked")
 public class CleengImplTest {
@@ -846,7 +845,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateCheckoutUrlForSubscription() throws IOException {
-        final UrlResponse response = this.api.generateCheckoutUrl("john2001doe@domain.com", new FlowDescription("S972283213_PL", "http://www.someurl.com"));
+        final UrlResponse response = this.api.generateCheckoutUrl("jesionekdev@gmail.com", new FlowDescription("S587628980_PL", "http://www.someurl.com"));
         assertNotNull("Response object should not be null", response);
         assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
     }
@@ -1173,9 +1172,10 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("user@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
+        final CustomerData customerData = new CustomerData("jesionekdev@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
+        //Token dASxiQ2wxjQ_bDZ5E5xndlPROR9P8AZuZ1DLexVNHAIEpePL
         assertTrue(response.result.token.length() > 0);
     }
 
@@ -1224,15 +1224,15 @@ public class CleengImplTest {
 
     @Test
     public void testListPaymentDetails() throws IOException {
-        String customerEmail = "john2001doe@domain.com";
+        String customerEmail = "jesionekdev@gmail.com";
         final PaymentDetailsResponse response = this.api.listPaymentDetails(customerEmail);
         assertNotNull(response);
         assertEquals("Result should be an array of size 1", 1, response.result.size());
-        assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("paymentDetailsId should match", "593681774", response.result.get(0).paymentDetailsId);
         assertEquals("paymentGateway should match", "adyen", response.result.get(0).paymentGateway);
         assertEquals("paymentMethod should match", "paypal", response.result.get(0).paymentMethod);
         assertEquals("cardExpirationDate should match", "01/50", response.result.get(0).cardExpirationDate);
-        assertEquals("cardLastFourDigits should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("cardLastFourDigits should match", "J2FZ66VXPN", response.result.get(0).cardLastFourDigits);
     }
 
     @Test
@@ -1246,23 +1246,25 @@ public class CleengImplTest {
         final PaymentDetailsResponse response = callback.getResponse();
         assertNotNull(response);
         assertEquals("Result should be an array of size 1", 1, response.result.size());
-        assertEquals("paymentDetailsId should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("paymentDetailsId should match", "593681774", response.result.get(0).paymentDetailsId);
         assertEquals("paymentGateway should match", "adyen", response.result.get(0).paymentGateway);
         assertEquals("paymentMethod should match", "paypal", response.result.get(0).paymentMethod);
         assertEquals("cardExpirationDate should match", "01/50", response.result.get(0).cardExpirationDate);
-        assertEquals("cardLastFourDigits should match", "835774077", response.result.get(0).paymentDetailsId);
+        assertEquals("cardLastFourDigits should match", "J2FZ66VXPN", response.result.get(0).cardLastFourDigits);
     }
 
     @Test
+    @Ignore
     public void testDeletePaymentDetails() throws IOException {
-        final BooleanResponse response = this.api.deletePaymentDetails("738608716");
+        final BooleanResponse response = this.api.deletePaymentDetails("593681774");
         assertNotNull(response);
-        assertEquals("Should not be able to delete payment details associated with different publisher token", 5, response.error.code);
+        assertTrue("Should be able to delete new payment", response.result.success);
     }
 
     @Test
+    @Ignore
     public void testDeletePaymentDetailsAsync() throws IOException, InterruptedException {
-        final DeletePaymentDetailsParams input = new DeletePaymentDetailsParams("738608716");
+        final DeletePaymentDetailsParams input = new DeletePaymentDetailsParams("593681774");
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
@@ -1270,7 +1272,7 @@ public class CleengImplTest {
         TimeUnit.SECONDS.sleep(5);
         final BooleanResponse response = callback.getResponse();
         assertNotNull(response);
-        assertEquals("Should not be able to delete payment details associated with different publisher token", 5, response.error.code);
+        assertTrue("Should be able to delete new payment", response.result.success);
     }
 
     @Test
