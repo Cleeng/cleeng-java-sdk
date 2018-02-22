@@ -631,6 +631,43 @@ public interface Cleeng {
 	void listPaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
+	 * Deletes payment details<br/>
+	 * <br/>
+	 *
+	 * @param paymentDetailsId Id of payment details
+	 * @return
+	 */
+	BooleanResponse deletePaymentDetails(String paymentDetailsId) throws IOException;
+
+	/**
+	 * Deletes payment details (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void deletePaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Checks if trial is allowd<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @param offerId offer Id
+	 * @return
+	 */
+	public BooleanResponse isTrialAllowed(String customerEmail, String offerId) throws IOException;
+
+	/**
+	 * Checks if trial is allowd (async)<br/>
+	 * <br/>
+	 *
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	public void isTrialAllowedAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
 	 * Gets offerIds by video id<br/>
 	 * <br/>
 	 *

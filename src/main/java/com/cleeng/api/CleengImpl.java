@@ -406,6 +406,24 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
+	public BooleanResponse isTrialAllowed(String customerEmail, String offerId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("isTrialAllowed", new IsTrialAllowedParams(this.publisherToken, customerEmail, offerId))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void isTrialAllowedAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("isTrialAllowed", new IsTrialAllowedParams(this.publisherToken,
+				((IsTrialAllowedParams) ((AsyncRequest) request).input).customerEmail,
+				((IsTrialAllowedParams) ((AsyncRequest) request).input).offerId));
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	public UpdateCustomerSubscriptionResponse updateCustomerSubscription(String offerId, String customerEmail, UpdateCustomerSubscriptionOfferData offerData) throws IOException {
 		final String response = this.client.invoke(
 				this.platformUrl,
@@ -626,6 +644,23 @@ public class CleengImpl implements Cleeng {
 			request.endpoint = this.platformUrl;
 			request.data = new JSONRPCRequest("listPaymentDetails", new PaymentDetailsParams(this.publisherToken,
 				((PaymentDetailsParams) ((AsyncRequest) request).input).userEmail));
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BooleanResponse deletePaymentDetails(String paymentDetailsId) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("deletePaymentDetails", new DeletePaymentDetailsParams(this.publisherToken, paymentDetailsId))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void deletePaymentDetailsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("deletePaymentDetails", new DeletePaymentDetailsParams(this.publisherToken,
+				((DeletePaymentDetailsParams) ((AsyncRequest) request).input).paymentDetailsId));
 		}
 		this.client.invokeAsync(requests);
 	}
