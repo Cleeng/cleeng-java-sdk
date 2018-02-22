@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("unchecked")
 public class CleengImplTest {
@@ -1273,6 +1274,26 @@ public class CleengImplTest {
         final BooleanResponse response = callback.getResponse();
         assertNotNull(response);
         assertTrue("Should be able to delete new payment", response.result.success);
+    }
+
+    @Test
+    public void testIsTrialAllowed() throws IOException {
+        final BooleanResponse response = this.api.isTrialAllowed("jesionekdev@gmail.com", "S587628980_PL");
+        assertNotNull(response);
+        assertFalse(response.result.success);
+    }
+
+    @Test
+    public void testIsTrialAllowedAsync() throws IOException, InterruptedException {
+        final IsTrialAllowedParams input = new IsTrialAllowedParams("jesionekdev@gmail.com", "S587628980_PL");
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncRequest(input, callback));
+        this.api.isTrialAllowedAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final BooleanResponse response = callback.getResponse();
+        assertNotNull(response);
+        assertFalse("Trial should not be allowed", response.result.success);
     }
 
     @Test
