@@ -832,13 +832,13 @@ public class CleengImplTest {
 
     @Test
     public void testUpdateCustomerEmail() throws IOException, InterruptedException {
-        final BooleanResponse syncResponse = this.api.updateCustomerEmail("john2000doe@domain.com", "john2002doe@domain.com");
+        final BooleanResponse syncResponse = this.api.updateCustomerEmail("jesionekdev@gmail.com", "jesionekdev2@gmail.com");
         assertNotNull(syncResponse);
         assertNull(syncResponse.error);
         assertTrue(syncResponse.result.success);
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncRequest(new UpdateCustomerEmailParams("john2002doe@domain.com", "john2000doe@domain.com"), callback));
+        requests.add(new AsyncRequest(new UpdateCustomerEmailParams("jesionekdev2@gmail.com", "jesionekdev@gmail.com"), callback));
         this.api.updateCustomerEmailAsync(requests);
         TimeUnit.SECONDS.sleep(5);
         final BooleanResponse response = callback.getResponse();
@@ -855,7 +855,7 @@ public class CleengImplTest {
     @Test
     public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
         String offerId = "S972283213_PL";
-        String customerEmail = "john2001doe@domain.com";
+        String customerEmail = "jesionekdev@gmail.com";
         UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800");
         final UpdateCustomerSubscriptionResponse response = this.api.updateCustomerSubscription(offerId, customerEmail, offerData);
         Assert.assertNotNull(response);
