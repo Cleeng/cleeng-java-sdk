@@ -854,7 +854,7 @@ public class CleengImplTest {
 
     @Test
     public void testUpdateCustomerSubscription() throws IOException, InterruptedException {
-        String offerId = "S972283213_PL";
+        String offerId = "S587628980_PL";
         String customerEmail = "jesionekdev@gmail.com";
         UpdateCustomerSubscriptionOfferData offerData = new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800");
         final UpdateCustomerSubscriptionResponse response = this.api.updateCustomerSubscription(offerId, customerEmail, offerData);
