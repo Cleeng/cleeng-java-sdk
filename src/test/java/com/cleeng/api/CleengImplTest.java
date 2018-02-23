@@ -40,6 +40,33 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testGenerateCustomerToken() throws IOException {
+        final TokenResponse response = this.api.generateCustomerToken("jesionekdev@gmail.com");
+        assertNotNull(response);
+        assertNull(response.error);
+        this.customerToken = response.result.token;
+        assertNotNull(response.result.token);
+    }
+
+    @Test
+    public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
+        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncTokenRequest(callback, "jesionekdev@gmail.com"));
+        final List<String> tokens = new ArrayList<String>();
+        final int count = 100;
+        for (int i = 0; i < count; i++) {
+            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "jesionekdev@gmail.com"));
+        }
+        this.api.generateCustomerTokenAsync(requests);
+        TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
+        for (int j = 0; j < requests.size(); j++) {
+            tokens.add(((AsyncRequestCallback<TokenResponse>) requests.get(j).callback).getResponse().result.token);
+        }
+        assertEquals("Tokens array should match", 101, tokens.size());
+    }
+
+    @Test
     public void testCreateSubscriptionOffer() throws IOException {
         final SubscriptionOfferData offerData = new SubscriptionOfferData(12.34,
             "week",
@@ -776,36 +803,10 @@ public class CleengImplTest {
     }
 
     @Test
-    public void testGenerateCustomerToken() throws IOException {
-        final TokenResponse response = this.api.generateCustomerToken("jesionekdev@gmail.com");
-        assertNotNull(response);
-        assertNull(response.error);
-        assertNotNull(response.result.token);
-    }
-
-    @Test
-    public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
-        final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
-        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncTokenRequest(callback, "jesionekdev@gmail.com"));
-        final List<String> tokens = new ArrayList<String>();
-        final int count = 100;
-        for (int i = 0; i < count; i++) {
-            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "jesionekdev@gmail.com"));
-        }
-        this.api.generateCustomerTokenAsync(requests);
-        TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
-        for (int j = 0; j < requests.size(); j++) {
-           tokens.add(((AsyncRequestCallback<TokenResponse>) requests.get(j).callback).getResponse().result.token);
-        }
-        assertEquals("Tokens array should match", 101, tokens.size());
-    }
-
-    @Test
     @Ignore
     public void testUpdateCustomerPassword() throws IOException {
-        final String customerEmail = "user@gmail.com";
-        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String customerEmail = "jesionekdev@gmail.com";
+        final String resetPasswordToken = "e50f9415dd9059e8f8b7a4443c635ca763c56256";
         final String newPassword = "newpass2001";
         final BooleanResponse response = this.api.updateCustomerPassword(customerEmail, resetPasswordToken, newPassword);
         assertNotNull(response);
@@ -818,7 +819,7 @@ public class CleengImplTest {
     public void testUpdateCustomerPasswordAsync() throws IOException, InterruptedException {
         final String customerEmail = "jesionekdev@gmail.com";
         //Provide valid reset token
-        final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
+        final String resetPasswordToken = "e50f9415dd9059e8f8b7a4443c635ca763c56256";
         final String newPassword = "newpass2002";
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -1173,7 +1174,7 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testRegisterMyCustomer() throws IOException {
-        final CustomerData customerData = new CustomerData("jesionekdev@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
+        final CustomerData customerData = new CustomerData("validemailhere@gmail.com", "en_US", "GBP", "PL", "mycleengpassword", "mycleengussr");
         final TokenResponse response = this.api.registerCustomer(customerData);
         assertNotNull(response);
         //Token dASxiQ2wxjQ_bDZ5E5xndlPROR9P8AZuZ1DLexVNHAIEpePL
