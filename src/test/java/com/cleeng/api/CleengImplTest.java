@@ -917,9 +917,7 @@ public class CleengImplTest {
         assertTrue("Token should be present in response object", response.result.token.length() > 0);
     }
 
-    //TODO: find out facebookId used on white labelled account used in this test
     @Test
-    @Ignore
     public void testGenerateCustomerTokenFromFacebook() throws IOException {
         final TokenResponse response = this.api.generateCustomerTokenFromFacebook("mycleengussr");
         assertNotNull(response);
@@ -928,7 +926,6 @@ public class CleengImplTest {
     }
 
     @Test
-    @Ignore
     public void testGenerateCustomerTokenFromFacebookAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -1259,7 +1256,6 @@ public class CleengImplTest {
     }
 
     @Test
-    @Ignore
     public void testDeletePaymentDetails() throws IOException {
         final BooleanResponse response = this.api.deletePaymentDetails("593681774");
         assertNotNull(response);
