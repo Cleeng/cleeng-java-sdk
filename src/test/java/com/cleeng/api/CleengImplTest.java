@@ -777,7 +777,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateCustomerToken() throws IOException {
-        final TokenResponse response = this.api.generateCustomerToken("testjohndoe2@gmail.com");
+        final TokenResponse response = this.api.generateCustomerToken("jesionekdev@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
@@ -787,11 +787,11 @@ public class CleengImplTest {
     public void testGenerateCustomerTokenAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
+        requests.add(new AsyncTokenRequest(callback, "jesionekdev@gmail.com"));
         final List<String> tokens = new ArrayList<String>();
         final int count = 100;
         for (int i = 0; i < count; i++) {
-            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "testjohndoe2@gmail.com"));
+            requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "jesionekdev@gmail.com"));
         }
         this.api.generateCustomerTokenAsync(requests);
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
@@ -816,7 +816,7 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testUpdateCustomerPasswordAsync() throws IOException, InterruptedException {
-        final String customerEmail = "testjohndoe2@gmail.com";
+        final String customerEmail = "jesionekdev@gmail.com";
         //Provide valid reset token
         final String resetPasswordToken = "161b51af14ddf305cf2ee2d24b8617f3d24da45e";
         final String newPassword = "newpass2002";
@@ -1141,7 +1141,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateCheckoutUrl() throws IOException {
-        final UrlResponse response = this.api.generateCheckoutUrl("testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
+        final UrlResponse response = this.api.generateCheckoutUrl("jesionekdev@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"));
         assertNotNull("Response object should not be null", response);
         assertTrue("Response url should have lenght > 0", response.result.url.length() > 0);
     }
@@ -1150,9 +1150,9 @@ public class CleengImplTest {
     public void testGenerateCheckoutUrlAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<UrlResponse> callback = new AsyncRequestCallback<UrlResponse>(UrlResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), callback));
-        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
-        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "testjohndoe2@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "jesionekdev@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), callback));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "jesionekdev@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
+        requests.add(new AsyncGenerateCheckoutUrlRequest(this.publisherToken, "jesionekdev@gmail.com", new FlowDescription("A962575346_PL", "http://www.someurl.com"), new AsyncRequestCallback<UrlResponse>(UrlResponse.class)));
         this.api.generateCheckoutUrlAsync(requests);
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final UrlResponse response = callback.getResponse();
@@ -1202,7 +1202,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateMyAccountUrl() throws IOException {
-        final String customerEmail = "testjohndoe2@gmail.com";
+        final String customerEmail = "jesionekdev@gmail.com";
         final List<String> modules = new ArrayList<String>();
         final UrlResponse response = this.api.generateMyAccountUrl(customerEmail, modules);
         assertNotNull(response);
@@ -1212,7 +1212,7 @@ public class CleengImplTest {
     @Test
     public void testGenerateMyAccountUrlAsync() throws IOException, InterruptedException {
         final List<String> modules = new ArrayList<String>();
-        final GenerateMyAccountUrlParams input = new GenerateMyAccountUrlParams("testjohndoe2@gmail.com", modules);
+        final GenerateMyAccountUrlParams input = new GenerateMyAccountUrlParams("jesionekdev@gmail.com", modules);
         final AsyncRequestCallback<UrlResponse> callback = new AsyncRequestCallback<UrlResponse>(UrlResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
