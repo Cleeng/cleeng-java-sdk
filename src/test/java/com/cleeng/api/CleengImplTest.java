@@ -1203,7 +1203,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateMyAccountUrl() throws IOException {
-        final String customerEmail = "jesionekdev2@gmail.com";
+        final String customerEmail = "jesionekdev@gmail.com";
         final List<String> modules = new ArrayList<String>();
         final UrlResponse response = this.api.generateMyAccountUrl(customerEmail, modules);
         assertNotNull(response);
