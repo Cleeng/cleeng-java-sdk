@@ -921,7 +921,7 @@ public class CleengImplTest {
     @Test
     @Ignore
     public void testGenerateCustomerTokenFromFacebook() throws IOException {
-        final TokenResponse response = this.api.generateCustomerTokenFromFacebook("john2001doe");
+        final TokenResponse response = this.api.generateCustomerTokenFromFacebook("mycleengussr");
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
@@ -932,11 +932,11 @@ public class CleengImplTest {
     public void testGenerateCustomerTokenFromFacebookAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncTokenRequest(callback, "john2001doe"));
-        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
-        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
-        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
-        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "john2001doe"));
+        requests.add(new AsyncTokenRequest(callback, "mycleengussr"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "mycleengussr"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "mycleengussr"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "mycleengussr"));
+        requests.add(new AsyncTokenRequest(new AsyncRequestCallback<TokenResponse>(TokenResponse.class), "mycleengussr"));
         this.api.generateCustomerTokenFromFacebookAsync(requests);
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final TokenResponse response = callback.getResponse();
