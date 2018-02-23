@@ -1242,7 +1242,7 @@ public class CleengImplTest {
 
     @Test
     public void testListPaymentDetailsAsync() throws IOException, InterruptedException {
-        final PaymentDetailsParams input = new PaymentDetailsParams("john2001doe@domain.com");
+        final PaymentDetailsParams input = new PaymentDetailsParams("jesionekdev@gmail.com");
         final AsyncRequestCallback<PaymentDetailsResponse> callback = new AsyncRequestCallback<PaymentDetailsResponse>(PaymentDetailsResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
         requests.add(new AsyncRequest(input, callback));
