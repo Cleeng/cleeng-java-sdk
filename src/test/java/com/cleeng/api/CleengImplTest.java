@@ -866,7 +866,7 @@ public class CleengImplTest {
     public void testUpdateCustomerSubscriptionAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<UpdateCustomerSubscriptionResponse> callback = new AsyncRequestCallback<UpdateCustomerSubscriptionResponse>(UpdateCustomerSubscriptionResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncRequest(new UpdateCustomerSubscriptionParams("john2001doe@domain.com", "S972283213_PL", new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800")), callback));
+        requests.add(new AsyncRequest(new UpdateCustomerSubscriptionParams("jesionekdev@gmail.com", "S587628980_PL", new UpdateCustomerSubscriptionOfferData("cancelled", "1717356800")), callback));
         this.api.updateCustomerSubscriptionAsync(requests);
         TimeUnit.SECONDS.sleep(5);
         final UpdateCustomerSubscriptionResponse response = callback.getResponse();
@@ -876,7 +876,7 @@ public class CleengImplTest {
 
     @Test
     public void testRequestPasswordReset() throws IOException {
-        final BooleanResponse response = this.api.requestPasswordReset("testjohndoe2@gmail.com");
+        final BooleanResponse response = this.api.requestPasswordReset("jesionekdev@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
         assertTrue(response.result.success);
@@ -886,7 +886,7 @@ public class CleengImplTest {
     public void testRequestPasswordResetAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<BooleanResponse>(BooleanResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncTokenRequest(callback, "testjohndoe2@gmail.com"));
+        requests.add(new AsyncTokenRequest(callback, "jesionekdev@gmail.com"));
         this.api.requestPasswordResetAsync(requests);
         TimeUnit.MILLISECONDS.sleep(2000);
         final BooleanResponse response = callback.getResponse();
@@ -895,7 +895,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateCustomerTokenFromPassword() throws IOException {
-        final TokenResponse response = this.api.generateCustomerTokenFromPassword("john2000doepass", "john2000doe@domain.com");
+        final TokenResponse response = this.api.generateCustomerTokenFromPassword("newpass2002", "jesionekdev@gmail.com");
         assertNotNull(response);
         assertNull(response.error);
         assertNotNull(response.result.token);
@@ -905,11 +905,11 @@ public class CleengImplTest {
     public void testGenerateCustomerTokenFromPasswordAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
-        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", callback));
-        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
-        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
-        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
-        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "john2000doepass", "john2000doe@domain.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "newpass2002", "jesionekdev@gmail.com", callback));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "newpass2002", "jesionekdev@gmail.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "newpass2002", "jesionekdev@gmail.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "newpass2002", "jesionekdev@gmail.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
+        requests.add(new AsyncGenerateCustomerTokenFromPasswordRequest(this.publisherToken, "newpass2002", "jesionekdev@gmail.com", new AsyncRequestCallback<TokenResponse>(TokenResponse.class)));
         this.api.generateCustomerTokenFromPasswordAsync(requests);
         TimeUnit.MILLISECONDS.sleep(getSleepTime(requests.size()));
         final TokenResponse response = callback.getResponse();
@@ -917,7 +917,9 @@ public class CleengImplTest {
         assertTrue("Token should be present in response object", response.result.token.length() > 0);
     }
 
+    //TODO: find out facebookId used on white labelled account used in this test
     @Test
+    @Ignore
     public void testGenerateCustomerTokenFromFacebook() throws IOException {
         final TokenResponse response = this.api.generateCustomerTokenFromFacebook("john2001doe");
         assertNotNull(response);
@@ -926,6 +928,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testGenerateCustomerTokenFromFacebookAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<TokenResponse> callback = new AsyncRequestCallback<TokenResponse>(TokenResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -946,7 +949,7 @@ public class CleengImplTest {
         final GetAccessStatusResponse response = this.api.getAccessStatus(this.customerToken, "A334745341_PL", "78.129.213.71");
         assertNotNull(response.result);
         assertEquals("Access granted should match", true, response.result.accessGranted);
-        assertEquals("ExpiresAt should match", 1519237275, response.result.expiresAt);
+        assertEquals("ExpiresAt should match", 1717356800, response.result.expiresAt);
         assertEquals("PurchasedDirectly should match", false, response.result.purchasedDirectly);
     }
 
