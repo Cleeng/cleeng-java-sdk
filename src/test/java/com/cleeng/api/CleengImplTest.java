@@ -1203,7 +1203,7 @@ public class CleengImplTest {
 
     @Test
     public void testGenerateMyAccountUrl() throws IOException {
-        final String customerEmail = "jesionekdev@gmail.com";
+        final String customerEmail = "jesionekdev2@gmail.com";
         final List<String> modules = new ArrayList<String>();
         final UrlResponse response = this.api.generateMyAccountUrl(customerEmail, modules);
         assertNotNull(response);
@@ -1225,6 +1225,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListPaymentDetails() throws IOException {
         String customerEmail = "jesionekdev@gmail.com";
         final PaymentDetailsResponse response = this.api.listPaymentDetails(customerEmail);
@@ -1238,6 +1239,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListPaymentDetailsAsync() throws IOException, InterruptedException {
         final PaymentDetailsParams input = new PaymentDetailsParams("jesionekdev@gmail.com");
         final AsyncRequestCallback<PaymentDetailsResponse> callback = new AsyncRequestCallback<PaymentDetailsResponse>(PaymentDetailsResponse.class);
@@ -1256,6 +1258,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testDeletePaymentDetails() throws IOException {
         final BooleanResponse response = this.api.deletePaymentDetails("593681774");
         assertNotNull(response);
