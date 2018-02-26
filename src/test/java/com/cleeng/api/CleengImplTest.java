@@ -1258,6 +1258,26 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testListCustomerSubscriptions() throws IOException {
+        String customerEmail = "jesionekdev@gmail.com";
+        final ListCustomerSubscriptionsResponse response = this.api.listCustomerSubscriptions(customerEmail, 0, 20);
+        assertNotNull(response);
+        assertNull(response.error);
+    }
+
+    @Test
+    public void testListCustomerSubscriptionsAsync() throws IOException, InterruptedException {
+        final AsyncRequestCallback<ListCustomerSubscriptionsResponse> callback = new AsyncRequestCallback<ListCustomerSubscriptionsResponse>(ListCustomerSubscriptionsResponse.class);
+        final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
+        requests.add(new AsyncListCustomerSubscriptionsRequest(this.publisherToken,"jesionekdev@gmail.com",0, 20, callback));
+        this.api.listCustomerSubscriptionsAsync(requests);
+        TimeUnit.SECONDS.sleep(5);
+        final ListCustomerSubscriptionsResponse response = callback.getResponse();
+        assertNotNull(response);
+        assertNull(response.error);
+    }
+
+    @Test
     @Ignore
     public void testDeletePaymentDetails() throws IOException {
         final BooleanResponse response = this.api.deletePaymentDetails("593681774");

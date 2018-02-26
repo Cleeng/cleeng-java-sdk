@@ -679,11 +679,31 @@ public interface Cleeng {
 	/**
 	 * Gets offerIds by video id (async)<br/>
 	 * <br/>
-	 *
+	 *[
 	 * @param requests collection of AsyncRequest objects
 	 * @return
 	 */
 	void listOfferIdsByVideoIdAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Lists customer subscriptions<br/>
+	 * <br/>
+	 *
+	 * @param customerEmail customer's email
+	 * @param offset pagination offset
+	 * @patam limit pagination limit
+	 * @return
+	 */
+	ListCustomerSubscriptionsResponse listCustomerSubscriptions(String customerEmail, int offset, int limit) throws IOException;
+
+	/**
+	 * Gets offerIds by video id (async)<br/>
+	 * <br/>
+	 *[
+	 * @param requests collection of AsyncRequest objects
+	 * @return
+	 */
+	void listCustomerSubscriptionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 
 	/**
 	 * Checks whether access to offer is granted<br/>
