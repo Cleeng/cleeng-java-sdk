@@ -1431,6 +1431,15 @@ public class CleengImplTest {
         Assert.assertNotNull(response);
     }
 
+    @Test
+    public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
+
+        final PersonalDataResponse response = this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629);
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
+
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
         return (long) sleepTime;

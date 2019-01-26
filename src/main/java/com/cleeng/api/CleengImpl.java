@@ -770,6 +770,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson(response, BasicResponse.class);
 	}
 
+	public PersonalDataResponse fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("fetchBroadcasterSpecificPersonalDataWithCaptureAnswers", new UserParams(this.publisherToken, userId))
+		);
+		return gson.fromJson(response, PersonalDataResponse.class);
+	}
+
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();
 		InputStream input = null;
