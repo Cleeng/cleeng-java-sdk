@@ -778,6 +778,14 @@ public class CleengImpl implements Cleeng {
 		return gson.fromJson(response, PersonalDataResponse.class);
 	}
 
+	public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("fetchBroadcasterSpecificPersonalDataWithCaptureAnswers", request.input);
+		}
+		this.client.invokeAsync(requests);
+	}
+
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();
 		InputStream input = null;

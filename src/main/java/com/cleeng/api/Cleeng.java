@@ -770,4 +770,13 @@ public interface Cleeng {
 	 * @return
 	 */
 	PersonalDataResponse fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId) throws IOException;
+
+	/**
+	 * Fetches customer data with additional broadcaster specific information in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }

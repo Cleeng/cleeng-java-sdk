@@ -1440,6 +1440,22 @@ public class CleengImplTest {
         Assert.assertNotNull(response.result);
     }
 
+    @Test
+    public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
+
+        final List<AsyncRequest> requests = new ArrayList<>();
+        final AsyncRequestCallback<PersonalDataResponse> callbackOne = new AsyncRequestCallback<>(PersonalDataResponse.class);
+        requests.add(new AsyncRequest(new UserParams(this.publisherToken,250897629), callbackOne));
+
+        this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+        final PersonalDataResponse response = callbackOne.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
+
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
         return (long) sleepTime;
