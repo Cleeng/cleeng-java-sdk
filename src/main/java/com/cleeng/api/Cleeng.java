@@ -751,7 +751,7 @@ public interface Cleeng {
 	 * @param data object containing personal data
 	 * @return
 	 */
-	public BasicResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(String userId, PersonalData data) throws IOException;
+	public BasicResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId, PersonalData data) throws IOException;
 
 	/**
 	 * Updates Cleeng Capture data for given broadcaster and customer in an asynchronous way

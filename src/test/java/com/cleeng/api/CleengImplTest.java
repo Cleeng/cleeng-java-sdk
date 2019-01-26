@@ -1423,6 +1423,14 @@ public class CleengImplTest {
         Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
     }
 
+    @Test
+    public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
+
+        final BasicResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+
+        Assert.assertNotNull(response);
+    }
+
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;
         return (long) sleepTime;
