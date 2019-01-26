@@ -754,6 +754,22 @@ public class CleengImpl implements Cleeng {
 		return batchResponse;
 	}
 
+	public void updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("updateBroadcasterSpecificPersonalDataWithCaptureAnswers", request.input);
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BasicResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(String userId, PersonalData data) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("updateBroadcasterSpecificPersonalDataWithCaptureAnswers", new PersonalDataParams())
+		);
+		return gson.fromJson(response, BasicResponse.class);
+	}
+
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();
 		InputStream input = null;

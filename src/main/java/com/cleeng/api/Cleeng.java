@@ -743,4 +743,22 @@ public interface Cleeng {
 	 * @return
 	 */
 	public BatchResponse invokeBatch(BatchRequest batch) throws IOException;
+
+	/**
+	 * Updates Cleeng Capture data for given broadcaster and customer<br/>
+	 * <br/>
+	 *
+	 * @param data object containing personal data
+	 * @return
+	 */
+	public BasicResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(String userId, PersonalData data) throws IOException;
+
+	/**
+	 * Updates Cleeng Capture data for given broadcaster and customer in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
