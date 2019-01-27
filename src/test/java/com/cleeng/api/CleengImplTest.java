@@ -1469,7 +1469,24 @@ public class CleengImplTest {
 
     }
 
+    @Test
+    public void testSaveCaptureQuestionsAsync() throws IOException, InterruptedException {
 
+        List<AsyncRequest> requests = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("custom_1", true, true, true, "value", "Question1?"));
+        AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
+        requests.add(new AsyncRequest( new QuestionsParams(this.publisherToken, questions), callback ));
+
+        this.api.saveCaptureQuestionsAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        BooleanResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
 
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;

@@ -795,7 +795,7 @@ public class CleengImpl implements Cleeng {
 	}
 
 	public void saveCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
-	    this.invokeAsync(requests,"fetchBroadcasterSpecificPersonalDataWithCaptureAnswers");
+	    this.invokeAsync(requests,"saveCaptureQuestions");
     }
 
     private void invokeAsync(List<AsyncRequest> requests, String methodName) throws IOException, InterruptedException {
