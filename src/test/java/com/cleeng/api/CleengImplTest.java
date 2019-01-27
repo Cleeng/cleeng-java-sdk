@@ -1432,7 +1432,7 @@ public class CleengImplTest {
     }
 
     @Test
-    public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
+    public void testFetchBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
 
         final PersonalDataResponse response = this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629);
 
@@ -1441,20 +1441,35 @@ public class CleengImplTest {
     }
 
     @Test
-    public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
+    public void testFetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
 
         final List<AsyncRequest> requests = new ArrayList<>();
-        final AsyncRequestCallback<PersonalDataResponse> callbackOne = new AsyncRequestCallback<>(PersonalDataResponse.class);
-        requests.add(new AsyncRequest(new UserParams(this.publisherToken,250897629), callbackOne));
+        final AsyncRequestCallback<PersonalDataResponse> callback = new AsyncRequestCallback<>(PersonalDataResponse.class);
+        requests.add(new AsyncRequest(new UserParams(this.publisherToken,250897629), callback));
 
         this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(requests);
 
         TimeUnit.SECONDS.sleep(5);
-        final PersonalDataResponse response = callbackOne.getResponse();
+        final PersonalDataResponse response = callback.getResponse();
 
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.result);
     }
+
+    @Test
+    public void testSaveCaptureQuestions() throws IOException {
+
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("custom_1", true, true, true, "value", "Question1?"));
+
+        BooleanResponse response = this.api.saveCaptureQuestions(questions);
+
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.result.success);
+
+    }
+
+
 
     private long getSleepTime(int requests) {
         double sleepTime = this.sleepRatio * requests * 1000;

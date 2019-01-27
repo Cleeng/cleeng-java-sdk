@@ -779,4 +779,22 @@ public interface Cleeng {
 	 * @throws InterruptedException
 	 */
 	void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Saves capture questions
+	 *
+	 * @param questions a list of questions
+	 * @return
+	 * @throws IOException
+	 */
+	BooleanResponse saveCaptureQuestions(List<Question> questions) throws IOException;
+
+	/**
+	 * Saves capture questions in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void saveCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
