@@ -17,4 +17,8 @@ public class QuestionsParams implements Serializable {
         this.publisherToken = publisherToken;
         this.questions = questions;
     }
+
+    public QuestionsParams(String publisherToken) {
+        this.publisherToken = publisherToken;
+    }
 }

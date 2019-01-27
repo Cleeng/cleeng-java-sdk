@@ -1432,6 +1432,12 @@ public class CleengImplTest {
     }
 
     @Test
+    public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
+
+
+    }
+
+    @Test
     public void testFetchBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
 
         final PersonalDataResponse response = this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629);
@@ -1466,7 +1472,6 @@ public class CleengImplTest {
 
         Assert.assertNotNull(response);
         Assert.assertTrue(response.result.success);
-
     }
 
     @Test
@@ -1476,7 +1481,7 @@ public class CleengImplTest {
         List<Question> questions = new ArrayList<>();
         questions.add(new Question("custom_1", true, true, true, "value", "Question1?"));
         AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
-        requests.add(new AsyncRequest( new QuestionsParams(this.publisherToken, questions), callback ));
+        requests.add(new AsyncRequest(new QuestionsParams(this.publisherToken, questions), callback));
 
         this.api.saveCaptureQuestionsAsync(requests);
 
@@ -1486,6 +1491,33 @@ public class CleengImplTest {
 
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.result);
+    }
+
+    @Test
+    public void testFetchCaptureQuestions() throws IOException {
+
+        CaptureQuestionResponse response = this.api.fetchCaptureQuestions();
+
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.result.size() > 0);
+    }
+
+    @Test
+    public void testFetchCaptureQuestionsAsync() throws IOException, InterruptedException {
+
+        List<AsyncRequest> requests = new ArrayList<>();
+        AsyncRequestCallback<CaptureQuestionResponse> callback = new AsyncRequestCallback<>(CaptureQuestionResponse.class);
+        requests.add(new AsyncRequest(new QuestionsParams(this.publisherToken), callback));
+
+        this.api.fetchCaptureQuestionsAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        CaptureQuestionResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.size() > 0);
     }
 
     private long getSleepTime(int requests) {

@@ -797,4 +797,20 @@ public interface Cleeng {
 	 * @throws InterruptedException
 	 */
 	void saveCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Fetches capture questions
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	CaptureQuestionResponse fetchCaptureQuestions() throws IOException;
+
+	/**
+	 * Fetches capture questions in an asynchronous way
+	 *
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void fetchCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }

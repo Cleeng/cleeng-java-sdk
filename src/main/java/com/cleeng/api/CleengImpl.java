@@ -798,6 +798,18 @@ public class CleengImpl implements Cleeng {
 	    this.invokeAsync(requests,"saveCaptureQuestions");
     }
 
+    public CaptureQuestionResponse fetchCaptureQuestions() throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("fetchCaptureQuestions", new QuestionsParams(this.publisherToken, null))
+		);
+		return gson.fromJson(response, CaptureQuestionResponse.class);
+	}
+
+	public void fetchCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		this.invokeAsync(requests, "fetchCaptureQuestions");
+	}
+
     private void invokeAsync(List<AsyncRequest> requests, String methodName) throws IOException, InterruptedException {
         for (AsyncRequest request : requests) {
             request.endpoint = this.platformUrl;
