@@ -762,12 +762,12 @@ public class CleengImpl implements Cleeng {
 		this.client.invokeAsync(requests);
 	}
 
-	public BasicResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId, PersonalData data) throws IOException {
+	public BooleanResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId, PersonalData data) throws IOException {
 		final String response = this.client.invoke(
 			this.platformUrl,
 			new JSONRPCRequest("updateBroadcasterSpecificPersonalDataWithCaptureAnswers", new PersonalDataParams(this.publisherToken, userId, data))
 		);
-		return gson.fromJson(response, BasicResponse.class);
+		return gson.fromJson(response, BooleanResponse.class);
 	}
 
 	public PersonalDataResponse fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId) throws IOException {

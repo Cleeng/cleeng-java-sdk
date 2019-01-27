@@ -1426,15 +1426,31 @@ public class CleengImplTest {
     @Test
     public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
 
-        final BasicResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+        final BooleanResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
 
         Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.success);
     }
 
     @Test
     public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
 
+        final List<AsyncRequest> requests = new ArrayList<>();
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
+        final PersonalDataParams params = new PersonalDataParams(this.publisherToken, 250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
 
+        requests.add(new AsyncRequest(params, callback));
+
+        this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        final BooleanResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.success);
     }
 
     @Test

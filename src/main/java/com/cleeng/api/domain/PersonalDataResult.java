@@ -17,7 +17,7 @@ public class PersonalDataResult implements Serializable {
     public String companyName;
     public String phoneNumber;
     public Integer broadcasterId;
-    public ArrayList<String> customAnswers;
+    public ArrayList<Answer> customAnswers;
 
 }
 
