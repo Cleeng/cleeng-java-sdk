@@ -22,15 +22,16 @@ import static org.junit.Assert.assertFalse;
 public class CleengImplTest {
 
     private String publisherToken = "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30";
-    private String customerToken = "H1vV9WyS18ETxUTuItOnoCcukoQFfyF_DWaBDw9nU3JRvIYm";
+    private String customerToken = "xG7m1lMdR40QF7uyIFvyAEKHJWooOe5Y9xvkOB07U_RDTeGi";
 
     private Cleeng api;
 
     private double sleepRatio = 1;
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, IOException {
         this.api = CleengFactory.createSandboxApi(publisherToken);
+        this.customerToken = this.api.generateCustomerToken("jesionekdev@gmail.com").result.token;
     }
 
     @After
@@ -728,6 +729,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
         final ListSingleOffersResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
+        assertNotNull(response.result);
         assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
@@ -736,6 +738,7 @@ public class CleengImplTest {
         final Criteria criteria = new Criteria(true);
         final ListVodOffersResponse response = this.api.listVodOffers(criteria, 0, 10);
         assertNotNull(response);
+        assertNotNull(response.result);
         assertEquals("list length should match", 10, response.result.items.size());
     }
 
@@ -752,6 +755,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
         final ListVodOffersResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
+        assertNotNull(response.result);
         assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
