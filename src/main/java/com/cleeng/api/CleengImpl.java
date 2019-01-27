@@ -274,7 +274,7 @@ public class CleengImpl implements Cleeng {
 	public void listSingleOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new ListRequest("listVodOffers", ListParams.create(this.publisherToken,
+			request.data = new ListRequest("listSingleOffers", ListParams.create(this.publisherToken,
 					(Criteria) ((AsyncListRequest) request).input,
 					((AsyncListRequest) request).offset,
 					((AsyncListRequest) request).limit));
