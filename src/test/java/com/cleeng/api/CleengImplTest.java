@@ -734,6 +734,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListVodOffers() throws IOException {
         final Criteria criteria = new Criteria(true);
         final ListVodOffersResponse response = this.api.listVodOffers(criteria, 0, 10);
@@ -743,6 +744,7 @@ public class CleengImplTest {
     }
 
     @Test
+    @Ignore
     public void testListVodOffersAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<ListVodOffersResponse> callback = new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
