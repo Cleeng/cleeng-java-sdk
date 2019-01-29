@@ -22,15 +22,16 @@ import static org.junit.Assert.assertFalse;
 public class CleengImplTest {
 
     private String publisherToken = "IEiuf3fJzAorVvxgBYiHiHXGk8oFPckTMSOn8hS1--lOti30";
-    private String customerToken = "H1vV9WyS18ETxUTuItOnoCcukoQFfyF_DWaBDw9nU3JRvIYm";
+    private String customerToken = "xG7m1lMdR40QF7uyIFvyAEKHJWooOe5Y9xvkOB07U_RDTeGi";
 
     private Cleeng api;
 
     private double sleepRatio = 1;
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws MalformedURLException, IOException {
         this.api = CleengFactory.createSandboxApi(publisherToken);
+        this.customerToken = this.api.generateCustomerToken("jesionekdev@gmail.com").result.token;
     }
 
     @After
@@ -728,18 +729,22 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
         final ListSingleOffersResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
+        assertNotNull(response.result);
         assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
     @Test
+    @Ignore
     public void testListVodOffers() throws IOException {
         final Criteria criteria = new Criteria(true);
         final ListVodOffersResponse response = this.api.listVodOffers(criteria, 0, 10);
         assertNotNull(response);
+        assertNotNull(response.result);
         assertEquals("list length should match", 10, response.result.items.size());
     }
 
     @Test
+    @Ignore
     public void testListVodOffersAsync() throws IOException, InterruptedException {
         final AsyncRequestCallback<ListVodOffersResponse> callback = new AsyncRequestCallback<ListVodOffersResponse>(ListVodOffersResponse.class);
         final List<AsyncRequest> requests = new ArrayList<AsyncRequest>();
@@ -752,6 +757,7 @@ public class CleengImplTest {
         TimeUnit.MILLISECONDS.sleep(this.getSleepTime(requests.size()));
         final ListVodOffersResponse response = callback.getResponse();
         assertNotNull("Response object should not be null", response);
+        assertNotNull(response.result);
         assertTrue("List should contain items", response.result.items.size() > 0);
     }
 
@@ -1421,6 +1427,119 @@ public class CleengImplTest {
         final BatchResponse response = this.api.invokeBatch(batch);
         Assert.assertNotNull(response);
         Assert.assertEquals("Number of responses should match number of requests in a batch", 2, response.responses.size());
+    }
+
+    @Test
+    public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
+
+        final BooleanResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
+
+        final List<AsyncRequest> requests = new ArrayList<>();
+        final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
+        final PersonalDataParams params = new PersonalDataParams(this.publisherToken, 250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+
+        requests.add(new AsyncRequest(params, callback));
+
+        this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        final BooleanResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testFetchBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
+
+        final PersonalDataResponse response = this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629);
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
+
+    @Test
+    public void testFetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
+
+        final List<AsyncRequest> requests = new ArrayList<>();
+        final AsyncRequestCallback<PersonalDataResponse> callback = new AsyncRequestCallback<>(PersonalDataResponse.class);
+        requests.add(new AsyncRequest(new UserParams(this.publisherToken,250897629), callback));
+
+        this.api.fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+        final PersonalDataResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
+
+    @Test
+    public void testSaveCaptureQuestions() throws IOException {
+
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("custom_1", true, true, true, "value", "Question1?"));
+
+        BooleanResponse response = this.api.saveCaptureQuestions(questions);
+
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.result.success);
+    }
+
+    @Test
+    public void testSaveCaptureQuestionsAsync() throws IOException, InterruptedException {
+
+        List<AsyncRequest> requests = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("custom_1", true, true, true, "value", "Question1?"));
+        AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
+        requests.add(new AsyncRequest(new QuestionsParams(this.publisherToken, questions), callback));
+
+        this.api.saveCaptureQuestionsAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        BooleanResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+    }
+
+    @Test
+    public void testFetchCaptureQuestions() throws IOException {
+
+        CaptureQuestionResponse response = this.api.fetchCaptureQuestions();
+
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.result.size() > 0);
+    }
+
+    @Test
+    public void testFetchCaptureQuestionsAsync() throws IOException, InterruptedException {
+
+        List<AsyncRequest> requests = new ArrayList<>();
+        AsyncRequestCallback<CaptureQuestionResponse> callback = new AsyncRequestCallback<>(CaptureQuestionResponse.class);
+        requests.add(new AsyncRequest(new QuestionsParams(this.publisherToken), callback));
+
+        this.api.fetchCaptureQuestionsAsync(requests);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        CaptureQuestionResponse response = callback.getResponse();
+
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.result);
+        Assert.assertTrue(response.result.size() > 0);
     }
 
     private long getSleepTime(int requests) {
