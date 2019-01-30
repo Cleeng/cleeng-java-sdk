@@ -274,7 +274,7 @@ public class CleengImpl implements Cleeng {
 	public void listSingleOffersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
 		for (AsyncRequest request : requests) {
 			request.endpoint = this.platformUrl;
-			request.data = new ListRequest("listVodOffers", ListParams.create(this.publisherToken,
+			request.data = new ListRequest("listSingleOffers", ListParams.create(this.publisherToken,
 					(Criteria) ((AsyncListRequest) request).input,
 					((AsyncListRequest) request).offset,
 					((AsyncListRequest) request).limit));
@@ -753,6 +753,70 @@ public class CleengImpl implements Cleeng {
 		}
 		return batchResponse;
 	}
+
+	public void updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("updateBroadcasterSpecificPersonalDataWithCaptureAnswers", request.input);
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BooleanResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId, PersonalData data) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("updateBroadcasterSpecificPersonalDataWithCaptureAnswers", new PersonalDataParams(this.publisherToken, userId, data))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public PersonalDataResponse fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId) throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("fetchBroadcasterSpecificPersonalDataWithCaptureAnswers", new UserParams(this.publisherToken, userId))
+		);
+		return gson.fromJson(response, PersonalDataResponse.class);
+	}
+
+	public void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		for (AsyncRequest request : requests) {
+			request.endpoint = this.platformUrl;
+			request.data = new JSONRPCRequest("fetchBroadcasterSpecificPersonalDataWithCaptureAnswers", request.input);
+		}
+		this.client.invokeAsync(requests);
+	}
+
+	public BooleanResponse saveCaptureQuestions(List<Question> questions) throws IOException {
+		final String response = this.client.invoke(
+			this.platformUrl,
+			new JSONRPCRequest("saveCaptureQuestions", new QuestionsParams(this.publisherToken, questions))
+		);
+		return gson.fromJson(response, BooleanResponse.class);
+	}
+
+	public void saveCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+	    this.invokeAsync(requests,"saveCaptureQuestions");
+    }
+
+    public CaptureQuestionResponse fetchCaptureQuestions() throws IOException {
+		final String response = this.client.invoke(
+				this.platformUrl,
+				new JSONRPCRequest("fetchCaptureQuestions", new QuestionsParams(this.publisherToken, null))
+		);
+		return gson.fromJson(response, CaptureQuestionResponse.class);
+	}
+
+	public void fetchCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException {
+		this.invokeAsync(requests, "fetchCaptureQuestions");
+	}
+
+    private void invokeAsync(List<AsyncRequest> requests, String methodName) throws IOException, InterruptedException {
+        for (AsyncRequest request : requests) {
+            request.endpoint = this.platformUrl;
+            request.data = new JSONRPCRequest(methodName, request.input);
+        }
+        this.client.invokeAsync(requests);
+    }
 
 	private void initProps(String propertiesPath) {
 		final Properties properties = new Properties();

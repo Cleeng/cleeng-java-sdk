@@ -742,5 +742,75 @@ public interface Cleeng {
 	 * @param batch object containing a collection of individual requests
 	 * @return
 	 */
-	public BatchResponse invokeBatch(BatchRequest batch) throws IOException;
+	BatchResponse invokeBatch(BatchRequest batch) throws IOException;
+
+	/**
+	 * Updates Cleeng Capture data for given broadcaster and customer<br/>
+	 * <br/>
+	 *
+	 * @param data object containing personal data
+	 * @return
+	 */
+	BooleanResponse updateBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId, PersonalData data) throws IOException;
+
+	/**
+	 * Updates Cleeng Capture data for given broadcaster and customer in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void updateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * fetches customer data with additional broadcaster specific information<br/>
+	 * <br/>
+	 *
+	 * @param userId user's Id
+	 * @return
+	 */
+	PersonalDataResponse fetchBroadcasterSpecificPersonalDataWithCaptureAnswers(Integer userId) throws IOException;
+
+	/**
+	 * Fetches customer data with additional broadcaster specific information in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void fetchBroadcasterSpecificPersonalDataWithCaptureAnswersAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Saves capture questions
+	 *
+	 * @param questions a list of questions
+	 * @return
+	 * @throws IOException
+	 */
+	BooleanResponse saveCaptureQuestions(List<Question> questions) throws IOException;
+
+	/**
+	 * Saves capture questions in an asynchronous way
+	 *
+	 * @param requests
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void saveCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
+
+	/**
+	 * Fetches capture questions
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	CaptureQuestionResponse fetchCaptureQuestions() throws IOException;
+
+	/**
+	 * Fetches capture questions in an asynchronous way
+	 *
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	void fetchCaptureQuestionsAsync(List<AsyncRequest> requests) throws IOException, InterruptedException;
 }
