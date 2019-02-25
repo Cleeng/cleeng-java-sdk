@@ -4,13 +4,13 @@ import org.jsonrpc.JSONRPCMessage;
 
 public class PersonalDataResponse extends JSONRPCMessage {
 
-    public PersonalDataResult result;
+    public PersonalData result;
 
     public PersonalDataResponse() {
 
     }
 
-    public PersonalDataResponse(PersonalDataResult result) {
+    public PersonalDataResponse(PersonalData result) {
 
         this.result = result;
     }
