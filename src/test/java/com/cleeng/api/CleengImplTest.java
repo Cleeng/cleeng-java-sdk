@@ -951,7 +951,7 @@ public class CleengImplTest {
         final GetAccessStatusResponse response = this.api.getAccessStatus(this.customerToken, "A334745341_PL", "78.129.213.71");
         assertNotNull(response.result);
         assertEquals("Access granted should match", true, response.result.accessGranted);
-        assertEquals("ExpiresAt should match", 1549400941, response.result.expiresAt);
+        assertEquals("ExpiresAt should match", 1717356800, response.result.expiresAt);
         assertEquals("PurchasedDirectly should match", false, response.result.purchasedDirectly);
     }
 
@@ -1428,7 +1428,23 @@ public class CleengImplTest {
     @Test
     public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswers() throws IOException {
 
-        final BooleanResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+        ArrayList<Answer> customAnswers = new ArrayList<>();
+        customAnswers.add(new Answer("custom_1", "zipcode", "10002"));
+
+        final BooleanResponse response = this.api.updateBroadcasterSpecificPersonalDataWithCaptureAnswers(250897629, new PersonalData("John",
+            "Doe",
+            "445 Mount Eden Road",
+            "Mount Eden",
+            "Auckland",
+            null,
+            "New Zealand",
+            null,
+            null,
+            null,
+            null,
+            714418052,
+            customAnswers
+        ));
 
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.result);
@@ -1438,9 +1454,25 @@ public class CleengImplTest {
     @Test
     public void testUpdateBroadcasterSpecificPersonalDataWithCaptureAnswersAsync() throws IOException, InterruptedException {
 
+        ArrayList<Answer> customAnswers = new ArrayList<>();
+        customAnswers.add(new Answer("custom_1", "zipcode", "10002"));
+
         final List<AsyncRequest> requests = new ArrayList<>();
         final AsyncRequestCallback<BooleanResponse> callback = new AsyncRequestCallback<>(BooleanResponse.class);
-        final PersonalDataParams params = new PersonalDataParams(this.publisherToken, 250897629, new PersonalData("John","445 Mount Eden Road, Mount Eden, Auckland","New Zealand"));
+        final PersonalDataParams params = new PersonalDataParams(this.publisherToken, 250897629, new PersonalData("John",
+            "Doe",
+            "445 Mount Eden Road",
+            "Mount Eden",
+            "Auckland",
+            null,
+            "New Zealand",
+            null,
+            null,
+            null,
+            null,
+            714418052,
+            customAnswers
+        ));
 
         requests.add(new AsyncRequest(params, callback));
 

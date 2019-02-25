@@ -60,7 +60,7 @@ public class CleengBuilder {
     /**
      *
      * @param value - indicating whether to block: 0 - block (override properties), 1: do not block (override properties), -1: does not specify (properties still will be used to set this, if not found in properties it will be set to not block)
-     * @return
+     * @return cleeng builder object
      */
     public CleengBuilder setUseNonBlockingMode(int value) {
         this.useNonBlockingMode = value;
